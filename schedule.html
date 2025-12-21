@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Schedule</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIOL 5380</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weekly AMEs</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="AME_guidelines.html">AME Guidelines</a>
+        </li>
+        <li>
+          <a href="AMEs/AME1.html">AME1</a>
+        </li>
+        <li>
+          <a href="AMEs/AME2.html">AME2</a>
+        </li>
+        <li>
+          <a href="AMEs/AME3.html">AME3</a>
+        </li>
+        <li>
+          <a href="AMEs/AME4.html">AME4</a>
+        </li>
+        <li>
+          <a href="AMEs/AME5.html">AME5</a>
+        </li>
+        <li>
+          <a href="AMEs/AME6.html">AME6</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">AME Solutions</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="AMEs/AME1_solution.html">AME1</a>
+        </li>
+        <li>
+          <a href="AMEs/AME2_solution.html">AME2</a>
+        </li>
+        <li>
+          <a href="AMEs/AME3_solution.html">AME3</a>
+        </li>
+        <li>
+          <a href="AMEs/AME4_solution.html">AME4</a>
+        </li>
+        <li>
+          <a href="AMEs/AME5_solution.html">AME5</a>
+        </li>
+        <li>
+          <a href="AMEs/AME6_solution.html">AME6</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Reseach Project</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="final_project.html">Project Overview</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://topicsinbiomechanics.slack.com/">Discussion Board</a>
+</li>
+<li>
+  <a href="https://bostoncollege.instructure.com/courses/1665701">Course Canvas Page</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Schedule</h1>
+<h3 class="subtitle">Comparative Shape Analysis • Spring 2026</h3>
+
+</div>
+
+
+<blockquote>
+<p><strong>Default cadence:</strong> readings before class; AMES;
+deliverable due <strong>Friday 11:59pm ET</strong> (unless noted).</p>
+</blockquote>
+<hr />
+<div id="key-spring-2026-calendar-notes-bc" class="section level1">
+<h1>Key Spring 2026 calendar notes (BC)</h1>
+<ul>
+<li><strong>Classes begin:</strong> Mon <strong>Jan 12,
+2026</strong><br />
+</li>
+<li><strong>MLK Day (no classes):</strong> Mon <strong>Jan 19,
+2026</strong><br />
+</li>
+<li><strong>Spring recess (no classes):</strong> Mon–Fri <strong>Mar
+2–6, 2026</strong><br />
+</li>
+<li><strong>Easter recess (no classes):</strong> Thu–Mon <strong>Apr
+2–6, 2026</strong> (classes resume <strong>Apr 6 at 4pm</strong>)<br />
+</li>
+<li><strong>Patriot’s Day (no classes):</strong> Mon <strong>Apr 20,
+2026</strong><br />
+</li>
+<li><strong>Spring Half-Term 2 ends:</strong> Thu <strong>Apr 30,
+2026</strong><br />
+</li>
+<li><strong>Study days / exam period:</strong> see the Registrar’s final
+exam schedule for your section.</li>
+</ul>
+<p>(These items are intentionally high-level—your individual meeting
+pattern determines which specific “no class” dates affect you.)</p>
+<hr />
+</div>
+<div id="phase-i-core-toolkit-weeks-18" class="section level1">
+<h1>Phase I: Core toolkit (Weeks 1–8)</h1>
+<div
+id="week-1-jan-12-what-is-shape-and-how-do-we-measure-it-reproducibly"
+class="section level2">
+<h2>Week 1 (Jan 12): What is “shape,” and how do we measure it
+reproducibly?</h2>
+<p><strong>Topics</strong> - Shape vs size; biological meaning of
+“shape” - Reproducible workflows (R projects, <code>here()</code>, R
+Markdown, Git/GitHub) - First biological case study: ecomorphology in
+fishes (or sharks)</p>
+<p><strong>Deliverable:</strong> AME 1 — repo setup + 1 figure + short
+interpretation</p>
+<hr />
+</div>
+<div id="week-2-jan-19-univariate-characters-and-why-they-still-matter"
+class="section level2">
+<h2>Week 2 (Jan 19): Univariate characters (and why they still
+matter)</h2>
+<blockquote>
+<p><strong>MLK Day:</strong> if your section meets on Monday, this is an
+async lab week.</p>
+</blockquote>
+<p><strong>Topics</strong> - Trait definition, scaling, ratios,
+allometry - Measurement error and repeatability - Univariate hypothesis
+testing designs</p>
+<p><strong>Deliverable:</strong> AME 2 — univariate model + diagnostic +
+decision log</p>
+<hr />
+</div>
+<div id="week-3-jan-26-landmarks-procrustes-and-the-geometry-of-form"
+class="section level2">
+<h2>Week 3 (Jan 26): Landmarks, Procrustes, and the geometry of
+form</h2>
+<p><strong>Topics</strong> - Landmarks/semilandmarks; sliding - GPA,
+centroid size, tangent space - Deformation visualization (TPS grids,
+vectors)</p>
+<p><strong>Deliverable:</strong> AME 3: PCA + deformation figure +
+biological claim</p>
+<hr />
+</div>
+<div id="week-4-feb-2-outlines-fourier-descriptors"
+class="section level2">
+<h2>Week 4 (Feb 2): Outlines + Fourier descriptors</h2>
+<p><strong>Topics</strong> - When landmarks fail: outlines and complex
+boundaries - Elliptic Fourier descriptors; reconstruction + harmonics -
+Biological examples: teeth, fins, leaves, shells</p>
+<p><strong>Deliverable:</strong> AME 4 — outline PCA + one
+classifier/clustering analysis</p>
+<hr />
+</div>
+<div
+id="week-5-feb-9-from-ordination-to-inference-multivariate-thinking"
+class="section level2">
+<h2>Week 5 (Feb 9): From ordination to inference (multivariate
+thinking)</h2>
+<p><strong>Topics</strong> - PCA as a tool (and the limits of PC
+fishing) - Effect sizes, resampling, cross-validation ideas -
+Trajectories and modularity (conceptual + simple workflows)</p>
+<p><strong>Deliverable:</strong> AME 5 — group comparison + uncertainty
+summary</p>
+<hr />
+</div>
+<div id="week-6-feb-16-comparative-methods-i-univariate-pcm-properly"
+class="section level2">
+<h2>Week 6 (Feb 16): Comparative methods I (univariate PCM,
+properly)</h2>
+<p><strong>Topics</strong> - Phylogenetic signal (conceptual) - PGLS,
+phylogenetic ANOVA; model diagnostics - Trait–environment association
+example</p>
+<p><strong>Deliverable:</strong> AME 6 — PGLS + “what would change my
+mind?” paragraph</p>
+<hr />
+</div>
+<div id="week-7-feb-23-comparative-methods-ii-multivariate-pcm-shape"
+class="section level2">
+<h2>Week 7 (Feb 23): Comparative methods II (multivariate PCM +
+shape)</h2>
+<p><strong>Topics</strong> - mvPGLS, phylogenetic MANOVA, distance-based
+alternatives - High-dimensional shape: RRPP logic; regularization
+concept - Tree-linked visualization (evolutionary patterns)</p>
+<p><strong>Deliverable:</strong> AME 7 — multivariate PCM test + tree
+visualization</p>
+<hr />
+</div>
+<div
+id="week-8-mar-9-evolutionary-models-of-shape-bm-ou-rates-disparity"
+class="section level2">
+<h2>Week 8 (Mar 9): Evolutionary models of shape (BM, OU, rates,
+disparity)</h2>
+<blockquote>
+<p><strong>Spring recess is Mar 2–6</strong>, so this week lands
+immediately after recess.</p>
+</blockquote>
+<p><strong>Topics</strong> - BM vs OU intuition for shape data - Rate
+heterogeneity + regime shifts (claims you can/can’t make) - Disparity
+through time; clade comparisons</p>
+<p><strong>Deliverable:</strong> AME 8 — model comparison figure +
+limitations section</p>
+<hr />
+</div>
+</div>
+<div id="phase-ii-independent-project-block-weeks-913"
+class="section level1">
+<h1>Phase II: Independent project block (Weeks 9–13)</h1>
+<p>Your project must include: 1) a biological question,<br />
+2) shape/trait data, and<br />
+3) at least one explicit comparative/evolutionary component.</p>
+<div id="week-9-mar-16-project-scoping-proposal-clinic"
+class="section level2">
+<h2>Week 9 (Mar 16): Project scoping + proposal clinic</h2>
+<p><strong>In class</strong> - Idea triage: question → data → methods →
+feasible scope - Repo hygiene for research projects</p>
+<p><strong>Deliverable:</strong> Proposal (1–2 pages) + project repo
+skeleton</p>
+<hr />
+</div>
+<div id="week-10-mar-23-data-audit-measurement-error-sampling-plan"
+class="section level2">
+<h2>Week 10 (Mar 23): Data audit + measurement error / sampling
+plan</h2>
+<p><strong>In class</strong> - Data provenance, cleaning, missingness
+checks - Measurement error plan (repeat digitizing, bootstrap,
+sensitivity)</p>
+<p><strong>Deliverable:</strong> Data audit notebook + updated README
+(data provenance)</p>
+<hr />
+</div>
+<div id="week-11-mar-30-analysis-plan-prereg-style-decision-log"
+class="section level2">
+<h2>Week 11 (Mar 30): Analysis plan + prereg-style decision log</h2>
+<p><strong>In class</strong> - What’s confirmatory vs exploratory? -
+Mapping hypotheses to models + plots</p>
+<p><strong>Deliverable:</strong> Analysis plan + decision log + figure
+mockups</p>
+<hr />
+</div>
+<div id="week-12-apr-6-midpoint-check-in-one-model-one-figure-one-claim"
+class="section level2">
+<h2>Week 12 (Apr 6): Midpoint check-in (one model, one figure, one
+claim)</h2>
+<blockquote>
+<p><strong>Easter recess is Apr 2–6</strong>; if your section meets
+early in the week, we’ll adjust check-ins.</p>
+</blockquote>
+<p><strong>Deliverable:</strong> Midpoint release (tagged) + short
+reflection</p>
+<hr />
+</div>
+<div id="week-13-apr-13apr-27-writing-polishing-and-presenting"
+class="section level2">
+<h2>Week 13 (Apr 13–Apr 27): Writing, polishing, and presenting</h2>
+<blockquote>
+<p><strong>Patriot’s Day is Apr 20</strong> (no classes) and may affect
+meeting patterns.</p>
+</blockquote>
+<p><strong>Deliverables (end of window)</strong> - Final report
+(reproducible HTML + PDF) - 10–12 minute presentation - v1.0 tagged
+release + README + CITATION</p>
+<hr />
+</div>
+</div>
+<div id="suggested-due-date-map-if-you-want-a-single-list"
+class="section level1">
+<h1>Suggested due-date map (if you want a single list)</h1>
+<ul>
+<li>AMEs 1–8: <strong>Fridays</strong> of Weeks 1–8<br />
+</li>
+<li>Project proposal: <strong>Fri Mar 20, 2026</strong><br />
+</li>
+<li>Data audit: <strong>Fri Mar 27, 2026</strong><br />
+</li>
+<li>Analysis plan: <strong>Fri Apr 3, 2026</strong> <em>(shift if your
+section is impacted by Easter recess)</em><br />
+</li>
+<li>Midpoint check-in: <strong>Fri Apr 10, 2026</strong><br />
+</li>
+<li>Final materials: <strong>Fri May 1, 2026</strong> <em>(or your
+scheduled final/presentation slot)</em></li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

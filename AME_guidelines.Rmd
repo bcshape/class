@@ -6,7 +6,7 @@ title: "Analysis and Modeling Exercises"
 ```{r setup, echo=F,warning=F,message=F}
 library(tidyverse)
 ```
-We'll engage in 5 analysis and modeling exercises (AMEs). These exercises address a major goal of the course: developing skills in quantitative inference in the context biological sciences.
+We'll engage in 8 analysis and modeling exercises (AMEs). These exercises address a major goal of the course: developing skills in quantitative inference in the context biological shape.
 
 Some specific themes we'll explore include:
 
@@ -14,7 +14,7 @@ Some specific themes we'll explore include:
 * Effective visualization of trends in research data.
 * Qualitative and statistical inference of biological data.
 
-Every 2-3 weeks or so, we'll introduce the concepts and task taken up by each AME. Unlike the mini-projects, AMEs are focused mainly on quantitative approaches to biomechanical research, not the bio-physical concepts that we explore elsewhere.
+Every week during the first two months of the course, we'll introduce the concepts and task taken up by each AME. These AMEs are focused mainly on quantitative approaches to shape research.
 
 AMEs will take about a week to complete. At least initially, these exercises will be self-assessed. That is, after completion and submission of each AME, solutions will be issued and students will have about another week to compare their submitted work to the solution and resubmit a revised AEM with a self-assessed preliminary score. The original submission, revised submission, and self-assessed score will then be review by Prof. K, who will, in short order, return the self-assessed AEM with some feedback and a final score. 
 
@@ -93,7 +93,7 @@ If you recall from our hypothetical AME, we're studying the bite force of the ea
 
 Let's first begin with looking at an objective that should receive full marks. For objective 3, students were asked to do the following, a task worth 3 points.
 
-3. Please download the data you see above by accessing [this link](data/bite_force.csv). Read it in as CSV data and save it to an object named `dat`. [3]
+3. Please download the data you see above by accessing [this link](""). Read it in as CSV data and save it to an object named `dat`. [3]
 
 
 For this, the solution included the following:
@@ -134,7 +134,7 @@ dat %>%
 ```</code>
 </pre>
 
-```{r objective_ex 4,echo=FALSE,warning=F,message=F}
+```{r objective_ex 4,echo=FALSE,warning=F,message=F,eval=F}
 dat <- read_csv("data/bite_force.csv")
 dat %>% 
   ggplot(aes(mass,Fmax,col=sex))+geom_point()
@@ -155,7 +155,7 @@ dat_M %>%
 </pre>
 
 
-```{r objective_ex2 4,echo=FALSE,warning=F,message=F}
+```{r objective_ex2 4,echo=FALSE,warning=F,message=F,eval=F}
 dat_F <- dat %>% filter(sex=="Female")
 dat_M <- dat %>% filter(sex=="Male")
 dat_F %>% 

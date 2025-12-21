@@ -14,7 +14,7 @@ Say we were studying the bite force of the eastern gray squirrel (*Sciurus carol
 
 Assume that you collected the following data, a table that contains the maximum bite force at the larger, aneteriormost incisor of the lower jaw, mass, and sex of 20 specimens.
 
-```{r,include=F}
+```{r,include=F,eval=F}
 library(tidyverse)
 library(kableExtra)
 dat <- tibble(
@@ -30,7 +30,7 @@ dat %>%
 write_csv(dat %>% select(-m),"data/bite_force.csv")
 ```
 
-```{r,echo=F}
+```{r,echo=F,eval=F}
 dat %>% 
   select(-m) %>% 
   kable(caption = "Table 1: Bite force data for 20 squirrels. Mass is given in kg, bite force ('Fmax') is given in N") %>% 

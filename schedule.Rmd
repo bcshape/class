@@ -1,0 +1,176 @@
+---
+title: "Schedule"
+subtitle: "Comparative Shape Analysis • Spring 2026"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+> **Default cadence:** readings before class; AMES; deliverable due **Friday 11:59pm ET** (unless noted).
+
+---
+
+# Key Spring 2026 calendar notes (BC)
+
+- **Classes begin:** Mon **Jan 12, 2026**  
+- **MLK Day (no classes):** Mon **Jan 19, 2026**  
+- **Spring recess (no classes):** Mon–Fri **Mar 2–6, 2026**  
+- **Easter recess (no classes):** Thu–Mon **Apr 2–6, 2026** (classes resume **Apr 6 at 4pm**)  
+- **Patriot’s Day (no classes):** Mon **Apr 20, 2026**  
+- **Spring Half-Term 2 ends:** Thu **Apr 30, 2026**  
+- **Study days / exam period:** see the Registrar’s final exam schedule for your section.
+
+(These items are intentionally high-level—your individual meeting pattern determines which specific “no class” dates affect you.)
+
+---
+
+# Phase I: Core toolkit (Weeks 1–8)
+
+## Week 1 (Jan 12): What is “shape,” and how do we measure it reproducibly?
+
+**Topics**
+- Shape vs size; biological meaning of “shape”
+- Reproducible workflows (R projects, `here()`, R Markdown, Git/GitHub)
+- First biological case study: ecomorphology in fishes (or sharks)
+
+**Deliverable:** AME 1 — repo setup + 1 figure + short interpretation
+
+---
+
+## Week 2 (Jan 19): Univariate characters (and why they still matter)
+> **MLK Day:** if your section meets on Monday, this is an async lab week.
+
+**Topics**
+- Trait definition, scaling, ratios, allometry
+- Measurement error and repeatability
+- Univariate hypothesis testing designs
+
+**Deliverable:** AME 2 — univariate model + diagnostic + decision log
+
+---
+
+## Week 3 (Jan 26): Landmarks, Procrustes, and the geometry of form
+**Topics**
+- Landmarks/semilandmarks; sliding
+- GPA, centroid size, tangent space
+- Deformation visualization (TPS grids, vectors)
+
+**Deliverable:** AME 3: PCA + deformation figure + biological claim
+
+---
+
+## Week 4 (Feb 2): Outlines + Fourier descriptors
+**Topics**
+- When landmarks fail: outlines and complex boundaries
+- Elliptic Fourier descriptors; reconstruction + harmonics
+- Biological examples: teeth, fins, leaves, shells
+
+**Deliverable:** AME 4 — outline PCA + one classifier/clustering analysis
+
+---
+
+## Week 5 (Feb 9): From ordination to inference (multivariate thinking)
+**Topics**
+- PCA as a tool (and the limits of PC fishing)
+- Effect sizes, resampling, cross-validation ideas
+- Trajectories and modularity (conceptual + simple workflows)
+
+**Deliverable:** AME 5 — group comparison + uncertainty summary
+
+---
+
+## Week 6 (Feb 16): Comparative methods I (univariate PCM, properly)
+**Topics**
+- Phylogenetic signal (conceptual)
+- PGLS, phylogenetic ANOVA; model diagnostics
+- Trait–environment association example
+
+**Deliverable:** AME 6 — PGLS + “what would change my mind?” paragraph
+
+---
+
+## Week 7 (Feb 23): Comparative methods II (multivariate PCM + shape)
+**Topics**
+- mvPGLS, phylogenetic MANOVA, distance-based alternatives
+- High-dimensional shape: RRPP logic; regularization concept
+- Tree-linked visualization (evolutionary patterns)
+
+**Deliverable:** AME 7 — multivariate PCM test + tree visualization
+
+---
+
+## Week 8 (Mar 9): Evolutionary models of shape (BM, OU, rates, disparity)
+> **Spring recess is Mar 2–6**, so this week lands immediately after recess.
+
+**Topics**
+- BM vs OU intuition for shape data
+- Rate heterogeneity + regime shifts (claims you can/can’t make)
+- Disparity through time; clade comparisons
+
+**Deliverable:** AME 8 — model comparison figure + limitations section
+
+---
+
+# Phase II: Independent project block (Weeks 9–13)
+
+Your project must include:
+1) a biological question,  
+2) shape/trait data, and  
+3) at least one explicit comparative/evolutionary component.
+
+## Week 9 (Mar 16): Project scoping + proposal clinic
+**In class**
+- Idea triage: question → data → methods → feasible scope
+- Repo hygiene for research projects
+
+**Deliverable:** Proposal (1–2 pages) + project repo skeleton
+
+---
+
+## Week 10 (Mar 23): Data audit + measurement error / sampling plan
+**In class**
+- Data provenance, cleaning, missingness checks
+- Measurement error plan (repeat digitizing, bootstrap, sensitivity)
+
+**Deliverable:** Data audit notebook + updated README (data provenance)
+
+---
+
+## Week 11 (Mar 30): Analysis plan + prereg-style decision log
+**In class**
+- What’s confirmatory vs exploratory?
+- Mapping hypotheses to models + plots
+
+**Deliverable:** Analysis plan + decision log + figure mockups
+
+---
+
+## Week 12 (Apr 6): Midpoint check-in (one model, one figure, one claim)
+> **Easter recess is Apr 2–6**; if your section meets early in the week, we’ll adjust check-ins.
+
+**Deliverable:** Midpoint release (tagged) + short reflection
+
+---
+
+## Week 13 (Apr 13–Apr 27): Writing, polishing, and presenting
+> **Patriot’s Day is Apr 20** (no classes) and may affect meeting patterns.
+
+**Deliverables (end of window)**
+- Final report (reproducible HTML + PDF)
+- 10–12 minute presentation
+- v1.0 tagged release + README + CITATION
+
+---
+
+# Suggested due-date map (if you want a single list)
+
+- AMEs 1–8: **Fridays** of Weeks 1–8  
+- Project proposal: **Fri Mar 20, 2026**  
+- Data audit: **Fri Mar 27, 2026**  
+- Analysis plan: **Fri Apr 3, 2026** *(shift if your section is impacted by Easter recess)*  
+- Midpoint check-in: **Fri Apr 10, 2026**  
+- Final materials: **Fri May 1, 2026** *(or your scheduled final/presentation slot)*
+
+

@@ -1,0 +1,169 @@
+---
+title: "Comparative Shape Analysis"
+output: html_document
+---
+
+Welcome to **Comparative Shape Analysis**, a course focused on understanding
+**biological form through real organisms, real data, and reproducible analysis**.
+
+Organismal biology sits at the intersection of **form, function, ecology, and
+evolution**. In this course, we use biological examples—teeth, fins, skulls,
+leaves, wings, and bodies—to ask how shape varies, how it works, and how it
+evolves. Along the way, students develop a practical toolkit for measuring,
+analyzing, and interpreting biological shape using modern quantitative methods.
+
+This is a **code-driven, research-style course**. You will spend much of the
+semester working with data, writing analysis pipelines, and making decisions
+about models, assumptions, and interpretation—just as practicing biologists do.
+
+---
+
+# Course scope, goals, and objectives
+
+To be an effective organismal biologist, one must be able to **translate
+biological questions into quantitative analyses** and back again. That means
+understanding both *what tools exist* and *when they should (or should not) be
+used*.
+
+The thrust of this course is to develop and hone **quantitative skills relevant
+to organismal and evolutionary biology**, with a particular emphasis on
+biological shape.
+
+By the end of the course, students will be able to:
+
+- Distinguish **shape, size, and form**, and articulate what each implies
+  biologically  
+- Quantify **univariate characters** (e.g. lengths, ratios, scaling relationships)
+  and evaluate their assumptions  
+- Analyze **multivariate and geometric morphometric data**, including landmark-
+  and outline-based approaches  
+- Apply **phylogenetic comparative methods** to test evolutionary hypotheses
+  about traits and shape  
+- Diagnose common failure modes in biological data analysis (collinearity,
+  overfitting, p ≫ n, phylogenetic non-independence)  
+- Build **fully reproducible analysis workflows** using R, Git, and GitHub  
+- Communicate results clearly using figures, code, and biological interpretation  
+
+---
+
+# Course philosophy
+
+<div class="green">
+<div class="row">
+  <div class="col-sm-2">
+    <i class="far fa-sticky-note fa-5x" style="color:#2C3E50"></i>
+  </div>
+  <div class="col-sm-9">
+
+This course emphasizes **how you think**, not just whether you get a particular
+answer.
+
+Biological data are messy. Shape data are high-dimensional. Evolutionary models
+are imperfect. Learning to navigate these realities—by making assumptions
+explicit, testing alternatives, and recognizing limitations—is more important
+than producing a single “correct” result.
+
+You will be evaluated as much on **reasoning, transparency, and reproducibility**
+as on statistical outcomes.
+
+  </div>
+</div>
+</div>
+
+---
+
+# Structure of the course
+
+The semester is divided into two phases:
+
+## Weeks 1–8: Biological examples & core methods
+
+During the first half of the course, we work through a sequence of biological
+case studies that introduce:
+
+- Univariate traits and scaling
+- Linear multivariate morphometrics
+- Landmark-based geometric morphometrics
+- Outline-based shape analysis
+- Hypothesis testing with shape
+- Phylogenetic regression and signal
+- Evolutionary models of trait evolution
+- Multivariate comparative methods
+
+Each week includes a **short, code-based lab notebook** that emphasizes
+biological interpretation alongside analysis.
+
+## Weeks 9–13: Independent research project
+
+In the second half of the semester, students conduct an **independent,
+reproducible research project** focused on biological shape.
+
+Projects may be:
+- Original analyses of instructor-provided or student-assembled datasets, or
+- Replication-and-extension studies based on published work
+
+All projects culminate in:
+- A fully reproducible GitHub repository
+- A project website page (GitHub Pages)
+- A short oral presentation
+
+---
+
+# What this course is (and is not)
+
+**This course is:**
+- Quantitative and biological
+- Code-centric and reproducible
+- Focused on interpretation, not button-pushing
+- Structured to resemble real research workflows
+
+**This course is not:**
+- A pure statistics course
+- A software-tutorial class
+- Focused on memorizing formulas
+- Designed around artificial or “toy” datasets
+
+---
+
+# Tools and expectations
+
+Students are expected to work regularly with:
+
+- **R** for data analysis and visualization  
+- **R Markdown** for clear, reproducible reports  
+- **Git and GitHub** for version control and collaboration  
+
+Prior experience with biological analysis in R is required (i.e., BIOL 3140) as is comfort with learning by
+doing.
+
+---
+
+# Accessibility, collaboration, and integrity
+
+Collaboration is encouraged at the **conceptual level**—discussing biological
+ideas, interpreting figures, and debugging logic.
+
+All submitted work must represent **your own analysis and writing**, and all
+code must be clearly attributed when reused or adapted.
+
+If you have accessibility needs or concerns, please contact the instructor
+early so accommodations can be arranged.
+
+---
+
+&nbsp;
+<hr />
+
+<p style="text-align: center;">
+Cobbled together by <a href="https://kenaleylab.org">Chris Kenaley</a>
+</p>
+
+<p style="text-align: center;">
+<span style="color: #808080;"><em>kenaley@bc.edu</em></span>
+</p>
+
+<p style="text-align: center;">
+  <a href="https://github.com/ckenaley/" class="fab fa-github"></a>
+</p>
+
+&nbsp;

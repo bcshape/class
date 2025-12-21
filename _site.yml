@@ -1,0 +1,60 @@
+name: "BIOL 5410: Comparative Shape Analysis"
+output_dir: "."
+output:  
+  html_document:  
+    self_contained: no  
+    theme: sandstone
+    highlight: tango
+    toc: true # adds a table of contents
+    toc_float: true
+    number_sections: FALSE
+    css: "style.css"
+navbar: 
+  title: "BIOL 5380"
+  left: 
+    - text: "Home"
+      href: index.html
+    - text: "Schedule"
+      href: schedule.html
+    - text: "Assignments" 
+      menu:
+      - text: "Weekly AMEs"
+        menu:
+        - text: "AME Guidelines"
+          href: AME_guidelines.html
+        - text: "AME1"
+          href: AMEs/AME1.html
+        - text: "AME2"
+          href: AMEs/AME2.html
+        - text: "AME3"
+          href: AMEs/AME3.html
+        - text: "AME4"
+          href: AMEs/AME4.html
+        - text: "AME5"
+          href: AMEs/AME5.html
+        - text: "AME6"
+          href: AMEs/AME6.html
+      - text: "AME Solutions"
+        menu:
+        - text: "AME1"
+          href: AMEs/AME1_solution.html
+        - text: "AME2"
+          href: AMEs/AME2_solution.html
+        - text: "AME3"
+          href: AMEs/AME3_solution.html
+        - text: "AME4"
+          href: AMEs/AME4_solution.html
+        - text: "AME5"
+          href: AMEs/AME5_solution.html
+        - text: "AME6"
+          href: AMEs/AME6_solution.html
+      - text: "Reseach Project"
+        menu:
+        - text: "Project Overview"
+          href: final_project.html
+    - text: "Discussion Board"
+      href: https://topicsinbiomechanics.slack.com/
+    - text: "Course Canvas Page"
+      href: https://bostoncollege.instructure.com/courses/1665701
+    
+   

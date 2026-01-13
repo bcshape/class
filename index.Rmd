@@ -39,7 +39,6 @@ Biological data are messy. Shape data are high-dimensional. Evolutionary models 
 
 You will be evaluated as much on **reasoning, transparency, and reproducibility** as on statistical outcomes.
 
-
 ---
 
 # Structure of the course
@@ -105,7 +104,7 @@ doing.
 
 # Course Assessment
 
-Your grade will be based on five assignment components: Asking and answering questions on our discussion board, many in-class coding exercises, and a series of project reports: 4 for Phase I projects, 4 for Phase II projects, and one for the Phase III project. 
+Your grade will be based on four assignment components: Engagement, AMES, Chalk Talks, and Final Project work.
 
 ***
 
@@ -113,9 +112,9 @@ Your grade will be based on five assignment components: Asking and answering que
 ----------------------  ------------  --------------------    
                                         **Points**            
      
- Engagement Q&A                        100 
+ Engagement                              100 
  
- Analysis and Modeling Exercises       8x25           
+ AMES                                   8x25           
   
  Chalk Talks                            4x25
  

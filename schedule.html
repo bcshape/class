@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -33,6 +33,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -43,13 +45,22 @@
   ul.task-list{list-style: none;}
     </style>
 
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
 
 
 
 
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -303,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">BIOL 5380</a>
+      <a class="navbar-brand" href="index.html">BIOL 5410</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -370,7 +381,7 @@ div.tocify {
       </ul>
     </li>
     <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Reseach Project</a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Final Project</a>
       <ul class="dropdown-menu" role="menu">
         <li>
           <a href="final_project.html">Project Overview</a>
@@ -380,7 +391,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="https://topicsinbiomechanics.slack.com/">Discussion Board</a>
+  <a href="https://github.com/orgs/bcshape/discussions">Discussion Board</a>
 </li>
 <li>
   <a href="https://bostoncollege.instructure.com/courses/1665701">Course Canvas Page</a>
@@ -398,72 +409,57 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Schedule</h1>
-<h3 class="subtitle">Comparative Shape Analysis • Spring 2026</h3>
 
 </div>
 
 
-<blockquote>
-<p><strong>Default cadence:</strong> readings before class; AMES;
-deliverable due <strong>Friday 11:59pm ET</strong> (unless noted).</p>
-</blockquote>
-<hr />
-<div id="key-spring-2026-calendar-notes-bc" class="section level1">
-<h1>Key Spring 2026 calendar notes (BC)</h1>
+<div id="phase-i-the-ins-and-outs-of-shape" class="section level1">
+<h1>Phase I: The Ins and Outs of Shape</h1>
+<div id="week-1-jan-12-what-is-shape" class="section level2">
+<h2>Week 1 (Jan 12): What is “shape”?</h2>
+<p><strong>Topics</strong></p>
 <ul>
-<li><strong>Classes begin:</strong> Mon <strong>Jan 12,
-2026</strong><br />
-</li>
-<li><strong>MLK Day (no classes):</strong> Mon <strong>Jan 19,
-2026</strong><br />
-</li>
-<li><strong>Spring recess (no classes):</strong> Mon–Fri <strong>Mar
-2–6, 2026</strong><br />
-</li>
-<li><strong>Easter recess (no classes):</strong> Thu–Mon <strong>Apr
-2–6, 2026</strong> (classes resume <strong>Apr 6 at 4pm</strong>)<br />
-</li>
-<li><strong>Patriot’s Day (no classes):</strong> Mon <strong>Apr 20,
-2026</strong><br />
-</li>
-<li><strong>Spring Half-Term 2 ends:</strong> Thu <strong>Apr 30,
-2026</strong><br />
-</li>
-<li><strong>Study days / exam period:</strong> see the Registrar’s final
-exam schedule for your section.</li>
+<li>Shape vs size; biological meaning of “shape”</li>
+<li>Data types and definitions: univariate, multivariate linear,
+landmarks/outlines, function/performance</li>
+<li>Reproducible workflows (R projects, R Markdown, Git/GitHub)</li>
 </ul>
-<p>(These items are intentionally high-level—your individual meeting
-pattern determines which specific “no class” dates affect you.)</p>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="rohlf_1990.pdf">Rolf (1990)</a></li>
+<li><a href="papers/klingenberg_2010.pdf">Klingenberg (2010)</a></li>
+<li><a href="/papers/wainwright_2007.pdf">Wainwright (2007)</a></li>
+<li>In-class coding (1/14)</li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME1 release</li>
+<li>Personal repo setup</li>
+</ul>
+<p><strong>Slides:</strong> <a href="lect/5410_1_13.html">Jan 13</a></p>
 <hr />
 </div>
-<div id="phase-i-core-toolkit-weeks-18" class="section level1">
-<h1>Phase I: Core toolkit (Weeks 1–8)</h1>
 <div
-id="week-1-jan-12-what-is-shape-and-how-do-we-measure-it-reproducibly"
+id="week-2-jan-19-measurement-repeatability-and-univariate-characters"
 class="section level2">
-<h2>Week 1 (Jan 12): What is “shape,” and how do we measure it
-reproducibly?</h2>
-<p><strong>Topics</strong> - Shape vs size; biological meaning of
-“shape” - Reproducible workflows (R projects, <code>here()</code>, R
-Markdown, Git/GitHub) - First biological case study: ecomorphology in
-fishes (or sharks)</p>
-<p><strong>Deliverable:</strong> AME 1 — repo setup + 1 figure + short
-interpretation</p>
-<hr />
-</div>
-<div id="week-2-jan-19-univariate-characters-and-why-they-still-matter"
-class="section level2">
-<h2>Week 2 (Jan 19): Univariate characters (and why they still
-matter)</h2>
-<blockquote>
-<p><strong>MLK Day:</strong> if your section meets on Monday, this is an
-async lab week.</p>
-</blockquote>
-<p><strong>Topics</strong> - Trait definition, scaling, ratios,
-allometry - Measurement error and repeatability - Univariate hypothesis
-testing designs</p>
-<p><strong>Deliverable:</strong> AME 2 — univariate model + diagnostic +
-decision log</p>
+<h2>Week 2 (Jan 19): Measurement, repeatability, and univariate
+characters</h2>
+<p><strong>Topics</strong></p>
+<ul>
+<li>Trait definition, scaling, ratios, allometry</li>
+<li>Scaling: size correction choices, ratio traps</li>
+</ul>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/symonds&amp;blomberg_2010.pdf">Symonds &amp;
+Blomberg (2014)</a></li>
+<li><a href="papers/pelabon_etal_2014">Pelabon et al. (2014)</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME1</li>
+<li>CT1</li>
+</ul>
 <hr />
 </div>
 <div id="week-3-jan-26-landmarks-procrustes-and-the-geometry-of-form"
@@ -472,9 +468,23 @@ class="section level2">
 form</h2>
 <p><strong>Topics</strong> - Landmarks/semilandmarks; sliding - GPA,
 centroid size, tangent space - Deformation visualization (TPS grids,
-vectors)</p>
-<p><strong>Deliverable:</strong> AME 3: PCA + deformation figure +
-biological claim</p>
+vectors) - geomorph ecosystem</p>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/martinez_et_al_2013.pdf">Martinez et
+al. (2013)</a></li>
+<li><a href="papers/mitteroecker&amp;gunz_2009.pdf">Mitteroecker &amp;
+Gunz (2009)</a></li>
+<li><a href="papers/tiatragul_etal_2024">Tiatragul et
+al. (2024)</a></li>
+<li><a href="papers/baken_etal_2021.pdf">Baken et al. (2021)</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME3</li>
+<li>CT3 (given in class 1/29) <strong>CPK: assign groups with
+Rmd</strong></li>
+</ul>
 <hr />
 </div>
 <div id="week-4-feb-2-outlines-fourier-descriptors"
@@ -482,9 +492,15 @@ class="section level2">
 <h2>Week 4 (Feb 2): Outlines + Fourier descriptors</h2>
 <p><strong>Topics</strong> - When landmarks fail: outlines and complex
 boundaries - Elliptic Fourier descriptors; reconstruction + harmonics -
-Biological examples: teeth, fins, leaves, shells</p>
-<p><strong>Deliverable:</strong> AME 4 — outline PCA + one
-classifier/clustering analysis</p>
+Biological examples: teeth, fins, leaves, shells, jaws</p>
+<p><strong>Consumables</strong> - <a
+href="papers/tseng_etal_2022.pdf">Tseng et al (2022)</a> - <a
+href="papers/bonhomme_etal_2014.pdf">Bonhomme et al (2014)</a></p>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME4</li>
+<li>CT4</li>
+</ul>
 <hr />
 </div>
 <div
@@ -492,130 +508,141 @@ id="week-5-feb-9-from-ordination-to-inference-multivariate-thinking"
 class="section level2">
 <h2>Week 5 (Feb 9): From ordination to inference (multivariate
 thinking)</h2>
-<p><strong>Topics</strong> - PCA as a tool (and the limits of PC
-fishing) - Effect sizes, resampling, cross-validation ideas -
-Trajectories and modularity (conceptual + simple workflows)</p>
-<p><strong>Deliverable:</strong> AME 5 — group comparison + uncertainty
-summary</p>
+<p><strong>Topics</strong> - PCA as a tool - Effect sizes, resampling,
+cross-validation ideas - Trajectories and modularity</p>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/abdi&amp;williams_2010.pdf">Abdi &amp; Williams
+(2010)</a></li>
+<li><a href="papers/satterfield_et_al_2023.pdf">Satterfield et al
+(2023)</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME5</li>
+<li>CT5</li>
+</ul>
 <hr />
 </div>
-<div id="week-6-feb-16-comparative-methods-i-univariate-pcm-properly"
-class="section level2">
-<h2>Week 6 (Feb 16): Comparative methods I (univariate PCM,
-properly)</h2>
-<p><strong>Topics</strong> - Phylogenetic signal (conceptual) - PGLS,
-phylogenetic ANOVA; model diagnostics - Trait–environment association
-example</p>
-<p><strong>Deliverable:</strong> AME 6 — PGLS + “what would change my
-mind?” paragraph</p>
+<div id="week-6-feb-16-comparative-methods-i" class="section level2">
+<h2>Week 6 (Feb 16): Comparative methods I</h2>
+<p><strong>Topics</strong></p>
+<ul>
+<li>Models of evolution: Tempo and mode</li>
+<li>PGLS and what it is (and is not)</li>
+<li>Multivariate PGLS / phylogenetic MANOVA</li>
+<li>Tree-linked visualization (evolutionary patterns)</li>
+</ul>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/zhusti_etal.pdf">Zhusti et al.</a></li>
+<li><a href="papers/felsenstein_1985.pdf">Felsenstein (1985)</a></li>
+<li><a href="papers/symonds&amp;blomberg_2010.pdf">Symonds &amp;
+Blomberg (2014)</a></li>
+<li>Harmon (2019) <a
+href="https://lukejharmon.github.io/pcm/chapter3_bmintro/">Chapter 3</a>
+and <a
+href="https://lukejharmon.github.io/pcm/chapter6_beyondbm">Chapter
+6</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME6</li>
+<li>CT6</li>
+</ul>
 <hr />
 </div>
-<div id="week-7-feb-23-comparative-methods-ii-multivariate-pcm-shape"
-class="section level2">
-<h2>Week 7 (Feb 23): Comparative methods II (multivariate PCM +
-shape)</h2>
-<p><strong>Topics</strong> - mvPGLS, phylogenetic MANOVA, distance-based
-alternatives - High-dimensional shape: RRPP logic; regularization
-concept - Tree-linked visualization (evolutionary patterns)</p>
-<p><strong>Deliverable:</strong> AME 7 — multivariate PCM test + tree
-visualization</p>
-<hr />
+<div id="week-7-feb-23-comparative-methods-ii" class="section level2">
+<h2>Week 7 (Feb 23): Comparative methods II</h2>
+<p><strong>Topics</strong> - BM vs OU intuition for shape data - Rate
+heterogeneity + regime shifts (claims you can/can’t make) - Disparity
+through time; clade comparisons</p>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/felice_et_al._2021.pdf">Felice et
+al. (2021)</a></li>
+<li><a href="/papers/uyeda_et_al_2018.pdf">Uyeda et al (2018)</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME7</li>
+<li>CT7</li>
+</ul>
+</div>
+<div id="spring-break-mar-2" class="section level2">
+<h2>Spring Break (Mar 2)</h2>
 </div>
 <div
 id="week-8-mar-9-evolutionary-models-of-shape-bm-ou-rates-disparity"
 class="section level2">
 <h2>Week 8 (Mar 9): Evolutionary models of shape (BM, OU, rates,
 disparity)</h2>
-<blockquote>
-<p><strong>Spring recess is Mar 2–6</strong>, so this week lands
-immediately after recess.</p>
-</blockquote>
-<p><strong>Topics</strong> - BM vs OU intuition for shape data - Rate
-heterogeneity + regime shifts (claims you can/can’t make) - Disparity
-through time; clade comparisons</p>
-<p><strong>Deliverable:</strong> AME 8 — model comparison figure +
-limitations section</p>
-<hr />
+<p><strong>Topics</strong></p>
+<ul>
+<li>Model comparison and hypothesis testing</li>
+<li>Modularity and integration</li>
+</ul>
+<p><strong>Consumables</strong></p>
+<ul>
+<li><a href="papers/evans_et_al_2023.pdf">Evans et al. (2023)</a></li>
+<li><a href="burns&amp;sidlauskas_2019.pdf">Burns and Sidlauskas
+(2019)</a></li>
+</ul>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>AME8</li>
+<li>CT8</li>
+</ul>
 </div>
 </div>
 <div id="phase-ii-independent-project-block-weeks-913"
 class="section level1">
 <h1>Phase II: Independent project block (Weeks 9–13)</h1>
-<p>Your project must include: 1) a biological question,<br />
-2) shape/trait data, and<br />
-3) at least one explicit comparative/evolutionary component.</p>
-<div id="week-9-mar-16-project-scoping-proposal-clinic"
-class="section level2">
-<h2>Week 9 (Mar 16): Project scoping + proposal clinic</h2>
+<div id="week-9-mar-16-project-scope-and-goals" class="section level2">
+<h2>Week 9 (Mar 16): Project scope and goals</h2>
 <p><strong>In class</strong> - Idea triage: question → data → methods →
 feasible scope - Repo hygiene for research projects</p>
-<p><strong>Deliverable:</strong> Proposal (1–2 pages) + project repo
-skeleton</p>
+<p><strong>Deliverable:</strong></p>
+<ul>
+<li>1-page proposal (due)</li>
+</ul>
 <hr />
 </div>
-<div id="week-10-mar-23-data-audit-measurement-error-sampling-plan"
+<div id="week-10-mar-23-data-audit-sampling-plan"
 class="section level2">
-<h2>Week 10 (Mar 23): Data audit + measurement error / sampling
-plan</h2>
+<h2>Week 10 (Mar 23): Data audit &amp; sampling plan</h2>
 <p><strong>In class</strong> - Data provenance, cleaning, missingness
-checks - Measurement error plan (repeat digitizing, bootstrap,
-sensitivity)</p>
-<p><strong>Deliverable:</strong> Data audit notebook + updated README
-(data provenance)</p>
+checks - Measurement error plan (repeat digitizing, sensitivity)</p>
+<p><strong>Deliverable:</strong></p>
+<p>-Landmark data (due)</p>
 <hr />
 </div>
 <div id="week-11-mar-30-analysis-plan-prereg-style-decision-log"
 class="section level2">
 <h2>Week 11 (Mar 30): Analysis plan + prereg-style decision log</h2>
-<p><strong>In class</strong> - What’s confirmatory vs exploratory? -
-Mapping hypotheses to models + plots</p>
-<p><strong>Deliverable:</strong> Analysis plan + decision log + figure
+<p>Note <strong>Easter recess starts Apr 2</strong></p>
+<p><strong>In class</strong> - Working through intial data - Developed
+refined hypotheses, models, and plots</p>
+<p><strong>Deliverable:</strong> - 1-page Analysis plan with figure
 mockups</p>
 <hr />
 </div>
-<div id="week-12-apr-6-midpoint-check-in-one-model-one-figure-one-claim"
+<div
+id="weeks-1214-apr-27-midpoint-check-in-one-model-one-figure-one-claim"
 class="section level2">
-<h2>Week 12 (Apr 6): Midpoint check-in (one model, one figure, one
+<h2>Weeks 12–14 (Apr 27): Midpoint check-in (one model, one figure, one
 claim)</h2>
-<blockquote>
-<p><strong>Easter recess is Apr 2–6</strong>; if your section meets
-early in the week, we’ll adjust check-ins.</p>
-</blockquote>
-<p><strong>Deliverable:</strong> Midpoint release (tagged) + short
-reflection</p>
+<p><strong>In class</strong> - Problem solving, data acquisition</p>
+<p><strong>Deliverable:</strong> None</p>
 <hr />
 </div>
-<div id="week-13-apr-13apr-27-writing-polishing-and-presenting"
+<div id="finals-period-may-111-polishing-and-presenting"
 class="section level2">
-<h2>Week 13 (Apr 13–Apr 27): Writing, polishing, and presenting</h2>
-<blockquote>
-<p><strong>Patriot’s Day is Apr 20</strong> (no classes) and may affect
-meeting patterns.</p>
-</blockquote>
-<p><strong>Deliverables (end of window)</strong> - Final report
-(reproducible HTML + PDF) - 10–12 minute presentation - v1.0 tagged
-release + README + CITATION</p>
-<hr />
+<h2>Finals period (May 1–11): Polishing and presenting</h2>
+<p><strong>On you own</strong> - Synthesis: Figures, results,
+interpretation</p>
+<p><strong>Deliverable:</strong> Final Rmd (Due May 11)</p>
 </div>
-</div>
-<div id="suggested-due-date-map-if-you-want-a-single-list"
-class="section level1">
-<h1>Suggested due-date map (if you want a single list)</h1>
-<ul>
-<li>AMEs 1–8: <strong>Fridays</strong> of Weeks 1–8<br />
-</li>
-<li>Project proposal: <strong>Fri Mar 20, 2026</strong><br />
-</li>
-<li>Data audit: <strong>Fri Mar 27, 2026</strong><br />
-</li>
-<li>Analysis plan: <strong>Fri Apr 3, 2026</strong> <em>(shift if your
-section is impacted by Easter recess)</em><br />
-</li>
-<li>Midpoint check-in: <strong>Fri Apr 10, 2026</strong><br />
-</li>
-<li>Final materials: <strong>Fri May 1, 2026</strong> <em>(or your
-scheduled final/presentation slot)</em></li>
-</ul>
 </div>
 
 

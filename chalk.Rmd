@@ -1,0 +1,129 @@
+---
+title: "Chalk Talk: Paper Synthesis"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+# Overview
+In class weeks 1--8, you will work in pre-assigned teams of 2–3 students to read, synthesize, and then communicate the thrust one assigned paper related to comparative shape analysis. This will typically take place on Thursdays before coding practice.
+
+Each team will deliver a 10-minute "chalk talk" on the chalk or white board, followed by class discussion. Many of the assigned papers will be review or synthesis papers, rather than primary empirical studies.
+
+There is no written submission for this assignment. The focus is on your ability to understand, integrate, and communicate ideas clearly in real time.
+
+**Note:** During our Thursday chalk talks, more than one paper will be discussed. Students are expected to merely become familiar with the papers they are not assigned. In other words, read the abstract and recognize the topic and goals of the paper. 
+
+## Purpose of the chalk talk
+
+Scientific understanding is not demonstrated only through writing. In practice, biologists must be able to:
+
+  - distill complex literature quickly
+  - explain methods and concepts without slides
+  - synthesize across studies (especially in reviews)
+  - respond thoughtfully to questions.
+
+This assignment emphasizes those skills.
+
+# Learning outcomes
+
+By completing this assignment, you will be able to:
+
+  - Identify the central biological questions addressed in a paper or review.
+  - Distinguish between data, methods, interpretation, and synthesis.
+  - Explain quantitative or comparative approaches at a conceptual level.
+  - Summarize the state of knowledge in a subfield (for review papers).
+  - Evaluate limitations, assumptions, and unresolved questions.
+  - Communicate scientific ideas clearly, collaboratively, and concisely.
+
+# Teams and paper assignment
+
+Teams will consist of 2–3 students assigned by Prof. K. Likewise, papers will be assigned to each group and made available through this site on our [schedule page](schedule.html). Group assignments can be found on our [chalk-talk group assignment page](chalk_assignments.html) [*password required*].
+
+Papers may be primary research articles or review/synthesis papers All papers will relate directly to the topics we'll cover: univariate traits and scaling, geometric morphometrics, outline methods, or phylogenetic comparative approaches to shape.
+
+Your responsibility is to distill and communicate the thrust of the paper you are assigned, not to critique it.
+
+# Chalk talk format
+
+A team will have 10 minutes total, followed by class discussion and questions. The presentation should be limited to the chalk or white board only. No slides, no projected figures, no handouts. Each student may bring one index card with notes.
+
+# What your chalk talk should cover
+
+The structure below is intentionally flexible. Use it as a guide, not a script.
+
+**1. Framing the paper (1–2 minutes)**
+
+  - What broad biological problem is being addressed?
+  - Why does this topic matter?
+  - For reviews: what motivated the synthesis?
+
+**2. Core concepts or evidence (3–4 minutes)**
+
+For primary research papers: 
+
+  - What data were used?
+  - What was the core analytical workflow (conceptually)?
+  - What was the main comparison or test?
+
+For review papers:
+
+  - What themes or frameworks organize the review?
+  - What kinds of data or methods recur across studies?
+  - How does the review structure the field?
+
+**3. Main conclusions (2–3 minutes)**
+
+  - What are the key take-home messages?
+  - What patterns or principles emerge?
+  - What does the paper argue we now understand better?
+  - Focus on ideas and evidence, not exhaustive detail.
+
+**4. Limits, debates, and open questions (1–2 minutes)** *
+
+  - What are the major limitations or uncertainties?
+  - Where do studies disagree?
+  - What questions remain unresolved?
+
+*This section is especially important for review papers.
+
+# Expectations for strong chalk talks
+
+A strong chalk talk is: 
+
+  - organized around ideas, not the paper’s section headings
+  - uses simple diagrams, arrows, and labels effectively
+  - makes clear distinctions between data, methods, and interpretation
+  - acknowledges uncertainty and disagreement honestly
+  - and stays within the time limit.
+
+Note: You are not expected to explain mathematical details, but you are expected to explain what analyses do and what biological questions they answer.
+
+# Assessment criteria
+
+This assignment is graded on content and communication, not polish and each is worth 15 points.
+
+**Biological framing and clarity (4 pts):** Clear explanation of the problem and why it matters.
+
+**Synthesis and understanding (5 pts):** Accurate, integrated understanding of the paper (or field, for reviews).
+
+**Methods comprehension (3 pts):** Correct conceptual explanation of analytical approaches.
+
+**Discussion of limits and open questions (2 pts):** Thoughtful engagement with uncertainty or debate.
+
+**Team participation and delivery (1 pt):** Balanced participation; effective use of the board; time management.
+
+# Discussion and participation
+
+Following each chalk talk, the class will ask questions and offer comments. Presenting teams are expected to respond thoughtfully, clarify points of confusion, and acknowledge when something is outside the scope of the paper.
+
+# Academic integrity and attribution
+
+Cite the paper clearly at the start of your talk (authors, year, journal). If you draw on additional sources to understand the paper, acknowledge that verbally.
+
+If you used AI tools to assist with comprehension, say so briefly and explain how they were used.
+
+# Final note
+
+The goal of this assignment is not to impress with detail, but to demonstrate that you can read carefully, think critically, and communicate clearly. If your classmates leave understanding the paper better than when they walked in, you’ve succeeded.

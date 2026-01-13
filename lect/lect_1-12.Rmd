@@ -1,0 +1,159 @@
+---
+title: "Research in Comparative Shape Analysis"
+author: "Dr. Christopher Kenaley"
+institute: "Boston College"
+date: "2025/12/11"
+output:
+  xaringan::moon_reader:
+    css: ["default", "metropolis"]
+    lib_dir: libs
+    nature:
+      ratio: 16:9
+---
+
+# Welcome
+```{r,echo=F,message=F}
+library(tidyverse)
+knitr::opts_chunk$set(
+echo = FALSE,
+warning = FALSE,
+message = FALSE
+)
+```
+
+
+.pull-left[
+
+This course is about how biological form varies,
+why it varies, and how we can test ideas about that variation.
+
+We'll combine:
+
+  - shape
+  - evolution
+  - biomechanics and ecology
+  - statistics
+
+to study shape as data.
+]
+
+.pull-right[
+
+What is shape?
+
+<img src="https://www.virtual-anthropology.com/wp-content/uploads/2017/02/GMM_grid.jpg" width="500">
+
+
+]
+
+---
+
+# What is shape?
+
+.pull-left[
+
+Not size alone
+
+Not simple ratios
+
+Not a picture with labels
+
+Shape is:
+  
+  - geometry
+  - covariance
+  - constrained (development, physics)
+  - product of evolutionary history
+
+And it only makes sense to look at all this comparatively.
+]
+
+.pull-right[
+
+<img src="https://trs.silverchair-cdn.com/trs/content_public/journal/rspb/288/1954/10.1098_rspb.2021.0919/4/rspb20210919f02.png?Expires=1771337148&Signature=wanHtaRjd8I4SceWerexxMSoC48zdxAYQ~33834uX1ctmNYC-~ioprJyTbYLJYIhfBmzPG6X3f9e2bjKGTnWbPQJXltGpgS92IhWwv7dqOAOr9En8e8SVcSj9wbN3HkKIlgacZYwtLUNdCLEQBNozAamAqneIuiy6BF-ZkfoSOsPn99BCuqfonGzulIx2luMO7tEGNhG55GReuknvuDGJfT3L0Nc3zqT-fiSt04DQ6zPjH7xBXatH5cUMeX~vFFUMUHzn2EBJTx2qPLg24TYDTtahO34rI7h0b4vImj0d5ZPDu6h7mejNGN5hzWmEM5rVaWQR-4IDnJUJOZ~djh9DQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA" width="400">
+
+]
+
+---
+# What this course is not
+
+.pull-left[
+
+It isn't 
+
+  - a software tutorial
+  - analysis-for-its-own-sake class
+  - a catalog of morphological novelty
+]
+
+.pull-right[
+Instead, we’ll ask:
+
+What questions require multivariate thinking?
+
+What hypotheses are productive in understanding why shape evolves the way it does?
+
+]
+
+
+---
+# Our focal study system
+
+
+.pull-left[
+
+Tetraodontiform fishes, A clade that includes:
+
+  - pufferfishes
+  - boxfishes
+  - triggerfishes
+  - filefishes-
+  - ocean sunfishes
+
+They are:
+
+  - morphologically extreme
+  - evolutionarily young but diverse (radiation)
+  - functionally constrained
+]
+
+.pull-right[
+
+If shape evolves due to function and history,
+tetraodontiforms are a test case.
+
+<img src="https://ocean.si.edu/sites/default/files/styles/3_2_largest/public/2023-11/PufferGraphic4.png.webp?itok=pReATlus" width="500">
+]
+
+---
+# Why tetraodontiforms?
+
+.pull-left[
+
++ Enormous disparity from a relatively compact clade
+
++ Repeated departures from “typical” fish body plans
+
++ Clear links between:
+
+  - shape
+  - locomotion
+  - defense
+  - feeding
+  
+]
+
+
+.pull-right[
+
+This forces us to ask:
+
+What counts as a meaningful axis of shape variation?
+
+Do these axes of shape variation covary with any of these features?
+
+<img src="https://www.pnas.org/cms/10.1073/pnas.1119635109/asset/36b1306c-5fe9-4ed8-9769-ae19594cbd32/assets/graphic/pnas.1119635109fig01.jpeg" width="500">
+
+
+]
+

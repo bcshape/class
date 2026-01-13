@@ -11,12 +11,12 @@
 
 
 
-<title>Comparative Shape Analysis</title>
+<title>BIOL 5410: Research in Comparative Shape Analysis</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -33,6 +33,8 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -43,13 +45,22 @@
   ul.task-list{list-style: none;}
     </style>
 
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
 
 
 
 
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -303,7 +314,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">BIOL 5380</a>
+      <a class="navbar-brand" href="index.html">BIOL 5410</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -370,7 +381,7 @@ div.tocify {
       </ul>
     </li>
     <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Reseach Project</a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Final Project</a>
       <ul class="dropdown-menu" role="menu">
         <li>
           <a href="final_project.html">Project Overview</a>
@@ -380,7 +391,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="https://topicsinbiomechanics.slack.com/">Discussion Board</a>
+  <a href="https://github.com/orgs/bcshape/discussions">Discussion Board</a>
 </li>
 <li>
   <a href="https://bostoncollege.instructure.com/courses/1665701">Course Canvas Page</a>
@@ -397,25 +408,29 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Comparative Shape Analysis</h1>
+<h1 class="title toc-ignore">BIOL 5410: Research in Comparative Shape
+Analysis</h1>
 
 </div>
 
 
+<div id="welcome" class="section level1">
+<h1>Welcome</h1>
 <p>Welcome to <strong>Comparative Shape Analysis</strong>, a course
 focused on understanding <strong>biological form through real organisms,
 real data, and reproducible analysis</strong>.</p>
 <p>Organismal biology sits at the intersection of <strong>form,
 function, ecology, and evolution</strong>. In this course, we use
-biological examples—teeth, fins, skulls, leaves, wings, and bodies—to
-ask how shape varies, how it works, and how it evolves. Along the way,
-students develop a practical toolkit for measuring, analyzing, and
-interpreting biological shape using modern quantitative methods.</p>
+biological examples—teeth, fins, skulls, wings, and bodies—to ask how
+shape varies, how it works, and how and why it evolves as it does. Along
+the way, students develop a practical toolkit for measuring, analyzing,
+and interpreting biological shape using modern quantitative methods.</p>
 <p>This is a <strong>code-driven, research-style course</strong>. You
 will spend much of the semester working with data, writing analysis
 pipelines, and making decisions about models, assumptions, and
 interpretation—just as practicing biologists do.</p>
 <hr />
+</div>
 <div id="course-scope-goals-and-objectives" class="section level1">
 <h1>Course scope, goals, and objectives</h1>
 <p>To be an effective organismal biologist, one must be able to
@@ -432,20 +447,17 @@ particular emphasis on biological shape.</p>
 what each implies biologically<br />
 </li>
 <li>Quantify <strong>univariate characters</strong> (e.g. lengths,
-ratios, scaling relationships) and evaluate their assumptions<br />
+ratios, scaling relationships)and evaluate their assumptions<br />
 </li>
 <li>Analyze <strong>multivariate and geometric morphometric
-data</strong>, including landmark- and outline-based approaches<br />
-</li>
+data</strong>, including landmark-and outline-based approaches</li>
 <li>Apply <strong>phylogenetic comparative methods</strong> to test
-evolutionary hypotheses about traits and shape<br />
-</li>
+evolutionary hypotheses about traits and shape</li>
 <li>Diagnose common failure modes in biological data analysis
-(collinearity, overfitting, p ≫ n, phylogenetic non-independence)<br />
+(collinearity,overfitting, phylogenetic non-independence, etc.)<br />
 </li>
 <li>Build <strong>fully reproducible analysis workflows</strong> using
-R, Git, and GitHub<br />
-</li>
+R, Git, and GitHub</li>
 <li>Communicate results clearly using figures, code, and biological
 interpretation</li>
 </ul>
@@ -453,24 +465,15 @@ interpretation</li>
 </div>
 <div id="course-philosophy" class="section level1">
 <h1>Course philosophy</h1>
-<div class="green">
-<div class="row">
-<div class="col-sm-2">
-<pre><code>&lt;i class=&quot;far fa-sticky-note fa-5x&quot; style=&quot;color:#2C3E50&quot;&gt;&lt;/i&gt;</code></pre>
-</div>
-<div class="col-sm-9">
 <p>This course emphasizes <strong>how you think</strong>, not just
 whether you get a particular answer.</p>
 <p>Biological data are messy. Shape data are high-dimensional.
 Evolutionary models are imperfect. Learning to navigate these
-realities—by making assumptions explicit, testing alternatives, and
-recognizing limitations—is more important than producing a single
+realities–by making assumptions explicit, testing alternatives, and
+recognizing limitation–is more important than producing a single
 “correct” result.</p>
 <p>You will be evaluated as much on <strong>reasoning, transparency, and
 reproducibility</strong> as on statistical outcomes.</p>
-</div>
-</div>
-</div>
 <hr />
 </div>
 <div id="structure-of-the-course" class="section level1">
@@ -491,27 +494,38 @@ biological case studies that introduce:</p>
 <li>Evolutionary models of trait evolution</li>
 <li>Multivariate comparative methods</li>
 </ul>
-<p>Each week includes a <strong>short, code-based lab notebook</strong>
-that emphasizes biological interpretation alongside analysis.</p>
+<p>Most weeks includes:</p>
+<ol style="list-style-type: decimal">
+<li>A single lecture on Tuesday.</li>
+<li>An <a href="AME_guidelines.html"><strong>Analysis and Modeling
+Exercise (AME)</strong></a> that emphasizes biological interpretation
+alongside analysis. The goals and scope of each AME are introduced on
+Thursday during class.</li>
+<li>A <a href="chalk.html"><strong>Chalk Talk</strong></a>, also on
+Thursday, where students lead discussions of important topics in shape
+analysis as interpreted through influential literation</li>
+</ol>
 </div>
 <div id="weeks-913-independent-research-project" class="section level2">
 <h2>Weeks 9–13: Independent research project</h2>
 <p>In the second half of the semester, students conduct an
 <strong>independent, reproducible research project</strong> focused on
-biological shape.</p>
-<p>Projects may be: - Original analyses of instructor-provided or
-student-assembled datasets, or - Replication-and-extension studies based
-on published work</p>
-<p>All projects culminate in: - A fully reproducible GitHub repository -
-A project website page (GitHub Pages) - A short oral presentation</p>
+biological shape. Projects will be original analyses of
+student-assembled datasets.</p>
+<p>The projects culminate in: - A fully reproducible GitHub repository -
+An report with outlining the important findings and interpretations</p>
 <hr />
 </div>
 </div>
 <div id="what-this-course-is-and-is-not" class="section level1">
 <h1>What this course is (and is not)</h1>
-<p><strong>This course is:</strong> - Quantitative and biological -
-Code-centric and reproducible - Focused on interpretation, not
-button-pushing - Structured to resemble real research workflows</p>
+<p><strong>This course is:</strong></p>
+<ul>
+<li>Quantitative and biological</li>
+<li>Code-centric and reproducible</li>
+<li>Focused on interpretation, not button-pushing</li>
+<li>Structured to resemble real research workflows</li>
+</ul>
 <p><strong>This course is not:</strong> - A pure statistics course - A
 software-tutorial class - Focused on memorizing formulas - Designed
 around artificial or “toy” datasets</p>
@@ -530,20 +544,164 @@ collaboration</li>
 </ul>
 <p>Prior experience with biological analysis in R is required (i.e.,
 BIOL 3140) as is comfort with learning by doing.</p>
+</div>
+<div id="course-assessment" class="section level1">
+<h1>Course Assessment</h1>
+<p>Your grade will be based on five assignment components: Asking and
+answering questions on our discussion board, many in-class coding
+exercises, and a series of project reports: 4 for Phase I projects, 4
+for Phase II projects, and one for the Phase III project.</p>
+<hr />
+<div id="grade-breakdown" class="section level3">
+<h3>Grade Breakdown</h3>
+<table style="width:88%;">
+<colgroup>
+<col width="33%" />
+<col width="19%" />
+<col width="34%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td align="center"><strong>Points</strong></td>
+</tr>
+<tr class="even">
+<td>Engagement Q&amp;A</td>
+<td></td>
+<td align="center">100</td>
+</tr>
+<tr class="odd">
+<td>Analysis and Modeling E</td>
+<td>xercises</td>
+<td align="center">8x25</td>
+</tr>
+<tr class="even">
+<td>Chalk Talks</td>
+<td></td>
+<td align="center">4x25</td>
+</tr>
+<tr class="odd">
+<td>Final Project</td>
+<td></td>
+<td align="center">1x100</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>total</strong></td>
+<td align="center"><strong>500</strong></td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
-<div id="accessibility-collaboration-and-integrity"
-class="section level1">
-<h1>Accessibility, collaboration, and integrity</h1>
-<p>Collaboration is encouraged at the <strong>conceptual
-level</strong>—discussing biological ideas, interpreting figures, and
-debugging logic.</p>
-<p>All submitted work must represent <strong>your own analysis and
-writing</strong>, and all code must be clearly attributed when reused or
-adapted.</p>
-<p>If you have accessibility needs or concerns, please contact the
-instructor early so accommodations can be arranged.</p>
+</div>
+<div id="accommodation-and-accessibility" class="section level1">
+<h1>Accommodation and Accessibility</h1>
+<p>Boston College is committed to providing accommodations to students,
+faculty, staff and visitors with disabilities. Specific documentation
+from the appropriate office is required for students seeking
+accommodation in Woods College courses. Advanced notice and formal
+registration with the appropriate office is required to facilitate this
+process. There are two separate offices at BC that coordinate services
+for students with disabilities:</p>
+<ul>
+<li><a href="http://www.bc.edu/libraries/help/tutoring.html">The Connors
+Family Learning Center (CFLC)</a> coordinates services for students with
+LD and ADHD.</li>
+<li><a
+href="http://www.bc.edu/offices/dos/subsidiary_offices/disabilityservices.html">The
+Disabilities Services Office (DSO)</a> coordinates services for all
+other disabilities.</li>
+</ul>
+<p>Find out more about BC’s commitment to accessibility at
+www.bc.edu/sites/accessibility.</p>
 <hr />
+</div>
+<div id="scholarship-and-academic-integrity" class="section level1">
+<h1>Scholarship and Academic Integrity</h1>
+<p>Students in this course, as all others at BC, must produce original
+work and cite references appropriately. Failure to cite references is
+plagiarism. Academic dishonesty includes, but is not necessarily limited
+to, the <em>use of AI</em> (see below) to produce work a student claims
+as their own, plagiarism, fabrication, facilitating academic dishonesty,
+cheating on exams or assignments, or submitting the same material or
+substantially similar material to meet the requirements of more than one
+course without seeking permission of all instructors concerned.
+Scholastic misconduct may also involve, but is not necessarily limited
+to, acts that violate the rights of other students, such as depriving
+another student of course materials or interfering with another
+student’s work. Please see the <a
+href="https://www.bc.edu/content/bc-web/academics/sites/university-catalog/policies-procedures.html#academic_integrity_policies">Boston
+College policy on academic integrity</a> for more information.</p>
+<div id="use-of-ai" class="section level2">
+<h2>Use of AI</h2>
+<p>Generative AI can be an incredibly powerful tool for anyone
+interested in writing a little code—you can ask it to do so much for
+you, and most of the time, what it produces works relatively well. Thus,
+it may be tempting for anyone new to modeling and data science to rely
+on this tool, in part or whole, for many of the assignments for this
+course. In your instructor’s opinion, relying on AI would make the
+learning goals and objectives of the course hard to reach. His opinion
+is that it can be helpful, but can often stifle learning and be used
+irresponsibly. So that we’re all on the same page with regard to how AI
+fits into the course, students should read, understand, and follow this
+AI policy.</p>
+<div id="requirements" class="section level3">
+<h3>Requirements</h3>
+<ul>
+<li>All students must attribute AI as the source of any work (i.e., you
+must cite your AI sources and specifically how they were used).
+Therefore, there must be a statement in every piece of submitted work
+that outlines how AI was used in the execution of the project.</li>
+<li>Students may <em>NOT</em> submit AI-generated work as wholesale
+substitutes for the work expected of them. In other words, any work a
+student submits must be, by and large, produced by that student and not
+the direct output of AI.</li>
+</ul>
+</div>
+<div id="guidelines-for-acceptable-use" class="section level3">
+<h3>Guidelines for Acceptable Use</h3>
+<p>AI may be used for:</p>
+<ul>
+<li>Brainstorming and code-review preparation.</li>
+<li>Debugging code and error interpretations.</li>
+<li>Finding guidance concerning how to implement code in an analysis
+(e.g, appropriate functions, syntax, and logic).</li>
+<li>Background research on a topic or quantitative method.</li>
+<li>Generating a lists of potentially relevant sources to read.</li>
+<li>Editing text for clarity, spelling and grammar.</li>
+<li>Many other things.*</li>
+</ul>
+<p>*If you come to a point where you’re using AI and unsure if this
+particular use falls in the “acceptable” category, please talk with
+Prof. K. He’ll provide some guidance.</p>
+</div>
+<div id="penalties" class="section level3">
+<h3>Penalties</h3>
+<p>Any work submitted that violates this policy will be considered a
+breach of <a
+href="https://www.bc.edu/content/bc-web/academics/sites/university-catalog/policies-procedures.html#academic_integrity_policies">the
+University’s broader policy on academic integrity</a>. Violations of the
+policy may incur penalties that include a grade of 0 for a violating
+assignment, a formal academic integrity inquiry, and/or failing grade
+for course.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="email-and-office-hours-policy" class="section level1">
+<h1>Email and Office Hours Policy</h1>
+<p>If you write Professor Kenaley with a question, he’ll try to get back
+to you within 24 hours. Rather than write Prof. Kenaley with questions
+related to course mechanics and expectations, please post these in our
+<a href="https://github.com/orgs/bcshape/discussions">discussion
+board</a>. It’s probably the case that others have the same
+questions.</p>
+<p>Office hours can be arranged by appointment via email and will take
+in person (Higgins 425B). Office hours may involve more more than
+student or team, so please come equipped with poignant questions and
+expect that other students have questions as urgent as yours.</p>
  
 <hr />
 <p style="text-align: center;">

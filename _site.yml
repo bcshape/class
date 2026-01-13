@@ -2,15 +2,13 @@ name: "BIOL 5410: Comparative Shape Analysis"
 output_dir: "."
 output:  
   html_document:  
-    self_contained: no  
-    theme: sandstone
-    highlight: tango
-    toc: true # adds a table of contents
+    self_contained: no 
+    theme: flatly
+    toc: true # adds a table of content
     toc_float: true
     number_sections: FALSE
-    css: "style.css"
 navbar: 
-  title: "BIOL 5380"
+  title: "BIOL 5410"
   left: 
     - text: "Home"
       href: index.html
@@ -48,12 +46,12 @@ navbar:
           href: AMEs/AME5_solution.html
         - text: "AME6"
           href: AMEs/AME6_solution.html
-      - text: "Reseach Project"
+      - text: "Final Project"
         menu:
         - text: "Project Overview"
           href: final_project.html
     - text: "Discussion Board"
-      href: https://topicsinbiomechanics.slack.com/
+      href: https://github.com/orgs/bcshape/discussions
     - text: "Course Canvas Page"
       href: https://bostoncollege.instructure.com/courses/1665701
     

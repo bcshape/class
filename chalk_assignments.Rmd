@@ -1,0 +1,9 @@
+---
+title: "Chalk Talk: Paper and Group Assignments"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+

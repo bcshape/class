@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Chalk Talk: Paper Synthesis</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">BIOL 5410</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Weekly AMEs</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="AME_guidelines.html">AME Guidelines</a>
+        </li>
+        <li>
+          <a href="AMEs/AME1.html">AME1</a>
+        </li>
+        <li>
+          <a href="AMEs/AME2.html">AME2</a>
+        </li>
+        <li>
+          <a href="AMEs/AME3.html">AME3</a>
+        </li>
+        <li>
+          <a href="AMEs/AME4.html">AME4</a>
+        </li>
+        <li>
+          <a href="AMEs/AME5.html">AME5</a>
+        </li>
+        <li>
+          <a href="AMEs/AME6.html">AME6</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">AME Solutions</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="AMEs/AME1_solution.html">AME1</a>
+        </li>
+        <li>
+          <a href="AMEs/AME2_solution.html">AME2</a>
+        </li>
+        <li>
+          <a href="AMEs/AME3_solution.html">AME3</a>
+        </li>
+        <li>
+          <a href="AMEs/AME4_solution.html">AME4</a>
+        </li>
+        <li>
+          <a href="AMEs/AME5_solution.html">AME5</a>
+        </li>
+        <li>
+          <a href="AMEs/AME6_solution.html">AME6</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Final Project</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="final_project.html">Project Overview</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/orgs/bcshape/discussions">Discussion Board</a>
+</li>
+<li>
+  <a href="https://bostoncollege.instructure.com/courses/1665701">Course Canvas Page</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Chalk Talk: Paper Synthesis</h1>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>In class weeks 1–8, you will work in pre-assigned teams of 2–3
+students to read, synthesize, and then communicate the thrust one
+assigned paper related to comparative shape analysis. This will
+typically take place on Thursdays before coding practice.</p>
+<p>Each team will deliver a 10-minute “chalk talk” on the chalk or white
+board, followed by class discussion. Many of the assigned papers will be
+review or synthesis papers, rather than primary empirical studies.</p>
+<p>There is no written submission for this assignment. The focus is on
+your ability to understand, integrate, and communicate ideas clearly in
+real time.</p>
+<p><strong>Note:</strong> During our Thursday chalk talks, more than one
+paper will be discussed. Students are expected to merely become familiar
+with the papers they are not assigned. In other words, read the abstract
+and recognize the topic and goals of the paper.</p>
+<div id="purpose-of-the-chalk-talk" class="section level2">
+<h2>Purpose of the chalk talk</h2>
+<p>Scientific understanding is not demonstrated only through writing. In
+practice, biologists must be able to:</p>
+<ul>
+<li>distill complex literature quickly</li>
+<li>explain methods and concepts without slides</li>
+<li>synthesize across studies (especially in reviews)</li>
+<li>respond thoughtfully to questions.</li>
+</ul>
+<p>This assignment emphasizes those skills.</p>
+</div>
+</div>
+<div id="learning-outcomes" class="section level1">
+<h1>Learning outcomes</h1>
+<p>By completing this assignment, you will be able to:</p>
+<ul>
+<li>Identify the central biological questions addressed in a paper or
+review.</li>
+<li>Distinguish between data, methods, interpretation, and
+synthesis.</li>
+<li>Explain quantitative or comparative approaches at a conceptual
+level.</li>
+<li>Summarize the state of knowledge in a subfield (for review
+papers).</li>
+<li>Evaluate limitations, assumptions, and unresolved questions.</li>
+<li>Communicate scientific ideas clearly, collaboratively, and
+concisely.</li>
+</ul>
+</div>
+<div id="teams-and-paper-assignment" class="section level1">
+<h1>Teams and paper assignment</h1>
+<p>Teams will consist of 2–3 students assigned by Prof. K. Likewise,
+papers will be assigned to each group and made available through this
+site on our <a href="schedule.html">schedule page</a>. Group assignments
+can be found on our <a href="chalk_assignments.html">chalk-talk group
+assignment page</a> [<em>password required</em>].</p>
+<p>Papers may be primary research articles or review/synthesis papers
+All papers will relate directly to the topics we’ll cover: univariate
+traits and scaling, geometric morphometrics, outline methods, or
+phylogenetic comparative approaches to shape.</p>
+<p>Your responsibility is to distill and communicate the thrust of the
+paper you are assigned, not to critique it.</p>
+</div>
+<div id="chalk-talk-format" class="section level1">
+<h1>Chalk talk format</h1>
+<p>A team will have 10 minutes total, followed by class discussion and
+questions. The presentation should be limited to the chalk or white
+board only. No slides, no projected figures, no handouts. Each student
+may bring one index card with notes.</p>
+</div>
+<div id="what-your-chalk-talk-should-cover" class="section level1">
+<h1>What your chalk talk should cover</h1>
+<p>The structure below is intentionally flexible. Use it as a guide, not
+a script.</p>
+<p><strong>1. Framing the paper (1–2 minutes)</strong></p>
+<ul>
+<li>What broad biological problem is being addressed?</li>
+<li>Why does this topic matter?</li>
+<li>For reviews: what motivated the synthesis?</li>
+</ul>
+<p><strong>2. Core concepts or evidence (3–4 minutes)</strong></p>
+<p>For primary research papers:</p>
+<ul>
+<li>What data were used?</li>
+<li>What was the core analytical workflow (conceptually)?</li>
+<li>What was the main comparison or test?</li>
+</ul>
+<p>For review papers:</p>
+<ul>
+<li>What themes or frameworks organize the review?</li>
+<li>What kinds of data or methods recur across studies?</li>
+<li>How does the review structure the field?</li>
+</ul>
+<p><strong>3. Main conclusions (2–3 minutes)</strong></p>
+<ul>
+<li>What are the key take-home messages?</li>
+<li>What patterns or principles emerge?</li>
+<li>What does the paper argue we now understand better?</li>
+<li>Focus on ideas and evidence, not exhaustive detail.</li>
+</ul>
+<p><strong>4. Limits, debates, and open questions (1–2 minutes)</strong>
+*</p>
+<ul>
+<li>What are the major limitations or uncertainties?</li>
+<li>Where do studies disagree?</li>
+<li>What questions remain unresolved?</li>
+</ul>
+<p>*This section is especially important for review papers.</p>
+</div>
+<div id="expectations-for-strong-chalk-talks" class="section level1">
+<h1>Expectations for strong chalk talks</h1>
+<p>A strong chalk talk is:</p>
+<ul>
+<li>organized around ideas, not the paper’s section headings</li>
+<li>uses simple diagrams, arrows, and labels effectively</li>
+<li>makes clear distinctions between data, methods, and
+interpretation</li>
+<li>acknowledges uncertainty and disagreement honestly</li>
+<li>and stays within the time limit.</li>
+</ul>
+<p>Note: You are not expected to explain mathematical details, but you
+are expected to explain what analyses do and what biological questions
+they answer.</p>
+</div>
+<div id="assessment-criteria" class="section level1">
+<h1>Assessment criteria</h1>
+<p>This assignment is graded on content and communication, not polish
+and each is worth 15 points.</p>
+<p><strong>Biological framing and clarity (4 pts):</strong> Clear
+explanation of the problem and why it matters.</p>
+<p><strong>Synthesis and understanding (5 pts):</strong> Accurate,
+integrated understanding of the paper (or field, for reviews).</p>
+<p><strong>Methods comprehension (3 pts):</strong> Correct conceptual
+explanation of analytical approaches.</p>
+<p><strong>Discussion of limits and open questions (2 pts):</strong>
+Thoughtful engagement with uncertainty or debate.</p>
+<p><strong>Team participation and delivery (1 pt):</strong> Balanced
+participation; effective use of the board; time management.</p>
+</div>
+<div id="discussion-and-participation" class="section level1">
+<h1>Discussion and participation</h1>
+<p>Following each chalk talk, the class will ask questions and offer
+comments. Presenting teams are expected to respond thoughtfully, clarify
+points of confusion, and acknowledge when something is outside the scope
+of the paper.</p>
+</div>
+<div id="academic-integrity-and-attribution" class="section level1">
+<h1>Academic integrity and attribution</h1>
+<p>Cite the paper clearly at the start of your talk (authors, year,
+journal). If you draw on additional sources to understand the paper,
+acknowledge that verbally.</p>
+<p>If you used AI tools to assist with comprehension, say so briefly and
+explain how they were used.</p>
+</div>
+<div id="final-note" class="section level1">
+<h1>Final note</h1>
+<p>The goal of this assignment is not to impress with detail, but to
+demonstrate that you can read carefully, think critically, and
+communicate clearly. If your classmates leave understanding the paper
+better than when they walked in, you’ve succeeded.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

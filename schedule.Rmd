@@ -11,6 +11,8 @@ title: "Schedule"
   - Shape vs size; biological meaning of "shape"
   - Data types and definitions: univariate, multivariate linear, landmarks/outlines, function/performance
   - Reproducible workflows (R projects, R Markdown, Git/GitHub)
+  - set up an R project and Git
+  - Release and look at [AME1](AMEs/AME1.html)
 
 **Consumables**
   
@@ -24,8 +26,9 @@ title: "Schedule"
   - Personal repo setup
 
 **Slides:** 
-  + [Jan 13](lect/lect_1_12.html)
-  + [Jan 15](lect/lect_1_15.html)
+
+  + [Jan 13](lect/lect_1-12.html)
+  + [Jan 15](lect/lect_1-15.html)
 
 ---
 

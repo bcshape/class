@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Starting Out, Setting Up</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="lect_1-15_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="lect_1-15_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lect_1-15_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Starting Out, Setting Up
+]
+.subtitle[
+## Definitions and Reproducible Workflows
+]
+.author[
+### Dr. Christopher Kenaley
+]
+.institute[
+### Boston College
+]
+
+---
+
+
+
+
+
+## Today’s goals
+
+Today we'll:
+
+- Explain the difference between **shape** and **size**
+- Recognize different **types of shape data**
+- Explore why **reproducible workflows** matter
+- See how data, code, and interpretation fit together
+- set up an R project and Git
+- Release and look at [AME1](https://bcshape.github.io/class/AMEs/AME1.html)
+
+---
+
+## Shape vs. size: not the same thing
+
+.pull-left[
+**Size**
+- How big something is
+- Often summarized with one number
+- Examples:
+  - mass
+  - length
+  - area
+]
+
+.pull-right[
+**Shape**
+- How parts are arranged relative to one another
+- Inherently **multidimensional**
+- Depends on geometry, not magnitude
+
+&lt;img src="size.png" width="500"&gt;
+]
+
+
+---
+
+## Why biologists care about shape
+
+Shape often links directly to:
+
+- function (feeding, locomotion, defense)
+- performance (speed, force, efficiency)
+- ecological role
+- evolutionary history
+
+&gt; Two organisms can be the same size  
+&gt; and behave *very* differently because of shape.
+
+&lt;img src="tsengMA.png" width="500"&gt;
+---
+
+## A working definition of shape
+
+.pull-left[
+**Shape is the geometry of an object after removing:**
+- size
+- position
+- orientation
+]
+
+
+.pull-right[
+**What remains is relative structure**
+
+This is why shape:
+- requires multiple variables
+- is hard to summarize with a single number
+- benefits from multivariate thinking
+&lt;img src="size.png" width="500"&gt;
+
+]
+---
+
+## Shape almost always implies comparison
+
+.pull-left[
+You rarely study shape in isolation.
+
+Instead, you ask:
+- How do shapes differ among groups?
+- How does shape change across environments?
+- How does shape evolve over time?
+]
+
+.pull-right[
+
+**Shape is meaningful because it varies**
+
+&lt;img src="zhust_opt.png" width="500"&gt;
+]
+
+---
+
+## Data types in shape analysis
+
+Not all “shape data” look the same.
+
+Today we’ll distinguish among:
+1. Univariate measurements  
+2. Multivariate linear measurements  
+3. Landmark and outline data  
+4. Function and performance data  
+
+Each answers *different kinds of questions*.
+
+---
+
+## Univariate data
+
+.pull-left[
+- One variable at a time
+- Easy to analyze
+- Easy to misinterpret
+]
+
+.pull-right[
+**Examples**
+- bone length
+- jaw height
+- fin area
+
+&lt;img src="https://www.tandfonline.com/cms/asset/b957684d-8d1c-4818-8c44-e6cdc1936a94/tizo_a_642414_o_f0002g.jpg" width="350"&gt;
+
+]
+
+
+
+
+**Limitation:**  
+Univariate data cannot capture geometry or covariance.
+
+---
+
+## Multivariate linear measurements
+
+.pull-left[
+- Multiple linear variables per specimen
+- Can describe proportions and relationships
+- Often analyzed with PCA or regression
+
+&lt;img src="zhusti_points.png" width="400"&gt;
+]
+
+.pull-right[
+**Examples**
+- fin base length and height, skull length and width
+- multiple distances on a body
+
+&lt;img src="zhusti_pca.png" width="300"&gt;
+]
+
+These begin to capture **shape**, but indirectly.
+
+---
+
+## Why covariance matters
+
+.pull-left[
+
+
+Shape lives in **relationships among variables**.
+
+Example:
+- long + narrow vs.
+- short + wide
+
+Two specimens may have:
+- identical areas
+- very different shapes
+
+
+&lt;img src="burns_warp.png" width="500"&gt;
+]
+
+.pull-right[
+Multivariate data allow us to see these patterns.
+
+&lt;img src="burns_pca.png" width="500"&gt;
+]
+---
+
+## Landmark data
+
+.pull-left[
+- Points placed at homologous locations
+- Preserve geometry explicitly
+- Common in morphometrics
+]
+
+.pull-right[
+**Examples**
+- joint locations
+- tooth cusps
+- fin insertion points
+]
+
+Landmarks allow direct analysis of shape geometry.
+
+&lt;img src="burns.png" width="500"&gt;
+---
+
+## Outline data
+
+.pull-left[
+- Shape described by boundaries
+- No discrete landmarks required
+- Captures overall form
+]
+
+.pull-right[
+**Examples**
+- leaf outlines
+- fin margins
+- shells
+]
+
+Often analyzed using Fourier or eigenshape methods.
+
+&lt;img src="https://www.researchgate.net/profile/Lisa_Libungan2/publication/274088159/figure/fig1/AS:294842207883269@1447307268613/Example-of-an-otolith-image-The-red-outline-marks-the-shape-of-the-otolith-which-is.png" width="500"&gt;
+
+---
+
+## Function and performance data
+
+Not shape *per se*, but tightly linked.
+
+Examples:
+- bite force
+- swimming speed
+- acceleration
+- metabolic cost
+
+These help connect **shape → performance → fitness**.
+
+&lt;img src="tsengMA.png" width="500"&gt;
+---
+
+## Choosing the right data type
+
+Ask first:
+- What biological question am I asking?
+- Do I care about geometry?
+- Do I care about performance?
+- What assumptions am I willing to make?
+
+No single data type is "best" — only *appropriate*.
+
+---
+
+## From data to inference
+
+Collecting shape data is only the beginning.
+
+.pull-left[
+You also need:
+- analysis
+- interpretation
+- transparency
+- reproducibility
+
+This is where workflow matters.
+]
+
+.pull-right[
+&lt;img src="https://morphometrics.uk/MorphoJ_guide/user_interface/images/graph_shot.JPG" width="400"&gt;
+]
+---
+
+## What is a reproducible workflow?
+
+.pull-left[
+A workflow where:
+- someone else can run your analysis
+- results regenerate automatically
+- decisions are documented
+
+Key ingredients:
+- R projects
+- R Markdown
+- version control (Git/GitHub)
+]
+
+.pull-right[
+
+&lt;img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400"&gt;
+
+
+&lt;img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400"&gt;
+
+
+]
+---
+
+## R Projects
+
+.pull-left[
+An **R Project**:
+- defines a working directory
+- keeps paths relative
+- keeps everything together
+
+Why this matters:
+- no broken file paths
+- easier collaboration
+- fewer “works on my machine” problems
+]
+
+.pull-right[
+&lt;img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400"&gt;
+
+]
+---
+
+## R Markdown
+
+.pull-left[
+R Markdown lets you combine:
+- code
+- results
+- text
+- figures
+
+In one document.
+
+This means:
+- figures update automatically
+- interpretation stays linked to analysis
+- fewer copy–paste errors
+]
+
+.pull-right[
+
+&lt;img src="https://bookdown.org/yihui/rmarkdown/images/notebook-preview.png" width="400"&gt;
+
+]
+---
+
+## Code + interpretation = science
+
+.pull-left[
+A figure without explanation is incomplete.  
+
+Text without code is unverifiable.
+
+R Markdown forces you to:
+- show how results were produced
+- explain what they mean
+- keep them connected
+]
+
+.pull-right[
+&lt;img src="https://bookdown.org/yihui/rmarkdown/images/notebook-preview.png" width="400"&gt;
+
+]
+---
+
+## Git and GitHub
+
+.pull-left[
+**Git** tracks changes over time.  
+**GitHub** stores and shares those changes.
+
+Together, they let you:
+- recover earlier versions
+- document progress
+- collaborate safely
+- show how work evolved
+]
+
+.pull-right[
+&lt;img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400"&gt;
+
+]
+---
+
+## Why this matters for shape analysis
+
+.pull-left[
+Shape analyses are:
+- multivariate
+- assumption-heavy
+- easy to over-interpret
+
+Reproducible workflows:
+- make errors visible
+- support reanalysis
+- improve scientific credibility
+]
+
+.pull-right[
+
+&lt;img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400"&gt;
+
+
+&lt;img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400"&gt;
+
+
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

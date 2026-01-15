@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 )
 ```
 
----
 
 ## Today’s goals
 
@@ -27,8 +26,10 @@ Today we'll:
 
 - Explain the difference between **shape** and **size**
 - Recognize different **types of shape data**
-- Understand why **reproducible workflows** matter
+- Explore why **reproducible workflows** matter
 - See how data, code, and interpretation fit together
+- set up an R project and Git
+- Release and look at [AME1](https://bcshape.github.io/class/AMEs/AME1.html)
 
 ---
 
@@ -49,7 +50,10 @@ Today we'll:
 - How parts are arranged relative to one another
 - Inherently **multidimensional**
 - Depends on geometry, not magnitude
+
+<img src="size.png" width="500">
 ]
+
 
 ---
 
@@ -65,34 +69,48 @@ Shape often links directly to:
 > Two organisms can be the same size  
 > and behave *very* differently because of shape.
 
+<img src="tsengMA.png" width="500">
 ---
 
 ## A working definition of shape
 
+.pull-left[
 **Shape is the geometry of an object after removing:**
 - size
 - position
 - orientation
+]
 
-What remains is **relative structure**.
+
+.pull-right[
+**What remains is relative structure**
 
 This is why shape:
 - requires multiple variables
 - is hard to summarize with a single number
 - benefits from multivariate thinking
+<img src="size.png" width="500">
 
+]
 ---
 
 ## Shape almost always implies comparison
 
+.pull-left[
 You rarely study shape in isolation.
 
 Instead, you ask:
 - How do shapes differ among groups?
 - How does shape change across environments?
 - How does shape evolve over time?
+]
 
-> Shape is meaningful because it varies.
+.pull-right[
+
+**Shape is meaningful because it varies**
+
+<img src="zhust_opt.png" width="500">
+]
 
 ---
 
@@ -120,10 +138,16 @@ Each answers *different kinds of questions*.
 
 .pull-right[
 **Examples**
-- body length
+- bone length
 - jaw height
 - fin area
+
+<img src="https://www.tandfonline.com/cms/asset/b957684d-8d1c-4818-8c44-e6cdc1936a94/tizo_a_642414_o_f0002g.jpg" width="350">
+
 ]
+
+
+
 
 **Limitation:**  
 Univariate data cannot capture geometry or covariance.
@@ -136,13 +160,16 @@ Univariate data cannot capture geometry or covariance.
 - Multiple linear variables per specimen
 - Can describe proportions and relationships
 - Often analyzed with PCA or regression
+
+<img src="zhusti_points.png" width="400">
 ]
 
 .pull-right[
 **Examples**
-- skull length, width, height
-- fin base length, fin height
+- fin base length and height, skull length and width
 - multiple distances on a body
+
+<img src="zhusti_pca.png" width="300">
 ]
 
 These begin to capture **shape**, but indirectly.
@@ -150,6 +177,9 @@ These begin to capture **shape**, but indirectly.
 ---
 
 ## Why covariance matters
+
+.pull-left[
+
 
 Shape lives in **relationships among variables**.
 
@@ -161,8 +191,15 @@ Two specimens may have:
 - identical areas
 - very different shapes
 
+
+<img src="burns_warp.png" width="500">
+]
+
+.pull-right[
 Multivariate data allow us to see these patterns.
 
+<img src="burns_pca.png" width="500">
+]
 ---
 
 ## Landmark data
@@ -182,6 +219,7 @@ Multivariate data allow us to see these patterns.
 
 Landmarks allow direct analysis of shape geometry.
 
+<img src="burns.png" width="500">
 ---
 
 ## Outline data
@@ -201,6 +239,8 @@ Landmarks allow direct analysis of shape geometry.
 
 Often analyzed using Fourier or eigenshape methods.
 
+<img src="https://www.researchgate.net/profile/Lisa_Libungan2/publication/274088159/figure/fig1/AS:294842207883269@1447307268613/Example-of-an-otolith-image-The-red-outline-marks-the-shape-of-the-otolith-which-is.png" width="500">
+
 ---
 
 ## Function and performance data
@@ -215,6 +255,7 @@ Examples:
 
 These help connect **shape → performance → fitness**.
 
+<img src="tsengMA.png" width="500">
 ---
 
 ## Choosing the right data type
@@ -225,7 +266,7 @@ Ask first:
 - Do I care about performance?
 - What assumptions am I willing to make?
 
-No single data type is “best” — only *appropriate*.
+No single data type is "best" — only *appropriate*.
 
 ---
 
@@ -233,6 +274,7 @@ No single data type is “best” — only *appropriate*.
 
 Collecting shape data is only the beginning.
 
+.pull-left[
 You also need:
 - analysis
 - interpretation
@@ -240,11 +282,16 @@ You also need:
 - reproducibility
 
 This is where workflow matters.
+]
 
+.pull-right[
+<img src="https://morphometrics.uk/MorphoJ_guide/user_interface/images/graph_shot.JPG" width="400">
+]
 ---
 
 ## What is a reproducible workflow?
 
+.pull-left[
 A workflow where:
 - someone else can run your analysis
 - results regenerate automatically
@@ -254,11 +301,22 @@ Key ingredients:
 - R projects
 - R Markdown
 - version control (Git/GitHub)
+]
 
+.pull-right[
+
+<img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400">
+
+
+<img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400">
+
+
+]
 ---
 
 ## R Projects
 
+.pull-left[
 An **R Project**:
 - defines a working directory
 - keeps paths relative
@@ -268,11 +326,17 @@ Why this matters:
 - no broken file paths
 - easier collaboration
 - fewer “works on my machine” problems
+]
 
+.pull-right[
+<img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400">
+
+]
 ---
 
 ## R Markdown
 
+.pull-left[
 R Markdown lets you combine:
 - code
 - results
@@ -285,23 +349,37 @@ This means:
 - figures update automatically
 - interpretation stays linked to analysis
 - fewer copy–paste errors
+]
 
+.pull-right[
+
+<img src="https://bookdown.org/yihui/rmarkdown/images/notebook-preview.png" width="400">
+
+]
 ---
 
 ## Code + interpretation = science
 
+.pull-left[
 A figure without explanation is incomplete.  
+
 Text without code is unverifiable.
 
 R Markdown forces you to:
 - show how results were produced
 - explain what they mean
 - keep them connected
+]
 
+.pull-right[
+<img src="https://bookdown.org/yihui/rmarkdown/images/notebook-preview.png" width="400">
+
+]
 ---
 
 ## Git and GitHub
 
+.pull-left[
 **Git** tracks changes over time.  
 **GitHub** stores and shares those changes.
 
@@ -310,11 +388,17 @@ Together, they let you:
 - document progress
 - collaborate safely
 - show how work evolved
+]
 
+.pull-right[
+<img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400">
+
+]
 ---
 
 ## Why this matters for shape analysis
 
+.pull-left[
 Shape analyses are:
 - multivariate
 - assumption-heavy
@@ -324,33 +408,15 @@ Reproducible workflows:
 - make errors visible
 - support reanalysis
 - improve scientific credibility
+]
 
----
+.pull-right[
 
-## Big picture
+<img src="https://r4ds.hadley.nz/diagrams/rstudio/script.png" width="400">
 
-Shape analysis sits at the intersection of:
-- geometry
-- biology
-- statistics
-- computation
 
-Learning the tools *and* the thinking behind them is the goal of this course.
+<img src="https://cdn.prod.website-files.com/63be620d63863b897c02c28a/6477657755c46a6f4965855f_github_large.png" width="400">
 
----
 
-## Coming up next
+]
 
-Next we’ll start:
-- visualizing shape data
-- exploring variation
-- asking when simple summaries fail
-
-And we’ll do it using the workflows you just learned.
-
----
-
-## Questions?
-
-> Shape is not just what organisms look like.  
-> It’s how biology encodes function, history, and constraint.

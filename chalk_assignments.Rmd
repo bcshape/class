@@ -4,6 +4,36 @@ title: "Chalk Talk: Paper and Group Assignments"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(kableExtra)
 ```
+
+The following table reflects the dates, groups, and papers for our Chalk Talks. Please refer to our [Chalk Talk page](chalk.html) for more details on the assignment.
+
+```{r, include=F}
+
+pap <- read_csv("ignore/paper_dates.csv") %>% 
+  mutate(group=readRDS("ignore/chalk_groups.RDS")$pair) 
+  
+
+yr <- pap$paper %>% gsub("^.*_(.*).pdf","\\1",.)
+aut <- pap$paper %>% gsub("(^.*)_(.*).pdf","\\1",.)
+aut <- aut %>% gsub("_"," ",.) %>% gsub("&"," & ",.) %>%toupper()
+
+pap_dat <- 
+  tibble(year=yr,
+         author=aut,
+         file=pap$paper) %>% 
+  mutate(link=paste0("[",author," (",year,")](",file.path("papers",file),")"))
+
+pap_kab <- pap %>% select(date,group)%>%
+  cbind(pap_dat %>% select(link)) %>% 
+  kable(escape = F)  
+                     
+                     
+```
+
+
+`r pap_kab`
 
 

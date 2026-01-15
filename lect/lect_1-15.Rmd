@@ -1,0 +1,356 @@
+---
+title: "Starting Out, Setting Up"
+subtitle: "Definitions and Reproducible Workflows"
+author: "Dr. Christopher Kenaley"
+institute: "Boston College"
+output:
+  xaringan::moon_reader:
+    ratio: "16:9"
+    highlightStyle: github
+    highlightLines: true
+    countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+---
+
+## Today’s goals
+
+Today we'll:
+
+- Explain the difference between **shape** and **size**
+- Recognize different **types of shape data**
+- Understand why **reproducible workflows** matter
+- See how data, code, and interpretation fit together
+
+---
+
+## Shape vs. size: not the same thing
+
+.pull-left[
+**Size**
+- How big something is
+- Often summarized with one number
+- Examples:
+  - mass
+  - length
+  - area
+]
+
+.pull-right[
+**Shape**
+- How parts are arranged relative to one another
+- Inherently **multidimensional**
+- Depends on geometry, not magnitude
+]
+
+---
+
+## Why biologists care about shape
+
+Shape often links directly to:
+
+- function (feeding, locomotion, defense)
+- performance (speed, force, efficiency)
+- ecological role
+- evolutionary history
+
+> Two organisms can be the same size  
+> and behave *very* differently because of shape.
+
+---
+
+## A working definition of shape
+
+**Shape is the geometry of an object after removing:**
+- size
+- position
+- orientation
+
+What remains is **relative structure**.
+
+This is why shape:
+- requires multiple variables
+- is hard to summarize with a single number
+- benefits from multivariate thinking
+
+---
+
+## Shape almost always implies comparison
+
+You rarely study shape in isolation.
+
+Instead, you ask:
+- How do shapes differ among groups?
+- How does shape change across environments?
+- How does shape evolve over time?
+
+> Shape is meaningful because it varies.
+
+---
+
+## Data types in shape analysis
+
+Not all “shape data” look the same.
+
+Today we’ll distinguish among:
+1. Univariate measurements  
+2. Multivariate linear measurements  
+3. Landmark and outline data  
+4. Function and performance data  
+
+Each answers *different kinds of questions*.
+
+---
+
+## Univariate data
+
+.pull-left[
+- One variable at a time
+- Easy to analyze
+- Easy to misinterpret
+]
+
+.pull-right[
+**Examples**
+- body length
+- jaw height
+- fin area
+]
+
+**Limitation:**  
+Univariate data cannot capture geometry or covariance.
+
+---
+
+## Multivariate linear measurements
+
+.pull-left[
+- Multiple linear variables per specimen
+- Can describe proportions and relationships
+- Often analyzed with PCA or regression
+]
+
+.pull-right[
+**Examples**
+- skull length, width, height
+- fin base length, fin height
+- multiple distances on a body
+]
+
+These begin to capture **shape**, but indirectly.
+
+---
+
+## Why covariance matters
+
+Shape lives in **relationships among variables**.
+
+Example:
+- long + narrow vs.
+- short + wide
+
+Two specimens may have:
+- identical areas
+- very different shapes
+
+Multivariate data allow us to see these patterns.
+
+---
+
+## Landmark data
+
+.pull-left[
+- Points placed at homologous locations
+- Preserve geometry explicitly
+- Common in morphometrics
+]
+
+.pull-right[
+**Examples**
+- joint locations
+- tooth cusps
+- fin insertion points
+]
+
+Landmarks allow direct analysis of shape geometry.
+
+---
+
+## Outline data
+
+.pull-left[
+- Shape described by boundaries
+- No discrete landmarks required
+- Captures overall form
+]
+
+.pull-right[
+**Examples**
+- leaf outlines
+- fin margins
+- shells
+]
+
+Often analyzed using Fourier or eigenshape methods.
+
+---
+
+## Function and performance data
+
+Not shape *per se*, but tightly linked.
+
+Examples:
+- bite force
+- swimming speed
+- acceleration
+- metabolic cost
+
+These help connect **shape → performance → fitness**.
+
+---
+
+## Choosing the right data type
+
+Ask first:
+- What biological question am I asking?
+- Do I care about geometry?
+- Do I care about performance?
+- What assumptions am I willing to make?
+
+No single data type is “best” — only *appropriate*.
+
+---
+
+## From data to inference
+
+Collecting shape data is only the beginning.
+
+You also need:
+- analysis
+- interpretation
+- transparency
+- reproducibility
+
+This is where workflow matters.
+
+---
+
+## What is a reproducible workflow?
+
+A workflow where:
+- someone else can run your analysis
+- results regenerate automatically
+- decisions are documented
+
+Key ingredients:
+- R projects
+- R Markdown
+- version control (Git/GitHub)
+
+---
+
+## R Projects
+
+An **R Project**:
+- defines a working directory
+- keeps paths relative
+- keeps everything together
+
+Why this matters:
+- no broken file paths
+- easier collaboration
+- fewer “works on my machine” problems
+
+---
+
+## R Markdown
+
+R Markdown lets you combine:
+- code
+- results
+- text
+- figures
+
+In one document.
+
+This means:
+- figures update automatically
+- interpretation stays linked to analysis
+- fewer copy–paste errors
+
+---
+
+## Code + interpretation = science
+
+A figure without explanation is incomplete.  
+Text without code is unverifiable.
+
+R Markdown forces you to:
+- show how results were produced
+- explain what they mean
+- keep them connected
+
+---
+
+## Git and GitHub
+
+**Git** tracks changes over time.  
+**GitHub** stores and shares those changes.
+
+Together, they let you:
+- recover earlier versions
+- document progress
+- collaborate safely
+- show how work evolved
+
+---
+
+## Why this matters for shape analysis
+
+Shape analyses are:
+- multivariate
+- assumption-heavy
+- easy to over-interpret
+
+Reproducible workflows:
+- make errors visible
+- support reanalysis
+- improve scientific credibility
+
+---
+
+## Big picture
+
+Shape analysis sits at the intersection of:
+- geometry
+- biology
+- statistics
+- computation
+
+Learning the tools *and* the thinking behind them is the goal of this course.
+
+---
+
+## Coming up next
+
+Next we’ll start:
+- visualizing shape data
+- exploring variation
+- asking when simple summaries fail
+
+And we’ll do it using the workflows you just learned.
+
+---
+
+## Questions?
+
+> Shape is not just what organisms look like.  
+> It’s how biology encodes function, history, and constraint.

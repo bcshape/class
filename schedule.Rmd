@@ -16,15 +16,16 @@ title: "Schedule"
   
   - [Rolf (1990)](rohlf_1990.pdf)
   - [Klingenberg (2010)](papers/klingenberg_2010.pdf)
-  - [Wainwright (2007)](/papers/wainwright_2007.pdf)
-  - In-class coding (1/14)
+  - In-class coding (1/15)
 
 **Deliverables:** 
 
   - AME1 release 
   - Personal repo setup
 
-**Slides:** [Jan 13](lect/5410_1_13.html)
+**Slides:** 
+  + [Jan 13](lect/lect_1_12.html)
+  + [Jan 15](lect/lect_1_15.html)
 
 ---
 
@@ -37,6 +38,7 @@ title: "Schedule"
 
 **Consumables**
   
+  - [Wainwright (2007)](/papers/wainwright_2007.pdf)
   - [Symonds & Blomberg (2014)](papers/symonds&blomberg_2010.pdf)
   - [Pelabon et al. (2014)](papers/pelabon_etal_2014)
  
@@ -80,7 +82,7 @@ title: "Schedule"
 
 
 **Consumables**
-  - [Tseng et al (2022)](papers/tseng_etal_2022.pdf)
+  - [Tseng et al (2022)](papers/tseng_et_al_2022.pdf)
   - [Bonhomme et al (2014)](papers/bonhomme_etal_2014.pdf)
 
 **Deliverables:** 
@@ -122,7 +124,7 @@ title: "Schedule"
 
 **Consumables**
   
-  - [Zhusti et al.](papers/zhusti_etal.pdf)
+  - [Zhusti et al.](papers/zhusti_et_al_InRev.pdf)
   - [Felsenstein (1985)](papers/felsenstein_1985.pdf)
   - [Symonds & Blomberg (2014)](papers/symonds&blomberg_2010.pdf)
   - Harmon (2019) [Chapter 3](https://lukejharmon.github.io/pcm/chapter3_bmintro/) and [Chapter 6](https://lukejharmon.github.io/pcm/chapter6_beyondbm)
@@ -145,7 +147,7 @@ title: "Schedule"
 
 **Consumables**
 
-  - [Felice et al. (2021)](papers/felice_et_al._2021.pdf)
+  - [Felice et al. (2021)](papers/felice_et_al_2021.pdf)
   - [Uyeda et al (2018)](/papers/uyeda_et_al_2018.pdf)
 
 **Deliverables:** 
@@ -229,4 +231,8 @@ Note **Easter recess starts Apr 2**
   - Synthesis: Figures, results, interpretation
 
 **Deliverable:** Final Rmd (Due May 11)
+
+```{r include=F}
+source("ignore/render.R")
+```
 

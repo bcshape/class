@@ -14,8 +14,14 @@ navbar:
       href: index.html
     - text: "Schedule"
       href: schedule.html
-    - text: "Assignments" 
+    - text: "Assignments"
       menu:
+      - text: "Chalk Talks"
+        menu:
+        - text: "Chalk Talk Guidelines"
+          href: chalk.html
+        - text: "Chalk Talk Group Assignments"
+          href: chalk_assignments.html
       - text: "Weekly AMEs"
         menu:
         - text: "AME Guidelines"

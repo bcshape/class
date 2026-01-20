@@ -40,7 +40,7 @@ title: "Schedule"
 
 **Consumables**
   
-  - [Wainwright (2007)](/papers/wainwright_2007.pdf)
+  - [Wainwright (2007)](papers/wainwright_2007.pdf)
   - [Symonds & Blomberg (2014)](papers/symonds&blomberg_2010.pdf)
   - [Pelabon et al. (2014)](papers/pelabon_etal_2014)
  

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Shape, Size and their Problems</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content { font-size: 18px; }
+.remark-code, .remark-inline-code { font-size: 14px; }
+.small { font-size: 16px; }
+.tiny  { font-size: 12px; }
+.emph  { font-weight: 700; }
+.note  { color: #555; font-size: 20px; }
+&lt;/style&gt;
+
+---
+
+# Shape, size, and their problems
+
+### Today: 
+
+- Many-to-one mapping 
+- Consider scaling/allometry 
+- Consider a no-no: ratios 
+- Address allometry
+- Chat/Questions
+
+
+---
+
+# 1. Many-to-one mapping
+
+- Multiple morphologies → same performance
+- Selection acts on **function**, not shape
+- Morphospace ≠ performance space
+
+
+---
+
+# Consequence
+.pull-left[
+Hard to link morphospace to fitness:
+- 2 `\(&lt;\)` parameters describing shape = multiple solitions
+- Morphospace may have more than one performance peak
+- Functional/performance redundancy ≠ lack of information
+
+&lt;img src="si.png" width="200"&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="silandscape.png" width="500"&gt;
+]
+
+---
+# 2. Scaling and shape
+
+.pull-left[
+- Size changes geometry automatically
+- Bigger organisms are *differently shaped*
+- Ignoring size assumes **isometry**
+
+Isometry is a fraught biological assumption.
+]
+
+.pull-right[
+
+**Isometry**: change is constant constant
+**Allometry**: rate of changes changes with size
+
+&lt;img src="https://gordsexton.wordpress.com/wp-content/uploads/2019/02/scaling-1.png" width="500"&gt;
+
+]
+
+---
+
+# A scaling example
+
+.pull-left[
+![](lect_1-20_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+![](lect_1-20_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# 3. Ratios: why people use them
+
+.pull-left[
+
+Ratios:
+- Simple
+- Dimensionless
+- Feel like size correction
+
+But simplicity hides assumptions.
+]
+
+.pull-right[
+&lt;img src="https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/66/2017/05/fish-anatomy-parts-lateral.jpg" width="500"&gt;
+]
+
+---
+
+# The ratio trap
+
+.pull-left[
+Ratios:
+- Assume isometry
+- Hide size in the denominator
+- Can create spurious correlations
+
+**Ratios do not remove size — they disguise it**
+
+&gt; "Allometric biases associated with morphological ratios likely increased uncertainty in our models, but some of these issues were minimized by restricting measurements to photos of adult stages only."
+(Kopf et al., 2021)
+
+]
+
+.pull-right[
+&lt;img src="jaw.jpg" width="500"&gt;
+]
+
+
+---
+
+# Why ratios fail
+
+.pull-left[
+
+![](lect_1-20_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+]
+
+.pull-right[
+
+![](lect_1-20_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+---
+
+# Why ratios fail
+
+.pull-left[
+If:
+- Trait ∝ size^a
+- Denominator ∝ size^b
+
+Then ratio ∝ size^(a-b)
+
+Size never disappears.
+]
+
+.pull-right[
+
+![](lect_1-20_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# 4. Addressing allometry
+
+.pull-left[
+A pattern that:
+- Is linear on log–log scale
+- Encodes development and function
+- Not a statistical nuisance
+]
+
+.pull-right[
+&lt;img src="https://entoxsimplified.com/wp-content/uploads/2018/04/shingletonfigure-2.jpg" width="500"&gt;
+]
+
+---
+
+# Fitting allometric models
+
+.pull-left[
+
+
+``` r
+fit &lt;- lm(
+  log10(trait_A) ~ log10(size), 
+  data = dat)
+```
+]
+
+.pull-right[
+
+``` r
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = log10(trait_A) ~ log10(size), data = dat)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.072742 -0.003881 -0.000312  0.003395  0.065459 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.305311   0.009771   31.25   &lt;2e-16 ***
+## log10(size) 1.198407   0.003604  332.56   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.01156 on 198 degrees of freedom
+## Multiple R-squared:  0.9982,	Adjusted R-squared:  0.9982 
+## F-statistic: 1.106e+05 on 1 and 198 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+
+# 6. Size correction
+
+Common approaches:
+- Residuals (model based)
+- PC1 as size (in MV frameworks)
+
+Neither is universally correct, just less incorrect than the other in the right context.
+
+---
+
+# Residuals are conditional
+
+.pull-left[
+- Depend on:
+  - size metric
+  - taxonomic scope
+  - slope (b) homogeneity
+  
+Residuals are **model-based traits**
+
+Distribution of residuals should approximate normalcy around 0.
+
+]
+
+.pull-right[
+
+
+![](lect_1-20_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+]
+
+---
+# Multivariate data and size
+
+.pull-left[
+
+In multivariate space:
+- PC1 often tracks size bc it's encoded in shape
+- But shape can load strongly
+- i.e, PC1 ≠ size by default.
+
+What to do?]
+
+.pull-right[
+
+
+![](lect_1-20_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+
+---
+# Multivariate data and size
+
+.pull-left[
+
+In multivariate space:
+- PC1 often tracks size
+- But shape can load strongly
+- i.e, PC1 ≠ size by default.
+
+What to do?]
+
+.pull-right[
+
+![](lect_1-20_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+]
+
+---
+# Multivariate data and size
+
+.pull-left[
+
+In multivariate space:
+- PC1 often tracks size
+- But shape can load strongly
+- i.e, PC1 ≠ size by default.
+
+What to do?]
+
+.pull-right[
+
+Control for it in OLS analysis  (ANOVA) of form `.~size + character`:
+
+- Centroid Size
+- Mass or Length
+
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -31,7 +31,7 @@ title: "Schedule"
 
 ---
 
-## Week 2 (Jan 19): Measurement, repeatability, and univariate characters 
+## Week 2 (Jan 19): Shape, Function, and Scaling 
 
 **Topics**
 
@@ -41,7 +41,7 @@ title: "Schedule"
 **Consumables**
   
   - [Wainwright (2007)](papers/wainwright_2007.pdf)
-  - [Symonds & Blomberg (2014)](papers/symonds&blomberg_2010.pdf)
+  - [Symonds & Blomberg (2014)](papers/symonds&blomberg_2014.pdf)
   - [Pelabon et al. (2014)](papers/pelabon_etal_2014)
  
 
@@ -53,6 +53,7 @@ title: "Schedule"
 **Slides:** 
 
   + [Jan 20](lect/lect_1-20.html)
+  
 ---
 
 ## Week 3 (Jan 26): Landmarks, Procrustes, and the geometry of form
@@ -74,7 +75,7 @@ title: "Schedule"
 **Deliverables:** 
 
   - AME3 
-  - CT3 (given in class 1/29) **CPK: assign groups with Rmd**
+  - CT3 (given in class 1/29) 
   
 ---
 
@@ -172,7 +173,7 @@ title: "Schedule"
 **Consumables**
   
   - [Evans et al. (2023)](papers/evans_et_al_2023.pdf)
-  - [Burns and Sidlauskas (2019)](burns&sidlauskas_2019.pdf)
+  - [Burns and Sidlauskas (2019)](papers/burns&sidlauskas_2019.pdf)
 
 
 **Deliverables:** 

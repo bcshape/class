@@ -26,11 +26,11 @@ pap_dat <-
          file=pap$paper) %>% 
   mutate(link=paste0("[",author," (",year,")](",file.path("papers",file),")"))
 
-pap_kab <- pap %>% select(date,group)%>%
+pap_kab <- pap %>% mutate(group=group[c(1:7,9,8,10:length(group))]) %>%
+  select(date,group)%>%
   cbind(pap_dat %>% select(link)) %>% 
   kable(escape = F)  
-                     
-                     
+                              
 ```
 
 

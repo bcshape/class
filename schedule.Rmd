@@ -11,8 +11,7 @@ title: "Schedule"
   - Shape vs size; biological meaning of "shape"
   - Data types and definitions: univariate, multivariate linear, landmarks/outlines, function/performance
   - Reproducible workflows (R projects, R Markdown, Git/GitHub)
-  - set up an R project and Git
-  - Release and look at [AME1](AMEs/AME1.html)
+  
 
 **Consumables**
   
@@ -51,6 +50,9 @@ title: "Schedule"
   - AME1
   - CT1 
 
+**Slides:** 
+
+  + [Jan 20](lect/lect_1-20.html)
 ---
 
 ## Week 3 (Jan 26): Landmarks, Procrustes, and the geometry of form

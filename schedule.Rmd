@@ -68,7 +68,7 @@ title: "Schedule"
   
   - [Martinez et al. (2013)](papers/martinez_et_al_2013.pdf)
   - [Mitteroecker & Gunz (2009)](papers/mitteroecker&gunz_2009.pdf)
-  - [Tiatragul et al. (2024)](papers/tiatragul_etal_2024)
+  - [Tiatragul et al. (2024)](papers/tiatragul_etal_2024.pdf)
   - [Baken et al. (2021)](papers/baken_etal_2021.pdf)
 
 
@@ -218,7 +218,7 @@ Note **Easter recess starts Apr 2**
   - Developed refined hypotheses, models, and plots
 
 **Deliverable:** 
-  - 1-page Analysis plan with figure mockups
+  - 1-page analysis plan with figure mockups
 
 ---
 
@@ -233,7 +233,7 @@ Note **Easter recess starts Apr 2**
 
 ## Finals period (May 1–11): Polishing and presenting
 
-**On you own**
+**On your own**
   - Synthesis: Figures, results, interpretation
 
 **Deliverable:** Final Rmd (Due May 11)

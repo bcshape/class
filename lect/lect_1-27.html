@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Research in Comparative Shape Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Research in Comparative Shape Analysis
+]
+.subtitle[
+## Geometric Morphetrics: Theory and Practice in <code>geomorph</code>
+]
+.author[
+### Dr. Christopher Kenaley
+]
+.institute[
+### Boston College
+]
+.date[
+### 2025/27/1
+]
+
+---
+
+
+
+# Geometric Morphometrics (GM)
+
+.pull-left[
+A coordinate-based approach to quantify **shape** while preserving geometry.
+
+**Today:**
+- Landmarks &amp; semilandmarks; sliding
+- GPA, centroid size, tangent space
+- Deformation visualization (TPS grids, vectors)
+- The `geomorph` ecosystem* (what to use, when)
+
+*`geomorph` context throughout
+]
+
+.pull-right[
+
+&lt;img src="https://www.sbmorphometrics.org/review/fig2.gif" width="500"&gt;
+
+]
+---
+
+# Today's goals
+
+.pull-left[
+By the end, you should be able to:
+
+1. Explain the difference between **landmarks** and **semilandmarks**
+2. Describe what **GPA** does (and what it removes)
+3. Define **centroid size** and **shape**
+4. Explain **tangent space** (at an intuitive level)
+5. Interpret deformation plots (TPS grids &amp; vectors)
+6. Know the core pieces of the **`geomorph`** workflow
+]
+
+.pull-right[
+
+&lt;img src="https://www.sbmorphometrics.org/review/fig2.gif" width="500"&gt;
+
+]
+---
+
+# What is "shape" in GM?
+
+.pull-left[
+We start with landmark coordinates:
+
+- Each specimen has *p* points in *k* dimensions
+- Stored as an array: **p × k × n** in `geomorph`
+
+GM defines **shape** as what's left after removing:
+
+- translation (position)
+- rotation (orientation)
+- scale (size)
+]
+
+.pull-right[
+
+```
+## , , 1
+## 
+##         [,1]     [,2]
+## [1,] 8.89372 53.77644
+## [2,] 9.26840 52.77072
+## [3,] 5.56104 54.21028
+## [4,] 1.87340 52.75100
+## [5,] 1.28180 53.18484
+## [6,] 1.24236 53.32288
+## 
+## , , 2
+## 
+##          [,1]     [,2]
+## [1,] 8.679762 54.57819
+## [2,] 8.935628 53.83027
+## [3,] 5.451914 54.65691
+## [4,] 1.987882 52.68871
+## [5,] 1.515514 53.02331
+## [6,] 1.338376 53.22013
+## 
+## , , 3
+## 
+##           [,1]     [,2]
+## [1,]  9.805328 56.06903
+## [2,] 10.137712 55.27961
+## [3,]  6.647680 55.73664
+## [4,]  3.448484 53.86698
+## [5,]  3.012230 54.34478
+## [6,]  2.825264 54.57330
+## 
+## , , 4
+## 
+##          [,1]     [,2]
+## [1,] 9.637164 58.03294
+## [2,] 9.952104 56.77318
+## [3,] 6.109836 57.94896
+## [4,] 2.645496 55.89135
+## [5,] 2.015616 56.62621
+## [6,] 1.721672 57.21410
+## 
+## , , 5
+## 
+##           [,1]     [,2]
+## [1,] 11.035692 58.75009
+## [2,] 11.335110 57.85184
+## [3,]  8.255382 58.92119
+## [4,]  4.555431 57.46687
+## [5,]  3.956595 58.08709
+## [6,]  3.871047 58.40790
+## 
+## , , 6
+## 
+##          [,1]     [,2]
+## [1,] 7.946625 55.71114
+## [2,] 8.476400 54.82112
+## [3,] 4.979885 54.90588
+## [4,] 2.479347 52.85035
+## [5,] 2.076718 53.10465
+## [6,] 1.737662 53.14703
+## 
+## , , 7
+## 
+##          [,1]     [,2]
+## [1,] 8.849841 58.66961
+## [2,] 9.396387 57.82877
+## [3,] 5.990985 58.31225
+## [4,] 2.501499 56.84078
+## [5,] 2.102100 57.28223
+## [6,] 1.933932 57.47141
+## 
+## , , 8
+## 
+##           [,1]     [,2]
+## [1,]  9.331504 56.36904
+## [2,] 10.154872 55.31344
+## [3,]  6.671392 56.62238
+## [4,]  2.195648 55.08121
+## [5,]  1.688960 55.79902
+## [6,]  1.520064 56.28459
+## 
+## , , 9
+## 
+##           [,1]     [,2]
+## [1,]  9.840795 58.49453
+## [2,] 10.179403 57.37289
+## [3,]  6.031455 58.49453
+## [4,]  2.624212 57.05545
+## [5,]  2.137463 57.35173
+## [6,]  1.566062 57.71150
+## 
+## , , 10
+## 
+##          [,1]     [,2]
+## [1,] 9.563510 56.51740
+## [2,] 9.900550 55.50628
+## [3,] 5.919265 56.36994
+## [4,] 1.811590 54.45303
+## [5,] 1.369225 55.02178
+## [6,] 1.221770 55.54841
+## 
+## , , 11
+## 
+##          [,1]     [,2]
+## [1,] 8.211782 57.04143
+## [2,] 8.337794 55.52929
+## [3,] 4.830460 59.47766
+## [4,] 0.336032 60.90580
+## [5,] 0.462044 61.68287
+## [6,] 0.378036 62.18692
+## 
+## , , 12
+## 
+##          [,1]     [,2]
+## [1,] 8.691998 54.71960
+## [2,] 9.660114 53.56207
+## [3,] 5.240454 55.43516
+## [4,] 1.641588 54.76169
+## [5,] 0.926024 55.37203
+## [6,] 0.610334 55.85608
+## 
+## , , 13
+## 
+##           [,1]     [,2]
+## [1,] 10.707338 61.44578
+## [2,] 11.724882 60.26636
+## [3,]  7.030304 61.28390
+## [4,]  2.890750 59.13318
+## [5,]  2.220096 59.78071
+## [6,]  2.058214 60.10447
+## 
+## , , 14
+## 
+##          [,1]     [,2]
+## [1,] 8.470779 53.32874
+## [2,] 9.155484 52.66360
+## [3,] 6.397101 53.21136
+## [4,] 4.460364 52.42884
+## [5,] 4.166919 52.76141
+## [6,] 3.990852 53.21136
+## 
+## , , 15
+## 
+##           [,1]     [,2]
+## [1,] 11.532672 74.42845
+## [2,] 12.226768 72.61312
+## [3,]  7.635056 75.04246
+## [4,]  2.776384 73.92122
+## [5,]  2.322552 74.32166
+## [6,]  1.681848 74.82889
+## 
+## , , 16
+## 
+##          [,1]     [,2]
+## [1,] 8.919900 55.17745
+## [2,] 9.675468 53.01569
+## [3,] 5.561820 55.57622
+## [4,] 0.797544 54.17003
+## [5,] 0.482724 54.98856
+## [6,] 0.272844 55.49227
+## 
+## , , 17
+## 
+##           [,1]     [,2]
+## [1,]  9.914553 55.94491
+## [2,] 10.459539 55.16935
+## [3,]  7.524999 55.94491
+## [4,]  5.009679 55.10647
+## [5,]  4.716225 55.48377
+## [6,]  4.527576 55.86107
+## 
+## , , 18
+## 
+##           [,1]     [,2]
+## [1,] 10.661782 62.89986
+## [2,] 11.616221 61.66607
+## [3,]  6.867305 63.76118
+## [4,]  2.677085 62.24805
+## [5,]  2.025273 62.80674
+## [6,]  1.489856 63.36544
+## 
+## , , 19
+## 
+##          [,1]     [,2]
+## [1,] 8.313908 51.34480
+## [2,] 9.735764 50.02168
+## [3,] 4.838260 51.38430
+## [4,] 1.303368 49.98219
+## [5,] 0.710928 50.57463
+## [6,] 0.572692 51.04858
+## 
+## , , 20
+## 
+##          [,1]     [,2]
+## [1,] 8.506270 57.07500
+## [2,] 9.813331 55.99615
+## [3,] 5.912895 57.30321
+## [4,] 1.514531 56.24512
+## [5,] 1.161832 56.84678
+## [6,] 0.871374 57.19948
+## 
+## , , 21
+## 
+##           [,1]     [,2]
+## [1,] 10.310018 55.68670
+## [2,] 11.086944 54.67879
+## [3,]  7.895248 55.77069
+## [4,]  4.388582 54.51081
+## [5,]  3.884630 54.80478
+## [6,]  3.569660 55.09875
+## 
+## , , 22
+## 
+##          [,1]     [,2]
+## [1,] 8.168564 57.41153
+## [2,] 8.189617 56.04309
+## [3,] 5.579045 59.41157
+## [4,] 0.694749 60.42211
+## [5,] 0.421060 61.11686
+## [6,] 0.336848 61.58002
+## 
+## , , 23
+## 
+##          [,1]     [,2]
+## [1,] 8.514847 55.94275
+## [2,] 9.163398 54.83394
+## [3,] 5.732354 55.92183
+## [4,] 2.238547 54.66657
+## [5,] 1.882890 55.00131
+## [6,] 1.694601 55.41973
+## 
+## , , 24
+## 
+##         [,1]     [,2]
+## [1,] 7.52874 58.00074
+## [2,] 7.90728 57.24366
+## [3,] 5.23647 58.12692
+## [4,] 1.95579 56.94924
+## [5,] 1.55622 57.26469
+## [6,] 1.36695 57.79044
+## 
+## , , 25
+## 
+##           [,1]     [,2]
+## [1,]  9.660255 58.00344
+## [2,] 10.498455 57.16524
+## [3,]  7.543800 58.17108
+## [4,]  4.253865 56.80901
+## [5,]  3.876675 57.27002
+## [6,]  3.583305 57.60530
+## 
+## , , 26
+## 
+##          [,1]     [,2]
+## [1,] 8.374318 56.47404
+## [2,] 8.837220 55.10638
+## [3,] 5.554824 57.02111
+## [4,] 1.346624 55.94802
+## [5,] 0.967886 56.74758
+## [6,] 0.799558 57.33673
+## 
+## , , 27
+## 
+##          [,1]     [,2]
+## [1,] 8.634288 57.98208
+## [2,] 9.663680 56.13338
+## [3,] 5.945264 58.54930
+## [4,] 1.491568 56.53253
+## [5,] 0.924352 57.41486
+## [6,] 0.630240 58.27619
+## 
+## , , 28
+## 
+##          [,1]     [,2]
+## [1,]  9.99570 57.01410
+## [2,] 10.63920 55.74855
+## [3,]  6.73530 57.70050
+## [4,]  1.26555 55.83435
+## [5,]  0.64350 56.49930
+## [6,]  0.49335 56.99265
+## 
+## , , 29
+## 
+##          [,1]     [,2]
+## [1,] 9.293050 56.80955
+## [2,] 9.860725 55.37985
+## [3,] 6.664925 57.29312
+## [4,] 2.733250 55.90547
+## [5,] 2.291725 56.15777
+## [6,] 2.018400 56.62032
+## 
+## , , 30
+## 
+##          [,1]     [,2]
+## [1,] 8.395014 57.54170
+## [2,] 9.238734 56.52924
+## [3,] 6.243528 57.96356
+## [4,] 2.425695 57.01438
+## [5,] 1.792905 57.26750
+## [6,] 1.455417 57.49952
+## 
+## , , 31
+## 
+##           [,1]     [,2]
+## [1,]  9.536103 56.41668
+## [2,] 10.188684 55.53254
+## [3,]  6.862626 56.83770
+## [4,]  2.778732 55.72200
+## [5,]  2.315610 56.16407
+## [6,]  1.978794 56.45878
+## 
+## , , 32
+## 
+##         [,1]     [,2]
+## [1,] 9.28998 57.66999
+## [2,] 9.43845 56.39739
+## [3,] 6.15090 60.06672
+## [4,] 0.91203 61.10601
+## [5,] 0.67872 61.63626
+## [6,] 0.57267 62.16651
+## 
+## , , 33
+## 
+##          [,1]     [,2]
+## [1,]  9.45411 57.01684
+## [2,] 10.10108 56.05682
+## [3,]  6.63666 57.28815
+## [4,]  2.69223 55.86899
+## [5,]  2.35831 56.36987
+## [6,]  2.02439 56.72466
+## 
+## , , 34
+## 
+##          [,1]     [,2]
+## [1,] 7.130627 56.33819
+## [2,] 7.546407 55.63136
+## [3,] 5.238828 56.50450
+## [4,] 1.683909 55.36111
+## [5,] 1.476019 55.67294
+## [6,] 1.247340 55.75610
+## 
+## , , 35
+## 
+##          [,1]     [,2]
+## [1,] 9.093168 58.07419
+## [2,] 9.745687 56.79020
+## [3,] 6.209455 58.36888
+## [4,] 1.852312 57.00069
+## [5,] 1.283989 57.48482
+## [6,] 1.094548 57.90580
+## 
+## , , 36
+## 
+##          [,1]     [,2]
+## [1,] 8.076244 58.16164
+## [2,] 8.837356 57.21025
+## [3,] 5.412352 58.26735
+## [4,] 1.945064 56.51257
+## [5,] 1.458798 56.93541
+## [6,] 1.205094 57.29482
+## 
+## , , 37
+## 
+##         [,1]     [,2]
+## [1,] 8.46210 56.89815
+## [2,] 9.28305 55.97195
+## [3,] 6.44130 56.77185
+## [4,] 2.31550 55.29835
+## [5,] 1.91555 55.57200
+## [6,] 1.78925 56.05615
+## 
+## , , 38
+## 
+##         [,1]     [,2]
+## [1,] 8.58024 57.72735
+## [2,] 9.65277 56.27628
+## [3,] 6.07767 58.31619
+## [4,] 1.21974 57.41190
+## [5,] 0.79914 58.27413
+## [6,] 0.65193 58.77885
+## 
+## , , 39
+## 
+##           [,1]     [,2]
+## [1,]  9.389055 56.73521
+## [2,] 10.000926 55.84905
+## [3,]  6.751680 56.94620
+## [4,]  2.869464 55.57477
+## [5,]  2.363088 56.06004
+## [6,]  2.088801 56.62972
+## 
+## , , 40
+## 
+##           [,1]     [,2]
+## [1,]  9.494001 56.66929
+## [2,] 10.125531 55.57464
+## [3,]  6.694218 57.25872
+## [4,]  1.494621 56.47983
+## [5,]  0.968346 56.77455
+## [6,]  0.842040 57.34292
+```
+
+]
+
+
+---
+
+# Landmarks
+
+.pull-left[
+A **landmark** is a homologous point you can place consistently:
+
+- same biological feature across specimens
+- e.g., joint, suture intersection, fin insertion
+
+**Key idea:** landmarks are tied to anatomy.
+]
+
+.pull-right[
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Morphometric_landmarks_on_a_Eurasian_perch_%28Perca_fluviatilis%29_-_journal.pone.0043641.g002.png" width="500"&gt;
+]
+---
+
+# Landmark types (bookkeeping)
+
+.pull-left[
+- **Type I:** clear intersection (high homology; best)
+- **Type II:** maxima/minima of curvature (moderate)
+- **Type III:** extremal points / endpoints (lowest)
+]
+
+.pull-right[
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Morphometric_landmarks_on_a_Eurasian_perch_%28Perca_fluviatilis%29_-_journal.pone.0043641.g002.png" width="500"&gt;
+]
+---
+
+# Semilandmarks
+
+.pull-left[
+Sometimes the "feature" is a *curve or outline*:
+
+- jaw margin
+- fin edge
+- skull profile
+
+We place **semilandmarks** along the curve.
+]
+
+.pull-right[
+&lt;img src="https://hiweller.rbind.io/post/using-semilandmarks-to-improve-patternize-alignment/featured.png" width="500"&gt;
+
+Problem: their spacing is often arbitrary.
+
+Solution: **sliding** semilandmarks to reduce nuisance variation.
+]
+
+
+---
+
+# Sliding semilandmarks (intuition)
+
+.pull-left[
+If points lie on a curve, we want them to match *the curve*, not the arbitrary spacing.
+
+Sliding adjusts semilandmark positions **along the curve** to optimize a criterion:
+
+- minimize bending energy (common)
+- or minimize Procrustes distance
+
+Landmarks (fixed) stay fixed; semilandmarks can move along tangents.
+]
+
+.pull-right[
+&lt;img src="https://hiweller.rbind.io/post/using-semilandmarks-to-improve-patternize-alignment/featured.png" width="500"&gt;
+
+
+]
+---
+
+# A tiny toy example (built-in data)
+
+*Plethodon* example dataset from `geomorph`.
+
+
+``` r
+data(plethodon, package = "geomorph")
+
+# Landmark array
+Y &lt;- plethodon$land   # p x k x n
+dim(Y)
+```
+
+```
+## [1] 12  2 40
+```
+
+---
+
+# Quick look at a few specimens
+
+.pull-left[
+
+``` r
+plot(Y[,,1], asp = 1, pch = 19, main = "Landmarks: specimen 1")
+text(Y[,,1], labels = 1:dim(Y)[1], pos = 3, cex = 0.7)
+```
+
+![](lect_1-27_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+&lt;img src="pleth.png" width="500"&gt;
+
+*Notice anything about the projection?*
+]
+---
+
+# Generalized Procrustes Analysis (GPA)
+
+.pull-left[
+GPA aligns specimens by:
+
+1. translating each configuration to its centroid
+2. scaling each configuration to unit centroid size
+3. rotating to minimize summed squared distances among corresponding landmarks
+
+Output:
+- aligned shapes
+- centroid sizes
+- Procrustes distances
+]
+
+.pull-right[
+
+&lt;img src="gpa.png" width="500"&gt;
+]
+
+---
+
+# Why GPA matters
+
+.pull-left[
+After GPA, differences among specimens reflect:
+
+- relative positions of landmarks
+- (i.e., **shape**)
+
+Not:
+- where the specimen sits in the image
+- how it’s rotated
+- how big it is
+]
+
+
+.pull-right[
+
+&lt;img src="gpa.png" width="500"&gt;
+]
+
+---
+
+# geomorph GPA
+
+.pull-left[
+
+``` r
+gpa &lt;- gpagen(Y, print.progress = FALSE)
+names(gpa) 
+```
+
+```
+##  [1] "coords"       "Csize"        "iter"         "rot.pts"      "consensus"   
+##  [6] "procD"        "p"            "k"            "nsliders"     "nsurf"       
+## [11] "points.VCV"   "points.var"   "data"         "Q"            "slide.method"
+## [16] "call"
+```
+]
+
+.pull-right[
+
+``` r
+plot(gpa)
+```
+
+![](lect_1-27_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+---
+
+# Centroid size
+
+.pull-left[
+Centroid size is a standard GM size metric:
+
+
+`\(CS = \sqrt{ \sum_{i=1}^{p} \left\| \mathbf{x}_i - \bar{\mathbf{x}} \right\|^2 }\)`
+
+
+p = number of landmarks
+
+`\(\mathbf{x}_i\)` = coordinate vector of landmark 
+
+`\(\bar{\mathbf{x}}\)` = centroid of all landmarks
+ 
+In `geomorph`:
+
+
+``` r
+head(gpa$Csize)
+```
+
+```
+## [1] 15.22692 14.71888 14.00955 15.75047 13.93518 13.50682
+```
+]
+
+.pull-right[
+
+![](lect_1-27_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+]
+---
+
+# Tangent space 
+
+.pull-left[
+Shape space is curved.
+
+We often analyze shapes using standard multivariate tools (PCA, regression), which assume Euclidean geometry.
+
+**Tangent space** is a local, linear approximation:
+
+- project shapes to a plane that is "tangent" at the mean shape
+- works well when shapes are not extremely different
+]
+
+.pull-right[
+&lt;img src="tangentspace.png" width="500"&gt;
+]
+---
+
+# Check tangent space approximation
+
+.pull-left[
+`geomorph` provides implementations with PCA function:
+]
+
+.pull-right[
+
+``` r
+pca &lt;- gm.prcomp(gpa$coords)
+plot(pca)
+```
+
+![](lect_1-27_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Shape variation with PCA plot (scores)
+
+.pull-left[
+More later in Week 5
+]
+
+.pull-right[
+
+``` r
+plot(pca, pch = 19, main = "Shape PCA (Procrustes coordinates)")
+```
+
+![](lect_1-27_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+]
+---
+
+# Interpreting PCA in GM
+
+.pull-left[
+PC axes = directions of maximal shape variation.
+
+To understand a PC:
+- visualize deformation from mean to +/- along that axis
+
+Two common visualizations:
+- **TPS grids**
+- **vector displacement plots**
+]
+
+.pull-right[
+
+![](lect_1-27_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+]
+---
+
+# Deformation visualization
+
+.pull-left[
+## Thin-Plate Spline (TPS)
+
+TPS summarizes deformation as if the shape were a thin sheet:
+
+- smooth warping
+- emphasizes localized vs global changes
+
+We often show:
+- mean shape vs target shape
+- deformation grid
+]
+
+.pull-right[
+&lt;img src="https://www.virtual-anthropology.com/wp-content/uploads/2017/02/thinplatespline2.jpg" width="500"&gt;
+]
+---
+
+# TPS example (mean to PC1 extremes)
+
+.pull-left[
+
+``` r
+ref &lt;- mshape(gpa$coords)
+
+# geomorph stores PC extreme shapes 
+target_minus &lt;- pca$shapes$shapes.comp1$min
+target_plus  &lt;- pca$shapes$shapes.comp1$max
+
+par(mfrow = c(1,2))
+plotRefToTarget(M1 = ref, 
+                M2 = target_minus, 
+                mag = 2, main = "PC1: -")
+plotRefToTarget(ref, 
+                target_plus,
+                mag = 2, 
+                main = "PC1: +")
+par(mfrow = c(1,1))
+```
+]
+
+.pull-right[
+![](lect_1-27_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Vector displacement plots
+.pull-left[
+Vectors show landmark movement from reference to target:
+
+- arrow direction = where the landmark moves
+- arrow length = how much it moves
+
+
+]
+
+.pull-right[
+![](lect_1-27_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+]
+---
+
+# Sliding semilandmarks in geomorph
+
+If you have curves, you provide:
+- a matrix describing curve point sequences
+- optional surface constraints (3D)
+
+Core functions:
+- `gpagen(..., curves = &lt;curves&gt;)`
+- `define.sliders()` to specify curves
+
+---
+
+# Semilandmark workflow
+
+`curves` = a matrix describing semilandmark curves (sliders) and their path and endpoints
+
+.pull-left[
+
+
+``` r
+curves &lt;- define.sliders(cbind(c(1,2,4,5,3)),#jaw 
+                         cbind(c(9,7,6,10,11,2))#skull
+                         )
+
+gpa_slid &lt;- gpagen(Y, 
+                   curves = curves, 
+                   ProcD = TRUE
+                  )
+
+plot(gpa_slid)
+```
+&lt;img src="pleth.png" width="200"&gt;
+
+
+Interpretation: semilandmarks slide along curves during GPA to improve correspondence.
+]
+
+.pull-right[
+
+![](lect_1-27_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+]
+---
+
+# Common pitfalls 
+
+1. Mixing anatomical landmarks with pseudo-landmarks without justification
+2. Too many semilandmarks with too few specimens (overfitting)
+3. Ignoring digitizing error (repeatability)
+4. Treating PCA as the analysis (it is exploratory, not a hypothesis test)
+5. Over-interpreting tiny deformations (check magnitude!)
+
+---
+
+# The geomorph ecosystem
+
+What geomorph gives you:
+
+.pull-left[
+
+**For now**
+
+## Data + preprocessing
+- `gpagen()` (GPA + optional sliding)
+- `plotAllSpecimens()`, `plotOutliers()`
+
+## Exploration
+- `gm.prcomp()` (PCA)
+
+]
+
+.pull-right[
+
+**Later on**
+
+## Hypothesis tests (shape)
+- `procD.lm()` (Procrustes ANOVA/regression)
+- `pairwise()` (posthoc)
+
+## Integration / modularity
+- `two.b.pls()` (PLS)
+- `integration.test()`, `modularity.test()`
+
+## Phylogenetic Comparative Methods
+- `phylo.procD.lm()`
+- `physignal()` (phylogenetic signal)
+]
+
+---
+
+# Adding size (allometry)
+
+.pull-left[
+Classic question:
+
+Does shape change with size?
+
+
+``` r
+fit_allom &lt;- procD.lm(gpa$coords ~ log(gpa$Csize), iter = 999)
+summary(fit_allom)$table[,6:7]
+```
+]
+
+.pull-right[
+
+```
+##                     Z Pr(&gt;F)
+## log(gpa$Csize) 1.2055  0.122
+## Residuals                   
+## Total
+```
+]
+
+---
+
+# Visualizing allometry
+
+standardized shape scores from the regression of shape on size
+
+.pull-left[
+
+``` r
+plotAllometry(fit_allom, 
+              size = log10(gpa$Csize), 
+              method = "RegScore",
+              logsz = T)
+```
+]
+
+.pull-right[
+
+![](lect_1-27_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+]
+
+---
+# This week's AME
+
+For AME 3:
+- digitizing landmarks (imageJ/FIJI tutorial Thursday)
+- deciding which points are landmarks vs semilandmarks
+- running GPA and checking tangent space
+- visualizing deformations
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

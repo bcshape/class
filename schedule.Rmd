@@ -76,6 +76,10 @@ title: "Schedule"
 
   - AME3 
   - CT3 (given in class 1/29) 
+
+**Slides:** 
+
+  + [Jan 27](lect/lect_1-27.html)
   
 ---
 

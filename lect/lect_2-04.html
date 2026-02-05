@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Research in Comparative Shape Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="lect_2-04_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="lect_2-04_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lect_2-04_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="lect_2-04_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Research in Comparative Shape Analysis
+]
+.subtitle[
+## When Landmarks Faile: Elliptic Fourier Descriptors for Complex Shapes
+]
+.author[
+### Dr. Christopher Kenaley
+]
+.institute[
+### Boston College
+]
+.date[
+### 2025/3/2
+]
+
+---
+
+# Today
+
++ Outline analysis based on Fourier descriptors
++ Worflow with `Momocs`
++ Update on puffer project
+
+
+---
+
+
+# Problem
+
+.pull-left[
+Landmarks work when:
+  - homologous points exist
+  - anatomy is discrete
+
+They fail when:
+  - shapes are smooth
+  - boundaries continuous
+  - homology unclear
+
+Examples:
+- teeth
+- fins
+- leaves
+- shells
+- jaws
+]
+
+.pull-right[
+
+&lt;img src="https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/66/2017/05/shark-tooth-morphology.jpg" width="500"&gt;
+]
+
+---
+  
+# Solution: outlines
+
+.pull-left[  
+Use the whole boundary instead of points
+
+Represent shape as many equally spaced coordinates
+]
+
+.pull-right[
+&lt;img src="efd.png" width="500"&gt;
+
+]
+
+---
+  
+# Elliptic Fourier Descriptors (EFDs)
+
+.pull-left[
+Idea:
+A complex outline = sum of simple waves
+
+Low harmonics: coarse shape  
+High harmonics: fine detail
+]
+
+.pull-right[
+&lt;img src="efd.png" width="500"&gt;
+]
+---
+# Light math intuition
+
+## Step 1 — Trace the outline
+
+.pull-left[
+We walk around the boundary:
+
+- record `\(x(t)\)`, `\(y(t)\)`
+- `\(t\)` = position along the outline
+- start anywhere, go all the way around
+
+So the shape becomes:
+  
+  `\(x(t)\)` and `\(y(t)\)` are periodic
+
+Each approximated as:
+
+`\(x(t) = a_n cos(nt) + b_n sin(nt)\)`
+`\(y(t) = c_n cos(nt) + d_n sin(nt)\)`
+  
+]
+
+.pull-right[
+
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig5_HTML.gif" width="500"&gt;
+]
+
+---
+# Step 2 — Fourier Transform
+
+.pull-left[
+
+Each approximated as:
+
+`\(x(t) = a_n cos(nt) + b_n sin(nt)\)`
+`\(y(t) = c_n cos(nt) + d_n sin(nt)\)`
+  
+Each harmonic adds 4 coefficients:
+
+- `\(a_n\)`
+- `\(b_n\)`
+- `\(c_n\)`
+- `\(d_n\)`
+
+These are the **Elliptic Fourier Descriptors**
+
+i.e., numbers that store the shape
+]
+
+.pull-right[
+
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig5_HTML.gif" width="500"&gt;
+]
+---
+
+# Step 2 — Fourier Transform
+
+.pull-left[
+A Fourier series says:
+
+x(t) = sum of waves `\(\sum a_n cos(nt) + b_n sin(nt)\)` 
+
+y(t) = sum of waves `\(\sum c_n cos(nt) + d_n sin(nt)\)`  
+
+Each wave = a **harmonic**
+
+Each harmonic:
+
+- is basically a rotating vector
+- traces an **ellipse**
+- adding ellipses together builds the outline
+
+
+]
+
+.pull-right[
+
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig6_HTML.gif" width="500"&gt;
+
+So:
+
++ Harmonic 1 → big oval  
++ Harmonic 2 → more detail  
++ Harmonic 3 → finer detail 
+]
+
+---
+
+# What do harmonics do?
+
+.pull-left[
+| Harmonic | Captures |
+|----------|-------------------------|
+| 1 | overall size/orientation |
+| 2–5 | major body shape |
+| 6–10 | fins/lobes |
+| high n | tiny wiggles/noise |
+
+Rule of thumb:
+- few harmonics = smooth blob
+- many harmonics = detailed outline
+]
+
+.pull-right[
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig7_HTML.gif" width="500"&gt;
+
+]
+
+
+---
+# Workflow
+
+.pull-left[
+1 import outlines  
+2 compute EFDs  
+3 coefficients become variables  
+4 PCA or regression  
+5 reconstruct shapes to interpret
+]
+
+.pull-right[
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig7_HTML.gif" width="500"&gt;
+
+]
+---
+  
+# Example with Momocs
+
+.pull-left[
+
+``` r
+library(Momocs)
+panel(apodemus) #loaded with Momocs
+```
+
+![](lect_2-04_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+&lt;img src="
+https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/ApodemusSylvaticus.jpg/1920px-ApodemusSylvaticus.jpg" width="500"&gt;
+
+]
+---
+  
+# Compute EFDs (coefficients) 
+  
+With your own outlines, would need to align first
+
+More harmonics = better fit
+
+
+``` r
+ef &lt;- efourier(apodemus, nb.h = 10)
+```
+
+---
+  
+# PCA on Coefficients and Reconstruction
+  
+  Same logic as landmark PCA
+
+
+
+``` r
+ef %&gt;% 
+  PCA %&gt;% 
+  plot
+```
+
+&lt;img src="lect_2-04_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+  
+# Biological examples
+
+.pull-left[
+Teeth: serration and cusp shape  
+Fins: smooth margins  
+Leaves: lobes vs entire  
+Shells: curved outlines  
+Jaws: functional silhouettes
+]
+
+.pull-right[
+&lt;img src="tsengMA.png" width="500"&gt;
+&lt;img src="sil.jpg" width="300"&gt;
+]
+
+---
+# When to use landmarks vs outlines
+  
+Landmarks:
+  - bones
+  - joints
+  - internal structure
+
+Outlines:
+  - smooth silhouettes
+  - few homologies
+  - external form important
+
+---
+#Pros and Concs
+.pull-left[
+## Advantages
+  
+- no homology needed
+- captures entire boundary
+- scalable/"automatable"
+- easy stats
+- reconstructable
+]
+
+.pull-right[
+## Limitations
+  
+- boundary only
+- less anatomical interpretability
+- sensitive to segmentation/digitization noise
+- few (if any?) comparative method
+]
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+**non-reef**&lt;br&gt;
+
+&lt;img src="https://biogeodb.stri.si.edu/caribbean/resources/img/images/species/2456_10546.jpg" width="250"&gt;
+
+]
+
+.pull-right[
+
+
+**reef facultative**&lt;br&gt;
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Sphoeroides_testudineus_%28checkered_pufferfish%29_%28San_Salvador_Island%2C_Bahamas%29_%2815548625654%29.jpg" width="250"&gt;
+
+
+
+**reef obligate**&lt;br&gt;
+
+
+&lt;img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Pez_ballesta_ondulado_%28Balistapus_undulatus%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-15%2C_DD_45.jpg/2560px-Pez_ballesta_ondulado_%28Balistapus_undulatus%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-15%2C_DD_45.jpg" width="250"&gt;
+
+]
+
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+Simmap analysis (later)
+
+
+]
+
+.pull-right[
+
+&lt;img src="simmap.png" width="500"&gt;
+
+]
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+Phylomorphospace (later)
+
+]
+
+.pull-right[
+
+&lt;img src="pca.png" width="500"&gt;
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

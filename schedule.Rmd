@@ -99,15 +99,21 @@ title: "Schedule"
 
   - AME4 
   - CT4 
+
+**Slides:** 
+
+  + [Feb 3](lect/lect_2-04.html) 
   
 ---
 
 ## Week 5 (Feb 9): From ordination to inference (multivariate thinking)
 
 **Topics**
+
 - PCA as a tool
 - Effect sizes, resampling, cross-validation ideas
-- Trajectories and modularity
+- PGLS and what it is (and is not)
+- Multivariate PGLS / phylogenetic MANOVA
 
 
 **Consumables**
@@ -128,9 +134,8 @@ title: "Schedule"
 **Topics**
 
   - Models of evolution: Tempo and mode
-  - PGLS and what it is (and is not)
-  - Multivariate PGLS / phylogenetic MANOVA
   - Tree-linked visualization (evolutionary patterns)
+  - Reconstructing ancestral states 
 
 **Consumables**
   

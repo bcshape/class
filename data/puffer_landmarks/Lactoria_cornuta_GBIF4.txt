@@ -1,9 +1,11 @@
 <shapes type=list>
 	<scaling type=logical names=FALSE length=1 as.numeric=FALSE >NA</scaling>
-	<landmarks.pixel type=matrix rownames=TRUE colnames=FALSE nrow=15 ncol=2 as.numeric=TRUE >
+	<landmarks.pixel type=matrix rownames=TRUE colnames=FALSE nrow=17 ncol=2 as.numeric=TRUE >
 		pectoral_dors	304	227
 		pectoral_vent	335	254
 		premax_post	149	282
+		eye_ant	193	110
+		eye_post	259	102
 		upper_jaw	118	290
 		dorsal_ant	576	136
 		dorsal_post	641	164

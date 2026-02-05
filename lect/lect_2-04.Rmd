@@ -1,0 +1,373 @@
+---
+title: "Research in Comparative Shape Analysis"
+subtitle: "When Landmarks Faile: Elliptic Fourier Descriptors for Complex Shapes"
+author: "Dr. Christopher Kenaley"
+institute: "Boston College"
+date: "2025/3/2"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+lib_dir: libs
+nature:
+  ratio: 16:9
+---
+# Today
+
++ Outline analysis based on Fourier descriptors
++ Worflow with `Momocs`
++ Update on puffer project
+
+
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(Momocs)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Problem
+
+.pull-left[
+Landmarks work when:
+  - homologous points exist
+  - anatomy is discrete
+
+They fail when:
+  - shapes are smooth
+  - boundaries continuous
+  - homology unclear
+
+Examples:
+- teeth
+- fins
+- leaves
+- shells
+- jaws
+]
+
+.pull-right[
+
+<img src="https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/66/2017/05/shark-tooth-morphology.jpg" width="500">
+]
+
+---
+  
+# Solution: outlines
+
+.pull-left[  
+Use the whole boundary instead of points
+
+Represent shape as many equally spaced coordinates
+]
+
+.pull-right[
+<img src="efd.png" width="500">
+
+]
+
+---
+  
+# Elliptic Fourier Descriptors (EFDs)
+
+.pull-left[
+Idea:
+A complex outline = sum of simple waves
+
+Low harmonics: coarse shape  
+High harmonics: fine detail
+]
+
+.pull-right[
+<img src="efd.png" width="500">
+]
+---
+# Light math intuition
+
+## Step 1 — Trace the outline
+
+.pull-left[
+We walk around the boundary:
+
+- record $x(t)$, $y(t)$
+- $t$ = position along the outline
+- start anywhere, go all the way around
+
+So the shape becomes:
+  
+  $x(t)$ and $y(t)$ are periodic
+
+Each approximated as:
+
+$x(t) = a_n cos(nt) + b_n sin(nt)$
+$y(t) = c_n cos(nt) + d_n sin(nt)$
+  
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig5_HTML.gif" width="500">
+]
+
+---
+# Step 2 — Fourier Transform
+
+.pull-left[
+
+Each approximated as:
+
+$x(t) = a_n cos(nt) + b_n sin(nt)$
+$y(t) = c_n cos(nt) + d_n sin(nt)$
+  
+Each harmonic adds 4 coefficients:
+
+- $a_n$
+- $b_n$
+- $c_n$
+- $d_n$
+
+These are the **Elliptic Fourier Descriptors**
+
+i.e., numbers that store the shape
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig5_HTML.gif" width="500">
+]
+---
+
+# Step 2 — Fourier Transform
+
+.pull-left[
+A Fourier series says:
+
+x(t) = sum of waves $\sum a_n cos(nt) + b_n sin(nt)$ 
+
+y(t) = sum of waves $\sum c_n cos(nt) + d_n sin(nt)$  
+
+Each wave = a **harmonic**
+
+Each harmonic:
+
+- is basically a rotating vector
+- traces an **ellipse**
+- adding ellipses together builds the outline
+
+
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig6_HTML.gif" width="500">
+
+So:
+
++ Harmonic 1 → big oval  
++ Harmonic 2 → more detail  
++ Harmonic 3 → finer detail 
+]
+
+---
+
+# What do harmonics do?
+
+.pull-left[
+| Harmonic | Captures |
+|----------|-------------------------|
+| 1 | overall size/orientation |
+| 2–5 | major body shape |
+| 6–10 | fins/lobes |
+| high n | tiny wiggles/noise |
+
+Rule of thumb:
+- few harmonics = smooth blob
+- many harmonics = detailed outline
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig7_HTML.gif" width="500">
+
+]
+
+
+---
+# Workflow
+
+.pull-left[
+1 import outlines  
+2 compute EFDs  
+3 coefficients become variables  
+4 PCA or regression  
+5 reconstruct shapes to interpret
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs00414-017-1555-0/MediaObjects/414_2017_1555_Fig7_HTML.gif" width="500">
+
+]
+---
+  
+# Example with Momocs
+
+.pull-left[
+```{r}
+library(Momocs)
+panel(apodemus) #loaded with Momocs
+```
+]
+
+.pull-right[
+
+<img src="
+https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/ApodemusSylvaticus.jpg/1920px-ApodemusSylvaticus.jpg" width="500">
+
+]
+---
+  
+# Compute EFDs (coefficients) 
+  
+With your own outlines, would need to align first
+
+More harmonics = better fit
+
+```{r}
+ef <- efourier(apodemus, nb.h = 10)
+```
+
+---
+  
+# PCA on Coefficients and Reconstruction
+  
+  Same logic as landmark PCA
+
+
+```{r,fig.width=6,fig.height=4,fig.align='center'}
+ef %>% 
+  PCA %>% 
+  plot
+```
+
+
+
+
+---
+  
+# Biological examples
+
+.pull-left[
+Teeth: serration and cusp shape  
+Fins: smooth margins  
+Leaves: lobes vs entire  
+Shells: curved outlines  
+Jaws: functional silhouettes
+]
+
+.pull-right[
+<img src="tsengMA.png" width="500">
+<img src="sil.jpg" width="300">
+]
+
+---
+# When to use landmarks vs outlines
+  
+Landmarks:
+  - bones
+  - joints
+  - internal structure
+
+Outlines:
+  - smooth silhouettes
+  - few homologies
+  - external form important
+
+---
+#Pros and Concs
+.pull-left[
+## Advantages
+  
+- no homology needed
+- captures entire boundary
+- scalable/"automatable"
+- easy stats
+- reconstructable
+]
+
+.pull-right[
+## Limitations
+  
+- boundary only
+- less anatomical interpretability
+- sensitive to segmentation/digitization noise
+- few (if any?) comparative method
+]
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+**non-reef**<br>
+
+<img src="https://biogeodb.stri.si.edu/caribbean/resources/img/images/species/2456_10546.jpg" width="250">
+
+]
+
+.pull-right[
+
+
+**reef facultative**<br>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Sphoeroides_testudineus_%28checkered_pufferfish%29_%28San_Salvador_Island%2C_Bahamas%29_%2815548625654%29.jpg" width="250">
+
+
+
+**reef obligate**<br>
+
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Pez_ballesta_ondulado_%28Balistapus_undulatus%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-15%2C_DD_45.jpg/2560px-Pez_ballesta_ondulado_%28Balistapus_undulatus%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-15%2C_DD_45.jpg" width="250">
+
+]
+
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+Simmap analysis (later)
+
+
+]
+
+.pull-right[
+
+<img src="simmap.png" width="500">
+
+]
+
+---
+# Puffer update
+
+.pull-left[
+## What questions are we asking?
+
++ Shape evolves unevenly because?
++ Tempo of shape evolves unevenly?
+
+Phylomorphospace (later)
+
+]
+
+.pull-right[
+
+<img src="pca.png" width="500">
+
+]

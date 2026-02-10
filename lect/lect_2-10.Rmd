@@ -1,0 +1,648 @@
+---
+title: "Research in Comparative Shape Analysis"
+subtitle: "Tools of the Trade: PCA and MV Regression"
+author: "Dr. Christopher Kenaley"
+institute: "Boston College"
+date: "2025/10/2"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+lib_dir: libs
+nature:
+  ratio: 16:9
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ape)
+library(phytools)
+library(nlme)
+library(geomorph)
+
+knitr::opts_chunk$set(
+  echo = TRUE, warning = FALSE, message = FALSE,
+  fig.width = 7, fig.height = 4.5, fig.retina = 2
+)
+set.seed(1)
+```
+
+
+
+# Today
+
+1. **PCA** as a tool (what it is / isn’t)  
+2. **Effect sizes and Resampling** (magnitude matters)  
+3. **PGLS** (what it is / isn’t)  
+4. **Multivariate PGLS / phylogenetic MANOVA**  
+
+---
+
+# The core idea
+
+.pull-left[
+Biological datasets often violate "standard stats" assumptions because:
+
+- Variables are correlated (multivariate structure)
+- Species share ancestry (non-independence)
+- Sample sizes are modest, uncertainty matters
+
+So we use a toolbox:
+
+1. **explore/visualize** differences
+2. **quantify** differences
+3. **model** differences
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500">
+]
+---
+
+# Part 1
+
+## PCA as a Tool
+
+---
+
+# Intuition: PCA without Math
+
+.pull-left[
+Imagine a cloud of points in 2D:
+
+- If the cloud is stretched diagonally, there is a **dominant direction**.
+
+- PCA finds that direction (**PC1**) and then a perpendicular direction (**PC2**).
+
+**PC1** = direction with the most variation  
+
+**PC2** = next most, but forced to be orthogonal to PC1
+]
+
+.pull-right[
+
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500">
+
+]
+
+---
+
+# Intuition: PCA without Math
+
+.pull-left[
+Imagine a cloud of points in 2D:
+
+- PC1 describes axes of most variance
+
+- PC2 second most
+
+- PC3 third most
+
+- etc.
+]
+
+.pull-right[
+
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500">
+
+]
+
+---
+# PCA answers questions like…
+
+.pull-left[
+- "What are the **main ways** organisms vary?"
+- "Do multiple traits change together as a **package** (i.e., integration) ?"
+- "Can we visualize complex data in 2–3 dimensions?"
+]
+
+
+.pull-right[
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500">
+
+
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1LKTwaVmP4Dqxb-N3iD3CHw.png" width="500">
+
+
+]
+
+
+
+---
+
+# PCA is Limited
+
+.pull-left[
+PCA is **not**:
+
+- A hypothesis test
+- A phylogenetic method (by default)
+- A causal explanation (“PC1 is selection”)
+
+PCA is a **summary** of covariance patterns.
+
+]
+
+.pull-right[
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500">
+
+
+<img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1LKTwaVmP4Dqxb-N3iD3CHw.png" width="500">
+
+]
+
+---
+
+# Loadings: what makes PC1 and PC2?
+
+.pull-left[
+```{r,eval=F}
+
+data(iris)
+pca_iris <- prcomp(iris[,1:4])
+loadings <- as.data.frame(pca_iris$rotation) %>%
+  rownames_to_column("trait")
+
+loadings
+```
+
+Interpretation idea:
+
+- A loading tells you which original variables contribute to each PC.
+- Big absolute values = big contributors.
+]
+
+.pull-right[
+
+```{r,echo=F}
+
+data(iris)
+pca_iris <- prcomp(iris[,1:4])
+loadings <- as.data.frame(pca_iris$rotation) %>%
+  rownames_to_column("trait")
+
+loadings
+```
+
+]
+
+---
+
+# Caution: scale matters
+
+.pull-left[
+- If traits have different units or ranges, PCA can be dominated by “big” variables.
+- `scale. = TRUE` often makes sense for mixed units.
+
+]
+
+.pull-right[
+Try it:
+
+```{r}
+pca_unscaled <- prcomp(iris[,1:4], scale. = FALSE)
+summary(pca_unscaled)
+```
+]
+
+---
+# PCA & Biological Meaning
+
+Our job is to connect statistics to biology:
+
+- Does PC1 look like “size”?
+- Does PC2 look like “shape” independent of size?
+- Are there groups (ecology, clades) separated?
+
+**PCA suggests patterns; it doesn’t prove mechanisms.**
+
+---
+
+# Part 2  
+
+## Effect sizes and Permutation
+
+---
+
+# Why effect sizes?
+
+.pull-left[
+In regressions:
+
+- A small effect can be "significant" with huge N.  
+- A large effect can be “non-significant” with small N.
+
+Effect sizes help you answer:
+
+> "Is this difference biologically meaningful?"
+
+]
+
+.pull-right[
+```{r, echo=F}
+set.seed(1)
+x <- seq(0,100,length.out=100)
+y1 <- 100+x*rnorm(length(x),mean=10)
+y2 <- 100+x*rnorm(length(x),mean = 11)
+
+tibble(x=x,y1=y1,y2=y2) %>% 
+  pivot_longer(y1:y2) %>% 
+  ggplot(aes(x,value,col=name))+
+  geom_point()+
+  geom_smooth(method = "lm")
+```
+]
+
+---
+
+# Why effect sizes?
+
+.pull-left[
+In regressions:
+
+- A small effect can be "significant" with huge N.  
+- A large effect can be “non-significant” with small N.
+
+Effect sizes help you answer:
+
+> "Is this difference biologically meaningful?"
+
+]
+
+.pull-right[
+```{r, echo=F}
+
+set.seed(1)
+x <- seq(0,100,length.out=5)
+y1 <- 100+x*rnorm(length(x),mean=10)
+y2 <- 100+x*rnorm(length(x),mean = 13)
+
+tibble(x=x,y1=y1,y2=y2) %>% 
+  pivot_longer(y1:y2) %>% 
+  ggplot(aes(x,value,col=name))+
+  geom_point()+
+  geom_smooth(method = "lm")
+```
+]
+
+
+---
+
+# Common ES metrics
+
+- Mean difference (raw units, or scaled **Z values**)
+- Standardized mean difference (**Cohen’s d**)*
+- Variance explained (**R²**, partial R²)
+- Regression slope (units of Y per unit of X)
+
+*`geomorph`'s functions
+---
+
+# Permutation Test: “shuffle labels”
+
+Permutation is great for testing **whether the observed pattern could arise by chance**.
+
+Example question:
+
+- “Are groups A and B different?”
+
+Permutation logic:
+
+- If group labels are arbitrary under H0, shuffling them should not change results much.
+
+---
+
+# Permutation p-value for mean difference
+
+```{r}
+A <- rnorm(100,mean = 3,sd=1)
+B <- rnorm(100,mean = 3.1,sd=1)
+obs <- mean(B) - mean(A)
+AB <- c(A, B)
+lab <- c(rep("A", length(A)), rep("B", length(B)))
+
+perm <- replicate(5000, {
+  lab_p <- sample(lab)
+  mean(AB[lab_p == "B"]) - mean(AB[lab_p == "A"])
+})
+
+p_perm <- mean(abs(perm) >= abs(obs))
+c(obs = obs, p_perm = p_perm)
+```
+---
+
+# Permutation p-value for mean difference
+
+```{r}
+A <- rnorm(100,mean = 3,sd=0.2)
+B <- rnorm(100,mean = 3.1,sd=0.2)
+obs <- mean(B) - mean(A)
+AB <- c(A, B)
+lab <- c(rep("A", length(A)), rep("B", length(B)))
+
+perm <- replicate(5000, {
+  lab_p <- sample(lab)
+  mean(AB[lab_p == "B"]) - mean(AB[lab_p == "A"])
+})
+
+p_perm <- mean(abs(perm) >= abs(obs))
+c(obs = obs, p_perm = p_perm)
+```
+---
+
+# Resampling takeaway
+
+**Permutation: how surprising is this under random assignment?**
+
+Often more intuitive than "black box" formulas.
+
+Important in `geomorph` functions (`iter=999`, how many random reassignments)
+
+---
+
+# Part 3 
+## PGLS: what it is (and is not)
+
+---
+
+# Why phylogeny matters
+
+.pull-left[
+Species are not independent data points:
+
+- Related species tend to be similar
+- That similarity is *expected* under many evolutionary models
+
+If we ignore this, we can:
+
+- Underestimate uncertainty
+- Get "false significant" results
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500">
+]
+---
+
+# PGLS in plain language
+
+.pull-left[
+PGLS is regression where:
+
+- Residuals are allowed to be correlated
+- The correlation structure comes from the phylogeny (closely related = more correlated)
+- Correlation structure determined by branch lengths (time) and a model of trait evolution
+
+It’s still regression: estimate slope + uncertainty.
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500">
+]
+---
+
+## What PGLS is NOT
+
+PGLS does **not**:
+
+- "remove phylogeny"
+- prove adaptation
+- guarantee causal direction (X → Y)
+
+It is a statistical adjustment for shared ancestry.
+
+---
+
+# Simulated example: correlated errors
+
+We’ll simulate a tree and traits evolving under Brownian motion.
+
+```{r}
+set.seed(3)
+tree <- rtree(60)
+
+# Trait X under BM
+X <- fastBM(tree)
+
+# Trait Y depends on X plus phylogenetically structured noise
+noise <- fastBM(tree, sig2 = 1)
+Y <- 0.8 * X + noise
+
+dat <- tibble(sp = names(X), X = as.numeric(X), Y = as.numeric(Y))
+```
+
+---
+# Fit OLS vs PGLS
+
+.pull-left[
+```{r,eval=F}
+# OLS ignores phylogeny
+ols <- lm(Y ~ X, data = dat)
+
+# PGLS with Brownian correlation
+pgls_bm <- gls(Y ~ X,
+               correlation = corBrownian(phy = tree, form = ~sp),
+               data = dat,
+               method = "ML")
+
+summary(ols)$coef
+summary(pgls_bm)$tTable
+```
+]
+
+.pull-right[
+```{r,echo=F}
+# OLS ignores phylogeny
+ols <- lm(Y ~ X, data = dat)
+
+# PGLS with Brownian correlation
+pgls_bm <- gls(Y ~ X,
+               correlation = corBrownian(phy = tree, form = ~sp),
+               data = dat,
+               method = "ML")
+
+summary(ols)$coef[,3:4]
+summary(pgls_bm)$tTable[,3:4]
+```
+]
+
+---
+
+# Why results can differ
+
+OLS assumes errors are independent.  
+PGLS says: "errors might be similar for close relatives."
+
+Often:
+
+- slope estimates can be similar
+- **standard errors** can change a lot
+---
+
+# What is Brownian Motion
+
+.pull-left[
+A model of trait evoluiton that depends on:
+
+- starting value 
+- time ($t$)
+- rate parameter ($\sigma^2$)
+
+]
+
+.pull-right[
+
+<img src="https://lukejharmon.github.io/pcm/images/figure3-1.png" width="500">
+
+Simulations over three different times: (A) 10, (B) 50, and (C) 100 time units.
+]
+
+---
+
+# What is Brownian Motion
+
+.pull-left[
+A model of trait evolution that depends on:
+
+- starting value 
+- time ($t$)
+- rate parameter ($\sigma^2$)
+
+
+Simulations over three differ values of $\sigma^2$: 1 (Panel A), 5 (Panel B), and 25 (Panel C)
+]
+
+.pull-right[
+
+<img src="https://lukejharmon.github.io/pcm/images/figure3-3.png" width="500">
+
+
+]
+
+---
+
+# Part 4  
+
+## Multivariate PGLS / Phylogenetic MANOVA
+
+---
+
+# Why multivariate?
+
+Many biological traits evolve together:
+
+- shape coordinates
+- suites of linear measurements
+- functionally integrated systems
+
+If you test one variable at a time:
+
+- you miss covariance structure
+- you inflate multiple testing
+
+---
+
+# Two Options for MV Data
+
+1. **Phylogenetic MANOVA**  
+   - test differences among groups in multivariate space  
+
+2. **Multivariate PGLS**  
+   - multivariate response (multiple traits), predictors, and phylogeny
+
+Different packages implement these in different ways.
+
+---
+
+# Example: phylogenetic MANOVA with `geomorph`
+
+We’ll create a toy multivariate trait matrix Y (n species × p traits).
+
+```{r}
+set.seed(4)
+tree2 <- rtree(80)
+
+p <- 6 #number of characters
+Y <- rbind(matrix(rnorm(40 * p),ncol=p),
+           matrix(rnorm(40 * p,mean=1),ncol=p)
+           )
+rownames(Y) <- tree2$tip.label
+
+group <- factor(rep(c("reef","pelagic"), each = 40))
+dat2 <- data.frame(group = group)
+rownames(dat2) <- tree2$tip.label
+
+fit_mv <- procD.pgls(Y ~ group, phy = tree2, data = dat2, iter = 999)
+
+summary(fit_mv)
+```
+---
+
+# Example: phylogenetic MANOVA with `geomorph`
+
+`summary(fit_mv)`
+
+```{r,echo=F}
+set.seed(4)
+tree2 <- rtree(80)
+
+p <- 6 #number of characters
+Y <- rbind(matrix(rnorm(40 * p),ncol=p),
+           matrix(rnorm(40 * p,mean=1),ncol=p)
+           )
+rownames(Y) <- tree2$tip.label
+
+group <- factor(rep(c("reef","pelagic"), each = 40))
+dat2 <- data.frame(group = group)
+rownames(dat2) <- tree2$tip.label
+
+fit_mv <- procD.pgls(Y ~ group, phy = tree2, data = dat2, iter = 999,print.progress = F)
+
+summary(fit_mv)
+```
+---
+
+# Interpreting multivariate tests
+
+Pay attention to:
+
+- the overall test (group effect)
+- effect size measures (when available)
+- how results look in ordination/plots (PCA)
+
+**Significance is not the same as importance.**
+
+---
+
+# Visualizing MV Differences 
+
+We can do PCA on Y just to visualize group separation.
+
+.pull-left[
+```{r,eval=F}
+pcaY <- prcomp(Y, scale. = TRUE)
+scY <- as_tibble(pcaY$x[,1:2]) %>%
+  mutate(group = group)
+
+ggplot(scY, aes(PC1, PC2, color = group)) +
+  geom_point(size = 2, alpha = 0.9) +
+  theme_classic()
+```
+]
+
+.pull-right[
+```{r,echo=F}
+pcaY <- prcomp(Y, scale. = TRUE)
+scY <- as_tibble(pcaY$x[,1:2]) %>%
+  mutate(group = group)
+
+ggplot(scY, aes(PC1, PC2, color = group)) +
+  geom_point(size = 3, alpha = 0.9) +
+  theme_classic(20)
+
+
+```
+*Note:* This PCA visualization does **not** “account for phylogeny”—it’s just an exploratory plot. 
+]
+
+
+

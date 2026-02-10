@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Research in Comparative Shape Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="lect_2-10_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="lect_2-10_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lect_2-10_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="lect_2-10_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Research in Comparative Shape Analysis
+]
+.subtitle[
+## Tools of the Trade: PCA and MV Regression
+]
+.author[
+### Dr. Christopher Kenaley
+]
+.institute[
+### Boston College
+]
+.date[
+### 2025/10/2
+]
+
+---
+
+
+
+
+
+
+# Today
+
+1. **PCA** as a tool (what it is / isn’t)  
+2. **Effect sizes and Resampling** (magnitude matters)  
+3. **PGLS** (what it is / isn’t)  
+4. **Multivariate PGLS / phylogenetic MANOVA**  
+
+---
+
+# The core idea
+
+.pull-left[
+Biological datasets often violate "standard stats" assumptions because:
+
+- Variables are correlated (multivariate structure)
+- Species share ancestry (non-independence)
+- Sample sizes are modest, uncertainty matters
+
+So we use a toolbox:
+
+1. **explore/visualize** differences
+2. **quantify** differences
+3. **model** differences
+]
+
+.pull-right[
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500"&gt;
+]
+---
+
+# Part 1
+
+## PCA as a Tool
+
+---
+
+# Intuition: PCA without Math
+
+.pull-left[
+Imagine a cloud of points in 2D:
+
+- If the cloud is stretched diagonally, there is a **dominant direction**.
+
+- PCA finds that direction (**PC1**) and then a perpendicular direction (**PC2**).
+
+**PC1** = direction with the most variation  
+
+**PC2** = next most, but forced to be orthogonal to PC1
+]
+
+.pull-right[
+
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500"&gt;
+
+]
+
+---
+
+# Intuition: PCA without Math
+
+.pull-left[
+Imagine a cloud of points in 2D:
+
+- PC1 describes axes of most variance
+
+- PC2 second most
+
+- PC3 third most
+
+- etc.
+]
+
+.pull-right[
+
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500"&gt;
+
+]
+
+---
+# PCA answers questions like…
+
+.pull-left[
+- "What are the **main ways** organisms vary?"
+- "Do multiple traits change together as a **package** (i.e., integration) ?"
+- "Can we visualize complex data in 2–3 dimensions?"
+]
+
+
+.pull-right[
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500"&gt;
+
+
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1LKTwaVmP4Dqxb-N3iD3CHw.png" width="500"&gt;
+
+
+]
+
+
+
+---
+
+# PCA is Limited
+
+.pull-left[
+PCA is **not**:
+
+- A hypothesis test
+- A phylogenetic method (by default)
+- A causal explanation (“PC1 is selection”)
+
+PCA is a **summary** of covariance patterns.
+
+]
+
+.pull-right[
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1QinDfRawRskupf4mU5bYSA.png" width="500"&gt;
+
+
+&lt;img src="https://towardsdatascience.com/wp-content/uploads/2022/02/1LKTwaVmP4Dqxb-N3iD3CHw.png" width="500"&gt;
+
+]
+
+---
+
+# Loadings: what makes PC1 and PC2?
+
+.pull-left[
+
+``` r
+data(iris)
+pca_iris &lt;- prcomp(iris[,1:4])
+loadings &lt;- as.data.frame(pca_iris$rotation) %&gt;%
+  rownames_to_column("trait")
+
+loadings
+```
+
+Interpretation idea:
+
+- A loading tells you which original variables contribute to each PC.
+- Big absolute values = big contributors.
+]
+
+.pull-right[
+
+
+```
+##          trait         PC1         PC2         PC3        PC4
+## 1 Sepal.Length  0.36138659 -0.65658877  0.58202985  0.3154872
+## 2  Sepal.Width -0.08452251 -0.73016143 -0.59791083 -0.3197231
+## 3 Petal.Length  0.85667061  0.17337266 -0.07623608 -0.4798390
+## 4  Petal.Width  0.35828920  0.07548102 -0.54583143  0.7536574
+```
+
+]
+
+---
+
+# Caution: scale matters
+
+.pull-left[
+- If traits have different units or ranges, PCA can be dominated by “big” variables.
+- `scale. = TRUE` often makes sense for mixed units.
+
+]
+
+.pull-right[
+Try it:
+
+
+``` r
+pca_unscaled &lt;- prcomp(iris[,1:4], scale. = FALSE)
+summary(pca_unscaled)
+```
+
+```
+## Importance of components:
+##                           PC1     PC2    PC3     PC4
+## Standard deviation     2.0563 0.49262 0.2797 0.15439
+## Proportion of Variance 0.9246 0.05307 0.0171 0.00521
+## Cumulative Proportion  0.9246 0.97769 0.9948 1.00000
+```
+]
+
+---
+# PCA &amp; Biological Meaning
+
+Our job is to connect statistics to biology:
+
+- Does PC1 look like “size”?
+- Does PC2 look like “shape” independent of size?
+- Are there groups (ecology, clades) separated?
+
+**PCA suggests patterns; it doesn’t prove mechanisms.**
+
+---
+
+# Part 2  
+
+## Effect sizes and Permutation
+
+---
+
+# Why effect sizes?
+
+.pull-left[
+In regressions:
+
+- A small effect can be "significant" with huge N.  
+- A large effect can be “non-significant” with small N.
+
+Effect sizes help you answer:
+
+&gt; "Is this difference biologically meaningful?"
+
+]
+
+.pull-right[
+&lt;img src="lect_2-10_files/figure-html/unnamed-chunk-4-1.png" width="504" /&gt;
+]
+
+---
+
+# Why effect sizes?
+
+.pull-left[
+In regressions:
+
+- A small effect can be "significant" with huge N.  
+- A large effect can be “non-significant” with small N.
+
+Effect sizes help you answer:
+
+&gt; "Is this difference biologically meaningful?"
+
+]
+
+.pull-right[
+&lt;img src="lect_2-10_files/figure-html/unnamed-chunk-5-1.png" width="504" /&gt;
+]
+
+
+---
+
+# Common ES metrics
+
+- Mean difference (raw units, or scaled **Z values**)
+- Standardized mean difference (**Cohen’s d**)*
+- Variance explained (**R²**, partial R²)
+- Regression slope (units of Y per unit of X)
+
+*`geomorph`'s functions
+---
+
+# Permutation Test: “shuffle labels”
+
+Permutation is great for testing **whether the observed pattern could arise by chance**.
+
+Example question:
+
+- “Are groups A and B different?”
+
+Permutation logic:
+
+- If group labels are arbitrary under H0, shuffling them should not change results much.
+
+---
+
+# Permutation p-value for mean difference
+
+
+``` r
+A &lt;- rnorm(100,mean = 3,sd=1)
+B &lt;- rnorm(100,mean = 3.1,sd=1)
+obs &lt;- mean(B) - mean(A)
+AB &lt;- c(A, B)
+lab &lt;- c(rep("A", length(A)), rep("B", length(B)))
+
+perm &lt;- replicate(5000, {
+  lab_p &lt;- sample(lab)
+  mean(AB[lab_p == "B"]) - mean(AB[lab_p == "A"])
+})
+
+p_perm &lt;- mean(abs(perm) &gt;= abs(obs))
+c(obs = obs, p_perm = p_perm)
+```
+
+```
+##         obs      p_perm 
+## -0.05025636  0.70900000
+```
+---
+
+# Permutation p-value for mean difference
+
+
+``` r
+A &lt;- rnorm(100,mean = 3,sd=0.2)
+B &lt;- rnorm(100,mean = 3.1,sd=0.2)
+obs &lt;- mean(B) - mean(A)
+AB &lt;- c(A, B)
+lab &lt;- c(rep("A", length(A)), rep("B", length(B)))
+
+perm &lt;- replicate(5000, {
+  lab_p &lt;- sample(lab)
+  mean(AB[lab_p == "B"]) - mean(AB[lab_p == "A"])
+})
+
+p_perm &lt;- mean(abs(perm) &gt;= abs(obs))
+c(obs = obs, p_perm = p_perm)
+```
+
+```
+##        obs     p_perm 
+## 0.06926026 0.01360000
+```
+---
+
+# Resampling takeaway
+
+**Permutation: how surprising is this under random assignment?**
+
+Often more intuitive than "black box" formulas.
+
+Important in `geomorph` functions (`iter=999`, how many random reassignments)
+
+---
+
+# Part 3 
+## PGLS: what it is (and is not)
+
+---
+
+# Why phylogeny matters
+
+.pull-left[
+Species are not independent data points:
+
+- Related species tend to be similar
+- That similarity is *expected* under many evolutionary models
+
+If we ignore this, we can:
+
+- Underestimate uncertainty
+- Get "false significant" results
+]
+
+.pull-right[
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500"&gt;
+]
+---
+
+# PGLS in plain language
+
+.pull-left[
+PGLS is regression where:
+
+- Residuals are allowed to be correlated
+- The correlation structure comes from the phylogeny (closely related = more correlated)
+- Correlation structure determined by branch lengths (time) and a model of trait evolution
+
+It’s still regression: estimate slope + uncertainty.
+]
+
+.pull-right[
+&lt;img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-019-41290-2/MediaObjects/41598_2019_41290_Fig3_HTML.png" width="500"&gt;
+]
+---
+
+## What PGLS is NOT
+
+PGLS does **not**:
+
+- "remove phylogeny"
+- prove adaptation
+- guarantee causal direction (X → Y)
+
+It is a statistical adjustment for shared ancestry.
+
+---
+
+# Simulated example: correlated errors
+
+We’ll simulate a tree and traits evolving under Brownian motion.
+
+
+``` r
+set.seed(3)
+tree &lt;- rtree(60)
+
+# Trait X under BM
+X &lt;- fastBM(tree)
+
+# Trait Y depends on X plus phylogenetically structured noise
+noise &lt;- fastBM(tree, sig2 = 1)
+Y &lt;- 0.8 * X + noise
+
+dat &lt;- tibble(sp = names(X), X = as.numeric(X), Y = as.numeric(Y))
+```
+
+---
+# Fit OLS vs PGLS
+
+.pull-left[
+
+``` r
+# OLS ignores phylogeny
+ols &lt;- lm(Y ~ X, data = dat)
+
+# PGLS with Brownian correlation
+pgls_bm &lt;- gls(Y ~ X,
+               correlation = corBrownian(phy = tree, form = ~sp),
+               data = dat,
+               method = "ML")
+
+summary(ols)$coef
+summary(pgls_bm)$tTable
+```
+]
+
+.pull-right[
+
+```
+##              t value     Pr(&gt;|t|)
+## (Intercept) 6.773468 7.032082e-09
+## X           3.274579 1.787569e-03
+```
+
+```
+##              t-value      p-value
+## (Intercept) 1.610472 1.127245e-01
+## X           4.311896 6.361025e-05
+```
+]
+
+---
+
+# Why results can differ
+
+OLS assumes errors are independent.  
+PGLS says: "errors might be similar for close relatives."
+
+Often:
+
+- slope estimates can be similar
+- **standard errors** can change a lot
+---
+
+# What is Brownian Motion
+
+.pull-left[
+A model of trait evoluiton that depends on:
+
+- starting value 
+- time (`\(t\)`)
+- rate parameter (`\(\sigma^2\)`)
+
+]
+
+.pull-right[
+
+&lt;img src="https://lukejharmon.github.io/pcm/images/figure3-1.png" width="500"&gt;
+
+Simulations over three different times: (A) 10, (B) 50, and (C) 100 time units.
+]
+
+---
+
+# What is Brownian Motion
+
+.pull-left[
+A model of trait evolution that depends on:
+
+- starting value 
+- time (`\(t\)`)
+- rate parameter (`\(\sigma^2\)`)
+
+
+Simulations over three differ values of `\(\sigma^2\)`: 1 (Panel A), 5 (Panel B), and 25 (Panel C)
+]
+
+.pull-right[
+
+&lt;img src="https://lukejharmon.github.io/pcm/images/figure3-3.png" width="500"&gt;
+
+
+]
+
+---
+
+# Part 4  
+
+## Multivariate PGLS / Phylogenetic MANOVA
+
+---
+
+# Why multivariate?
+
+Many biological traits evolve together:
+
+- shape coordinates
+- suites of linear measurements
+- functionally integrated systems
+
+If you test one variable at a time:
+
+- you miss covariance structure
+- you inflate multiple testing
+
+---
+
+# Two Options for MV Data
+
+1. **Phylogenetic MANOVA**  
+   - test differences among groups in multivariate space  
+
+2. **Multivariate PGLS**  
+   - multivariate response (multiple traits), predictors, and phylogeny
+
+Different packages implement these in different ways.
+
+---
+
+# Example: phylogenetic MANOVA with `geomorph`
+
+We’ll create a toy multivariate trait matrix Y (n species × p traits).
+
+
+``` r
+set.seed(4)
+tree2 &lt;- rtree(80)
+
+p &lt;- 6 #number of characters
+Y &lt;- rbind(matrix(rnorm(40 * p),ncol=p),
+           matrix(rnorm(40 * p,mean=1),ncol=p)
+           )
+rownames(Y) &lt;- tree2$tip.label
+
+group &lt;- factor(rep(c("reef","pelagic"), each = 40))
+dat2 &lt;- data.frame(group = group)
+rownames(dat2) &lt;- tree2$tip.label
+
+fit_mv &lt;- procD.pgls(Y ~ group, phy = tree2, data = dat2, iter = 999)
+```
+
+```
+## 
+## Please be aware that printing progress slows down the analysis (perhaps slightly).
+## 
+## Preliminary Model Fit...
+## 
+## Sums of Squares calculations: 1000 permutations.
+## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |                                                                      |   1%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=====                                                                 |   8%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |=======                                                               |  11%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |=========                                                             |  13%
+  |                                                                            
+  |=========                                                             |  14%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |==============                                                        |  21%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |================                                                      |  24%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |===================                                                   |  28%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |=====================                                                 |  31%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |=======================                                               |  34%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |========================                                              |  35%
+  |                                                                            
+  |=========================                                             |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  36%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |==========================                                            |  38%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |============================                                          |  41%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |==============================                                        |  44%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |===============================                                       |  45%
+  |                                                                            
+  |================================                                      |  45%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===================================                                   |  51%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=====================================                                 |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |=====================================                                 |  54%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |========================================                              |  58%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  59%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |============================================                          |  64%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |=============================================                         |  65%
+  |                                                                            
+  |==============================================                        |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |===============================================                       |  68%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |================================================                      |  69%
+  |                                                                            
+  |=================================================                     |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |=================================================                     |  71%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |===================================================                   |  73%
+  |                                                                            
+  |===================================================                   |  74%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |==========================================================            |  84%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |=============================================================         |  88%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |===============================================================       |  91%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |=================================================================     |  94%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================|  99%
+  |                                                                            
+  |======================================================================| 100%
+```
+
+``` r
+summary(fit_mv)
+```
+
+```
+## 
+## Analysis of Variance, using Residual Randomization
+## Permutation procedure: Randomization of null model residuals 
+## Number of permutations: 1000 
+## Estimation method: Generalized Least-Squares (via OLS projection) 
+## Sums of Squares and Cross-products: Type I 
+## Effect sizes (Z) based on F distributions
+## 
+##           Df     SS      MS     Rsq      F      Z Pr(&gt;F)  
+## group      1  22.71 22.7081 0.03094 2.4903 1.8499  0.034 *
+## Residuals 78 711.27  9.1188 0.96906                       
+## Total     79 733.97                                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Call: procD.lm(f1 = Y ~ group, iter = iter, seed = seed, RRPP = TRUE,  
+##     SS.type = SS.type, effect.type = effect.type, int.first = int.first,  
+##     Cov = Cov, data = data, print.progress = print.progress)
+```
+---
+
+# Example: phylogenetic MANOVA with `geomorph`
+
+`summary(fit_mv)`
+
+
+```
+## 
+## Analysis of Variance, using Residual Randomization
+## Permutation procedure: Randomization of null model residuals 
+## Number of permutations: 1000 
+## Estimation method: Generalized Least-Squares (via OLS projection) 
+## Sums of Squares and Cross-products: Type I 
+## Effect sizes (Z) based on F distributions
+## 
+##           Df     SS      MS     Rsq      F      Z Pr(&gt;F)  
+## group      1  22.71 22.7081 0.03094 2.4903 1.8499  0.034 *
+## Residuals 78 711.27  9.1188 0.96906                       
+## Total     79 733.97                                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Call: procD.lm(f1 = Y ~ group, iter = iter, seed = seed, RRPP = TRUE,  
+##     SS.type = SS.type, effect.type = effect.type, int.first = int.first,  
+##     Cov = Cov, data = data, print.progress = print.progress)
+```
+---
+
+# Interpreting multivariate tests
+
+Pay attention to:
+
+- the overall test (group effect)
+- effect size measures (when available)
+- how results look in ordination/plots (PCA)
+
+**Significance is not the same as importance.**
+
+---
+
+# Visualizing MV Differences 
+
+We can do PCA on Y just to visualize group separation.
+
+.pull-left[
+
+``` r
+pcaY &lt;- prcomp(Y, scale. = TRUE)
+scY &lt;- as_tibble(pcaY$x[,1:2]) %&gt;%
+  mutate(group = group)
+
+ggplot(scY, aes(PC1, PC2, color = group)) +
+  geom_point(size = 2, alpha = 0.9) +
+  theme_classic()
+```
+]
+
+.pull-right[
+&lt;img src="lect_2-10_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
+*Note:* This PCA visualization does **not** “account for phylogeny”—it’s just an exploratory plot. 
+]
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

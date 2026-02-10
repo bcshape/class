@@ -125,8 +125,10 @@ title: "Schedule"
 
   - AME5 
   - CT5 
-  
 
+**Slides:**
+
++ [Feb 10](lect/lect_2-10.html) 
 ---
 
 ## Week 6 (Feb 16): Comparative methods I

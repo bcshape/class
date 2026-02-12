@@ -42,6 +42,10 @@ navbar:
         menu:
         - text: "Project Overview"
           href: final_project.html
+      - text: "Data Collection"
+        menu:
+        - text: "Data Collection Groups"
+          href: data_assignments.html
     - text: "Discussion Board"
       href: https://github.com/orgs/bcshape/discussions
     - text: "Course Canvas Page"

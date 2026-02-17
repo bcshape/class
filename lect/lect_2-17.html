@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Models of Evolution: Tempo, Mode, and Ancestral State Reconstruction</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Christopher Kenaley" />
+    <script src="lect_2-17_files/header-attrs-2.29/header-attrs.js"></script>
+    <link href="lect_2-17_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lect_2-17_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="lect_2-17_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Models of Evolution: Tempo, Mode, and Ancestral State Reconstruction
+]
+.author[
+### Dr. Christopher Kenaley
+]
+.institute[
+### Boston College
+]
+.date[
+### 2026/17/2
+]
+
+---
+
+
+
+
+# Models of Evolution
+## Tempo and Mode
+
+---
+
+# What do we mean by Tempo and Mode?
+
+.pull-left[
+**Tempo**  
+- The *rate* of evolutionary change  
+- Fast vs slow evolution  
+- Constant vs variable rates across a phylogeny  
+
+**Mode**  
+- The *pattern or process* of evolution  
+- Examples:
+  - Brownian Motion (random walk)
+  - Ornstein–Uhlenbeck (adaptive peaks)
+  - Early burst models
+]  
+  .pull-right[
+&lt;img src="https://www.pnas.org/cms/10.1073/pnas.2425573122/asset/b883508e-f9c8-4232-aad6-9f81a63afe08/assets/images/large/pnas.2425573122fig01.jpg" width="500"&gt;
+]
+---
+
+# Brownian Motion (BM)
+.pull-left[
+- Trait variance accumulates through time
+- No preferred direction
+- Often used as a null model
+
+Key idea:
+&gt; The expected difference between species increases with time since divergence.
+]
+
+.pull-right[
+
+&lt;img src="https://lukejharmon.github.io/pcm/images/figure3-1.png" width="500"&gt;
+
+Simulations over three different times: (A) 10, (B) 50, and (C) 100 time units.
+]
+---
+
+# Ornstein–Uhlenbeck (OU).
+
+.pull-left[
+- Evolution toward an adaptive optimum (`\(\sigma^2\)`)
+- Strength of pull determined by (`\(\alpha\)`), the rubberband parameter
+- Useful for testing adaptive hypotheses
+
+Examples in morphology:
+- Body shape adapting to habitat
+- Functional constraints
+]
+
+.pull-right[
+&lt;img src="ou.jpeg" width="500"&gt;
+]
+---
+
+# Visualizing Evolution on Trees
+
+.pull-left[
+Why visualize traits on trees?
+- Detect convergence
+- Identify clades with rapid change
+- Explore adaptive shifts
+
+Common tools in R:
+- phytools
+- geiger
+- ape
+]
+
+.pull-right[
+&lt;img src="https://methodsblog.com/wp-content/uploads/2020/11/continuouscolor-1.png" width="500"&gt;
+]
+---
+
+# Example: Plotting a Trait on a Tree
+
+.pull-left[
+
+``` r
+library(ape)
+library(phytools)
+
+tree &lt;- rtree(30)
+trait &lt;- setNames(rnorm(30),tree$tip.label)
+
+contMap(tree, trait)
+```
+]
+
+.pull-right[
+
+![](lect_2-17_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+---
+
+# Tree-Linked Visualization
+
+Goals:
+- Map traits onto branches
+- See where changes occur
+- Identify evolutionary patterns
+
+Methods:
+- Continuous trait mapping
+- Discrete trait mapping
+- Stochastic character mapping
+
+---
+
+# Ancestral State Reconstruction
+
+Question:
+&gt; What were the traits of ancestral species?
+
+Approaches:
+- Maximum likelihood
+- Bayesian inference
+- Stochastic mapping (simmap)
+
+---
+
+# Stochastic Character Mapping (simmap)
+
+.pull-left[
+What it does:
+- Simulates histories of trait change
+- Provides distributions of transitions
+- Allows uncertainty in ancestral states
+]
+
+.pull-right[
+
+&lt;img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDgKznDd8kOFTY3vwz44BsSO8ckCBtdBK02r5mcs_TrXDRUN6asknAsGTSiTEVx7RQ-ngLOnl21ivX0Aicnh2-Z4AW9Ihh-8JoalTs_7DNsw_fTg3V-dL5GRA71RA704F6_2xH8aMrKK1n/s1600/make.simmap.multiple.trees.png" width="500"&gt;
+
+]
+---
+
+## The Key Idea
+
+.pull-left[
+We usually know:
+- The tree
+- The trait at the tips
+- A model of transition rates (Q matrix)
+
+We *do not* know:
+- Exactly where changes occurred
+- How many times transitions happened
+
+simmap solves this by **simulating many possible histories**.
+]
+
+.pull-right[
+
+&lt;img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDgKznDd8kOFTY3vwz44BsSO8ckCBtdBK02r5mcs_TrXDRUN6asknAsGTSiTEVx7RQ-ngLOnl21ivX0Aicnh2-Z4AW9Ihh-8JoalTs_7DNsw_fTg3V-dL5GRA71RA704F6_2xH8aMrKK1n/s1600/make.simmap.multiple.trees.png" width="500"&gt;
+
+
+]
+---
+
+## Think of it Like This
+
+1. Start with the observed states at the tips  
+2. Use the evolutionary model to simulate changes along branches (what are the chances?)
+3. Repeat this many times  
+4. Summarize the results
+
+&gt; Each simulation is one plausible evolutionary history.
+
+---
+
+## What Do We Get?
+
+From many simulations we can estimate:
+- Probability of ancestral states
+- Number of transitions
+- Direction of transitions
+- Time spent in each state
+
+---
+
+## Why This Matters in Shape Evolution
+
+.pull-left[
+We can ask:
+- Did body shapes evolve after habitat shifts?
+- Are some habitats evolutionary “sinks” or “sources”?
+- Do transitions cluster in certain clades?
+]
+
+.pull-right[
+
+&lt;img src="zhustisimmap.png" width="500"&gt;
+
+]
+---
+
+# Example simmap Workflow in R
+
+.pull-left[
+
+``` r
+library(phytools)
+
+tree &lt;- rtree(20)
+states &lt;- sample(
+  c("reef","pelagic","benthic"), 
+  20, 
+  replace=TRUE)
+names(states) &lt;- tree$tip.label
+
+simmap &lt;- make.simmap(
+  tree, 
+  states,
+  model="ER", 
+  nsim=10)
+
+plotSimmap(simmap[[1]])
+```
+]
+
+.pull-right[
+
+```
+## make.simmap is sampling character histories conditioned on
+## the transition matrix
+## 
+## Q =
+##           benthic   pelagic      reef
+## benthic -3.727798  0.000000  3.727798
+## pelagic  2.286055 -2.286055  0.000000
+## reef     2.450650  2.400082 -4.850732
+## (estimated using likelihood);
+## and (mean) root node prior probabilities
+## pi =
+##   benthic   pelagic      reef 
+## 0.3333333 0.3333333 0.3333333
+```
+
+]
+
+---
+
+# Example simmap Workflow in R
+
+.pull-left[
+
+``` r
+plotSimmap(simmap[[1]])
+```
+]
+
+.pull-right[
+
+```
+## no colors provided. using the following legend:
+##   benthic   pelagic      reef 
+##   "black" "#DF536B" "#61D04F"
+```
+
+![](lect_2-17_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+]
+
+---
+# Models of Discrete Character Evolution
+
+`make.simmap(tree, states, model="ARD", nsim=10)`
+
+When reconstructing ancestral states or running simmap,  
+we must choose a **model of how transitions occur**.
+
+These models differ in how they treat **transition rates between states**.
+
+---
+# Models of Discrete Character Evolution
+
+## ER — Equal Rates
+
+**Assumption:**  
+All transitions occur at the same rate.
+
+Example (3 habitats):
+- Reef → Pelagic = same rate  
+- Pelagic → Benthic = same rate  
+- Benthic → Reef = same rate  
+
+**Interpretation:**  
+No direction or bias in transitions.
+
+**Use when:**  
+- You want a simple baseline model  
+- Data are limited
+
+---
+# Models of Discrete Character Evolution
+
+## SYM — Symmetrical Rates
+
+**Assumption:**  
+Forward and reverse transitions are equal,  
+but different pairs of states can differ.
+
+Example:
+- Reef ↔ Pelagic has one rate  
+- Reef ↔ Benthic has another rate  
+
+But:
+- Reef → Pelagic = Pelagic → Reef
+
+**Interpretation:**  
+Transitions differ among habitat pairs,  
+but there is no directional bias.
+
+---
+# Models of Discrete Character Evolution
+
+## ARD — All Rates Different
+
+**Assumption:**  
+Every transition has its own rate.
+
+Example:
+- Reef → Pelagic ≠ Pelagic → Reef  
+- Pelagic → Benthic ≠ Benthic → Pelagic  
+
+**Interpretation:**  
+Allows directional evolution and asymmetry.
+
+**Use when:**  
+- You suspect evolutionary bias  
+- You have enough data to estimate many parameters
+
+---
+
+## Choosing Among Models
+
+Typically:
+1. Fit ER, SYM, and ARD  
+2. Compare AIC or likelihood  
+3. Use the best-supported model for simmap
+
+---
+
+# Interpreting simmap Results
+
+.pull-left[
+You can estimate:
+- Number of transitions
+- Directionality of changes
+- Time spent in each state
+
+Example:
+
+
+``` r
+describe.simmap(simmap)
+```
+]
+
+.pull-right[
+
+```
+## 10 trees with a mapped discrete character with states:
+##  benthic, pelagic, reef 
+## 
+## trees have 64.2 changes between states on average
+## 
+## changes are of the following types:
+##      benthic,pelagic benthic,reef pelagic,benthic pelagic,reef reef,benthic
+## x-&gt;y               0         25.8            12.2            0         13.9
+##      reef,pelagic
+## x-&gt;y         12.3
+## 
+## mean total time spent in each state is:
+##        benthic   pelagic      reef    total
+## raw  6.7933289 5.1989838 5.7724499 17.76476
+## prop 0.3824047 0.2926571 0.3249382  1.00000
+```
+
+]
+---
+
+# Biological Questions You Can Ask
+
+- Does habitat influence body shape evolution?
+- Are transitions between habitats rare or common?
+- Do some clades evolve faster than others?
+
+---
+
+# Summary
+
+Key ideas:
+- Tempo = rate of evolution
+- Mode = process of evolution
+- Trees allow visualization of evolutionary patterns
+- simmap helps reconstruct probable histories
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

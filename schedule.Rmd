@@ -151,7 +151,11 @@ title: "Schedule"
 
   - AME6 
   - CT6 
-  
+
+**Slides:**
+
++ [Feb 17](lect/lect_2-17.html) 
+
 ---
 
 ## Week 7 (Feb 23): Comparative methods II 

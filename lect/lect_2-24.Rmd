@@ -1,0 +1,724 @@
+---
+title: "Shape Integration, Modularity, Multivariate Rates, and Phylogenetic PCA"
+author: "Dr. Christopher Kenaley"
+institute: "Boston College"
+date: "2026/24/2"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+lib_dir: libs
+nature:
+  ratio: 16:9
+---
+
+#Today
+
+- Shape Integration  
+- Modularity  
+- Multivariate Evolutionary Rates  
+- + Phylogenetic PCA (^)
+
+---
+# Big Picture
+.pull-left[
+
+
+Today we’ll connect four ideas:
+
+- **Integration**: traits covary → “things move together”
+- **Modularity**: covariance is **blocky** → semi-independent parts
+- **Multivariate rates**: how fast **shape as a vector** evolves
+- **Phylogenetic PCA**: PCA that accounts for shared ancestry
+
+**Unifying theme:** covariance structure.
+]
+
+.pull-right[
+
+<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0047248422000914-gr1.jpg" width="500">
+
+]
+
+---
+
+# Step 1: What is Integration?
+
+.pull-left[
+
+
+Imagine measuring:
+
+- Jaw length
+- Head width
+- Eye size
+- Body depth
+
+If these tend to change together → **integrated**.
+
+If they vary independently → weak integration.
+
+**Integration = structure in covariance** (not just “correlation”).
+]
+
+.pull-right[
+
+<img src="https://res.cloudinary.com/dry8rzbyx/image/fetch/s--YSWEWrj9--/f_auto/q_auto/c_scale,w_1536/https://www.knime.com/sites/default/files/public/9-descriptive-statistics-knime.png" width="500">
+
+]
+
+---
+# Visual Intuition
+
+.pull-left[
+
+
+Two traits:
+
+- Integrated → tight diagonal cloud (predictable)
+- Not integrated → round cloud (independent-ish)
+
+If you can predict trait B from trait A, there’s integration.
+]
+
+.pull-right[
+<img src="https://res.cloudinary.com/dry8rzbyx/image/fetch/s--YSWEWrj9--/f_auto/q_auto/c_scale,w_1536/https://www.knime.com/sites/default/files/public/9-descriptive-statistics-knime.png" width="500">
+
+]
+
+---
+# Why Does Integration Exist?
+.pull-left[
+
+
+Three common causes:
+
+1. **Developmental coupling** (shared pathways)
+2. **Functional coupling** (works together)
+3. **Genetic correlations** (shared genetic basis)
+
+]
+
+.pull-right[
+<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0047248422000914-gr1.jpg" width="500">
+]
+
+---
+# Translation to Matrices
+
+.pull-left[
+
+Integration lives in the covariance matrix:
+
+- Strong integration → large off-diagonals, variation concentrated
+- Weak integration → covariance spread more evenly
+
+Think: “Is there a dominant direction of variation?”
+]
+
+.pull-right[
+```{r,echo=F,message=F,warning=F}
+suppressPackageStartupMessages({
+  library(ggplot2)
+library(reshape2)
+library(tidyverse)
+})
+# -----------------------------
+# 1. Define covariance matrices
+# -----------------------------
+
+traits <- c("Jaw", "Head", "Body")
+
+low_cov <- matrix(c(
+  1.0, 0.05, 0.02,
+  0.05, 1.0, 0.03,
+  0.02, 0.03, 1.0
+), nrow = 3, byrow = TRUE)
+
+medium_cov <- matrix(c(
+  1.0, 0.4, 0.3,
+  0.4, 1.0, 0.35,
+  0.3, 0.35, 1.0
+), nrow = 3, byrow = TRUE)
+
+high_cov <- matrix(c(
+  1.0, 0.8, 0.75,
+  0.8, 1.0, 0.85,
+  0.75, 0.85, 1.0
+), nrow = 3, byrow = TRUE)
+
+# Add row/column names
+for (mat in list(low_cov, medium_cov, high_cov)) {
+  colnames(mat) <- rownames(mat) <- traits
+}
+
+# -----------------------------
+# 2. Convert to tidy dataframe
+# -----------------------------
+
+make_df <- function(mat, level){
+  as.data.frame(as.table(mat)) %>%
+    rename(Trait1 = Var1,
+           Trait2 = Var2,
+           Covariance = Freq) %>%
+    mutate(Integration = level)
+}
+
+df_low    <- make_df(low_cov, "Low")
+df_medium <- make_df(medium_cov, "Medium")
+df_high   <- make_df(high_cov, "High")
+
+df_all <- bind_rows(df_low, df_medium, df_high)
+
+# -----------------------------
+# 3. Plot heatmaps
+# -----------------------------
+
+ggplot(df_all, aes(Trait1, Trait2, fill = Covariance)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0.5,
+    limits = c(0, 1)
+  ) +
+  facet_wrap(~ Integration) +
+  coord_equal() +
+  theme_minimal(base_size = 14) +
+  labs(title = "Low vs Medium vs High Integration",
+       fill = "Covariance")
+```
+]
+
+---
+# Eigenvectors = Directions of Shape Change
+
+.pull-left[
+
+PCA is an eigen-decomposition of covariance.
+
+If **PC1 explains a lot**, variation is “channeled” → stronger integration.
+
+If variance is evenly spread across many PCs → weaker integration.
+]
+
+.pull-right[
+
+<img src="https://www.sthda.com/sthda/RDoc/figure/factor-analysis/factominer-principal-component-analysis-eigenvalue-factoextra-data-mining-1.png" width="500">
+
+]
+
+---
+# Modularity
+
+
+
+
+---
+# What is Modularity?
+
+.pull-left[
+
+
+A **module** = traits that:
+
+- covary strongly **within** the group
+- covary weakly **between** groups
+
+Classic examples:
+- face vs braincase
+- fin modules (pectoral vs caudal)
+- jaw joint vs tooth-bearing region
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-018-25715-y/MediaObjects/41598_2018_25715_Fig2_HTML.jpg" width="400">
+
+]
+
+---
+# What Modularity Looks Like
+
+.pull-left[
+
+
+Covariance matrix becomes “blocky”:
+
+<table style="border-collapse: collapse; font-family: monospace; text-align: center;">
+  <tr>
+    <td style="border: 1px solid #333; padding: 6px;">A</td>
+    <td style="border: 1px solid #333; padding: 6px;">A</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #333; padding: 6px;">A</td>
+    <td style="border: 1px solid #333; padding: 6px;">A</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">B</td>
+    <td style="border: 1px solid #333; padding: 6px;">B</td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">0</td>
+    <td style="border: 1px solid #333; padding: 6px;">B</td>
+    <td style="border: 1px solid #333; padding: 6px;">B</td>
+  </tr>
+</table>
+
+Strong within-module covariance, weak across modules.
+]
+
+.pull-right[
+```{r,echo=F}
+traits <- c("M1_T1","M1_T2","M2_T1","M2_T2")
+
+# Block covariance: strong within-module (A and B), weak between modules (0)
+C_block <- matrix(c(
+  1.0, 0.8, 0.05, 0.05,
+  0.8, 1.0, 0.05, 0.05,
+  0.05, 0.05, 1.0, 0.8,
+  0.05, 0.05, 0.8, 1.0
+), nrow = 4, byrow = TRUE)
+
+colnames(C_block) <- rownames(C_block) <- traits
+
+df <- as.data.frame(as.table(C_block)) %>%
+  rename(Trait1 = Var1, Trait2 = Var2, Covariance = Freq)
+
+ggplot(df, aes(Trait1, Trait2, fill = Covariance)) +
+  geom_tile(color = "white", linewidth = 0.6) +
+  coord_equal() +
+  theme_minimal(base_size = 14) +
+  theme(axis.title = element_blank()) +
+  labs(title = "Block-structured covariance (two modules)") +
+  scale_fill_gradient2(midpoint = 0.5, limits = c(0, 1))
+```
+]
+
+---
+# Why Modularity Matters
+
+.pull-left[
+
+
+Modularity can increase **evolvability** because:
+
+- selection can change one module without dragging everything else
+- local adaptation becomes easier
+- constraints can be localized
+
+Key idea: modularity = semi-independence.
+]
+
+.pull-right[
+
+]
+
+---
+
+.pull-left[
+# Testing Modularity (Intuition)
+
+We ask:
+
+- Is within-module covariance > between-module covariance?
+
+Common tests/metrics:
+- RV coefficient
+- Covariance ratio (CR)
+- permutation/random-partition comparisons
+
+You need a **hypothesis of modules** (a partition).
+]
+
+.pull-right[
+<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41598-018-25715-y/MediaObjects/41598_2018_25715_Fig2_HTML.jpg" width="400">
+]
+
+---
+# Integration vs Modularity
+.pull-left[
+
+They are not opposites.
+
+You can have:
+- strong integration **within** modules
+- weak integration **between** modules
+
+That’s structured integration (often what biology looks like).
+]
+
+.pull-right[
+
+<img src="https://damelo.net/publication/modularityandintegration/featured.jpg"  width="400" >
+
+
+]
+
+---
+
+# Multivariate Evolutionary Rates
+
+---
+# Univariate Rate Reminder
+
+.pull-left[
+
+
+Brownian motion (BM):
+- trait variance increases linearly with time
+- rate parameter: **σ²**
+
+Univariate question:
+“How fast does trait X evolve?”
+]
+
+.pull-right[
+<!-- Add a time vs variance sketch -->
+
+<img src="https://lukejharmon.github.io/pcm/images/figure3-1.png"  width="400" >
+
+]
+
+---
+# Multivariate Rate Idea
+.pull-left[
+
+
+Now traits form a vector:
+
+**shape = (x1, x2, …, xp)**
+
+Question becomes:
+“How fast does the *shape vector* diffuse through morphospace?”
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-018-25715-y/MediaObjects/41598_2018_25715_Fig1_HTML.jpg"  width="400" >
+
+]
+
+---
+# The Evolutionary Rate Matrix (R)
+.pull-left[
+
+
+Under multivariate BM, rate is a matrix:
+
+- diagonals = per-trait rates
+- off-diagonals = evolutionary covariances
+
+Interpretation:
+- big eigenvalues → fast along major axes
+- small eigenvalues → slow / constrained axes
+
+* λ1 = 1.8 → fast evolution along major axis
+* λ2 = 0.2 → slow evolution orthogonal to that
+]
+
+.pull-right[
+```{r}
+R <- matrix(c(
+  1.0, 0.8,
+  0.8, 1.0
+), nrow = 2, byrow = TRUE)
+
+R
+eigen(R)
+
+```
+
+
+]
+
+
+---
+# The Evolutionary Rate Matrix (R)
+
+.pull-left[
+* λ1 = 1.8 → fast evolution along major axis
+* λ2 = 0.2 → slow evolution orthogonal to that
+
+```{r,warning=F,message=F}
+library(MASS)
+set.seed(1)
+sim_data <- mvrnorm(n = 1000, 
+                    mu = c(0,0), 
+                    Sigma = R)
+```
+
+]
+
+.pull-right[
+```{r,warning=F,message=F}
+plot(sim_data,
+     pch = 16,
+     col = rgb(0,0,1,0.3),
+     asp = 1,
+     main = "Evolutionary diffusion under R")
+```
+
+**That ellipse is the eigenstructure of R**
+
+]
+
+---
+# The Evolutionary Rate Matrix (R)
+
+.pull-left[
+* λ1 = 1 → fast evolution along major axis
+* λ2 = 1 → fast evolution orthogonal to that
+
+```{r,warning=F,message=F,fig.height=2}
+R2 <- matrix(c(
+  1.0, 0.0,
+  0.0, 1.0
+), nrow = 2)
+
+eigen(R2)
+set.seed(1)
+
+sim_data2 <- mvrnorm(n = 1000, 
+                    mu = c(0,0), 
+                    Sigma = R2)
+```
+
+]
+
+.pull-right[
+```{r,warning=F,message=F}
+plot(sim_data2,
+     pch = 16,
+     col = rgb(0,0,1,0.3),
+     asp = 1,
+     main = "Evolutionary diffusion under R")
+```
+
+
+]
+
+
+---
+
+.pull-left[
+# Rate vs Integration
+
+Strong integration does **not** automatically mean slow evolution.
+
+It can mean:
+- evolution is *channeled* along certain axes
+- constrained in others
+
+So you can see:
+- high rate along PC1-like axis
+- low rate orthogonal to it
+]
+
+.pull-right[
+```{r}
+plot(sim_data,
+     pch = 16,
+     col = rgb(0,0,1,0.3),
+     asp = 1,
+     main = "Evolutionary diffusion under R")
+```
+]
+
+---
+
+.pull-left[
+# Comparing Rates Across Groups
+
+Typical questions:
+
+- reef vs pelagic
+- shallow vs deep
+- clade A vs clade B
+
+Common tools:
+- likelihood comparisons
+- simulations
+- `geomorph::compare.evol.rates`
+]
+
+.pull-right[
+<!-- Add your favorite study system comparison -->
+]
+
+---
+
+# Phylogenetic PCA (pPCA)
+
+---
+# Why PCA Can Mislead
+.pull-left[
+
+
+Regular PCA treats species as independent.
+
+But species share history, so raw covariance includes:
+- evolutionary signal (shared ancestry)
+- plus whatever ecology/selection adds
+
+So PCA axes can reflect phylogeny as much as “functional structure”.
+]
+
+.pull-right[
+
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-018-25715-y/MediaObjects/41598_2018_25715_Fig1_HTML.jpg?as=webp"  width="400" >
+
+]
+
+---
+# What pPCA Tries to Do
+
+.pull-left[
+
+
+Phylogenetic PCA adjusts for expected covariance under a phylogenetic model
+(usually BM) before doing PCA.
+
+Goal:
+- describe major axes of variation **after accounting for shared ancestry**
+- interpret PCs as “phylogenetically informed” shape axes
+]
+
+.pull-right[
+**Same concept, different pile**
+]
+
+---
+# Two Common Flavors
+.pull-left[
+
+
+1) **pPCA via BM-transformed covariance**
+   - estimate phylogenetic covariance among species
+   - transform data → do PCA
+
+2) **PGLS-style residual PCA**
+   - regress traits on intercept with phylogenetic error (BM)
+   - PCA on residuals / transformed data
+
+Both are trying to reduce the “non-independence problem.”
+]
+
+.pull-right[
+<!-- Add an algorithm schematic -->
+]
+
+---
+# How to Interpret pPC Axes
+.pull-left[
+
+
+pPC1 is still:
+- a direction of major variation in the dataset
+
+But now it’s major variation *given the phylogeny/model*.
+
+Practical interpretation:
+- pPCs often emphasize shifts that are **not just deep clade structure**
+- sometimes axes rotate compared to ordinary PCA
+]
+
+
+---
+# PCA vs pPCA 
+
+```{r,echo=F,warning=F,message=F,fig.height=4}
+# ---------------------------------
+# 1. Load packages
+# ---------------------------------
+library(ape)
+library(phytools)
+
+set.seed(123)
+
+# ---------------------------------
+# 2. Simulate phylogeny
+# ---------------------------------
+tree <- rtree(60)
+
+# ---------------------------------
+# 3. Simulate 2 traits under BM
+# ---------------------------------
+R <- matrix(c(
+  1.0, 0.7,
+  0.7, 1.0
+), 2, 2)
+
+X <- fastBM(tree, nsim = 2, sig2 = 1)
+X <- as.matrix(X)
+
+# ---------------------------------
+# 4. Add a clade-level shift
+# ---------------------------------
+# Pick a large clade
+clade_node <- getMRCA(tree, tree$tip.label[1:30])
+clade_tips <- extract.clade(tree, clade_node)$tip.label
+
+# Add a mean shift to that clade
+X[clade_tips, ] <- X[clade_tips, ] + c(4, 4)
+
+# ---------------------------------
+# 5. Regular PCA
+# ---------------------------------
+pca <- prcomp(X, scale. = FALSE)
+
+# ---------------------------------
+# 6. Phylogenetic PCA
+# ---------------------------------
+ppca <- phyl.pca(tree, X, method = "BM")
+
+# ---------------------------------
+# 7. Plot side by side
+# ---------------------------------
+par(mfrow = c(1,2))
+
+plot(pca$x[,1], pca$x[,2],
+     pch = 16,
+     col = "steelblue",
+     main = "Regular PCA",
+     xlab = "PC1",
+     ylab = "PC2")
+
+plot(ppca$S[,1], ppca$S[,2],
+     pch = 16,
+     col = "firebrick",
+     main = "Phylogenetic PCA",
+     xlab = "pPC1",
+     ylab = "pPC2")
+```
+
+---
+
+.pull-left[
+# Important Caveat
+
+pPCA depends on the assumed evolutionary model.
+
+If the real process deviates strongly from BM:
+- pPCA can “overcorrect” or distort
+- interpretation changes
+
+Best practice:
+- compare PCA and pPCA
+- check phylogenetic signal
+- be explicit about model assumptions
+]
+
+.pull-right[
+<!-- Add: a note on lambda / OU if you teach it -->
+]
+
+---
+

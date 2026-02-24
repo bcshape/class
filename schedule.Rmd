@@ -86,9 +86,10 @@ title: "Schedule"
 ## Week 4 (Feb 2): Outlines + Fourier descriptors
 
 **Topics**
-- When landmarks fail: outlines and complex boundaries
-- Elliptic Fourier descriptors; reconstruction + harmonics
-- Biological examples: teeth, fins, leaves, shells, jaws
+  
+  - When landmarks fail: outlines and complex boundaries
+  - Elliptic Fourier descriptors; reconstruction + harmonics
+  - Biological examples: teeth, fins, leaves, shells, jaws
 
 
 **Consumables**
@@ -161,10 +162,11 @@ title: "Schedule"
 ## Week 7 (Feb 23): Comparative methods II 
 
 **Topics**
-  - BM vs OU intuition for shape data
-  - Rate heterogeneity + regime shifts (claims you can/can’t make)
-  - Disparity through time; clade comparisons
 
+  - Shape Integration
+  - Modularity
+  - Multivariate Rates
+  - Phylogenetic PCA
 
 **Consumables**
 
@@ -176,14 +178,22 @@ title: "Schedule"
   - AME7 
   - CT7 
 
+**Slides:**
+
++ [Feb 24](lect/lect_2-24.html) 
+
+---
+
 ## Spring Break (Mar 2)
 
-## Week 8 (Mar 9): Evolutionary models of shape (BM, OU, rates, disparity)
+---
+
+## Week 8 (Mar 9): Hypothesis Testing
 
   **Topics**
   
   - Model comparison and hypothesis testing
-  - Modularity and integration
+  
   
 **Consumables**
   
